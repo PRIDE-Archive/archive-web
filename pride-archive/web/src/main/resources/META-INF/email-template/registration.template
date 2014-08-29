@@ -1,0 +1,35 @@
+Dear [USERNAME],
+
+Thank you for registering with PRIDE.
+
+Your login details are below, please change your password after login.
+
+    Email: [EMAIL]
+    Password: [PASSWORD]
+
+Please also verify your contact details:
+
+    Title: [TITLE]
+    First name: [FIRST_NAME]
+    Last name: [LAST_NAME]
+    Affiliation: [AFFILIATION]
+
+To submit data, you can visit [PRIDE_ARCHIVE_SUBMISSION_URL]
+
+For general help, please go to [PRIDE_ARCHIVE_HELP_URL]
+
+You can always reach us at [PRIDE_SUPPORT] for any other questions.
+
+
+Best wishes,
+PRIDE team, EBI
+
+Website: [PRIDE_URL]
+Email: [PRIDE_SUPPORT]
+Twitter: [TWITTER]
+
+For general PRIDE reference, please use: Vizcaino JA, Cote RG, Csordas A, Dianes JA, Fabregat A,
+Foster JM, Griss J, Alpi E, Birim M, Contell J, O'Kelly G, Schoenegger A, Ovelleiro D, Perez-Riverol Y,
+Reisinger F, Rios D, Wang R, Hermjakob H. The Proteomics Identifications (PRIDE) database and associated
+tools: status in 2013. Nucleic Acids Res. 2013 Jan 1;41(D1):D1063-9. doi: 10.1093/nar/gks1262.
+Epub 2012 Nov 29. PubMed PMID:23203882.

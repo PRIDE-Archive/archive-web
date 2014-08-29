@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:context="http://www.springframework.org/schema/context"
+             xmlns:mvc="http://www.springframework.org/schema/mvc"
+             xmlns:security="http://www.springframework.org/schema/security"
+             xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+
+    <!-- Enables the Spring MVC @Controller programming model -->
+    <annotation-driven>
+        <!--Configuration to handle automatically the page request by spring-->
+        <mvc:argument-resolvers>
+            <beans:bean id="pageagleArgumentResolver" class="org.springframework.data.web.PageableHandlerMethodArgumentResolver">
+                <beans:constructor-arg name="sortResolver">
+                    <beans:bean class="org.springframework.data.web.SortHandlerMethodArgumentResolver">
+                        <beans:property name="propertyDelimiter" value=": "/>
+                    </beans:bean>
+                </beans:constructor-arg>
+            </beans:bean>
+        </mvc:argument-resolvers>
+    </annotation-driven>
+
+	<context:component-scan base-package="uk.ac.ebi.pride.archive.web" />
+
+    <resources mapping="/resources/**" location="/resources/"/>
+
+    <!-- Resolves view names to Tiles 2 definitions -->
+    <beans:bean id="tilesViewResolver" class="org.springframework.web.servlet.view.tiles2.TilesViewResolver"/>
+
+    <!-- Configures Tiles 2 -->
+    <beans:bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+        <beans:property name="definitions">
+            <beans:list>
+                <beans:value>/WEB-INF/tiles.xml</beans:value>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+
+    <!-- Resolves messages to support internationalization -->
+    <beans:bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <beans:property name="basename" value="/WEB-INF/messages/global" />
+    </beans:bean>
+
+    <!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+    <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <beans:property name="prefix" value="/WEB-INF/views/" />
+        <beans:property name="suffix" value=".jsp" />
+    </beans:bean>
+
+    <!--<beans:bean class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver">-->
+        <!--<beans:property name="order" value="1"/>-->
+    <!--</beans:bean>-->
+
+    <!--<beans:bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">-->
+        <!--&lt;!&ndash;<beans:property name="exceptionMappings">&ndash;&gt;-->
+            <!--&lt;!&ndash;<beans:props>&ndash;&gt;-->
+                <!--&lt;!&ndash;<beans:prop key="java.lang.Exception">error</beans:prop>&ndash;&gt;-->
+            <!--&lt;!&ndash;</beans:props>&ndash;&gt;-->
+        <!--&lt;!&ndash;</beans:property>&ndash;&gt;-->
+        <!--&lt;!&ndash;<beans:property name="order" value="2"/>&ndash;&gt;-->
+    <!--</beans:bean>-->
+
+    <!--Disable browser cache for searchResults -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!--<mvc:mapping path="/simpleSearch*"/>  &lt;!&ndash; we must filter the request, and not the result and view (searchResult.jsp)&ndash;&gt;-->
+            <!--<mvc:mapping path="/users/*"/>-->
+            <!--<mvc:mapping path="/projects/*/assays/*"/>-->
+            <mvc:mapping path="/**"/>
+            <beans:bean id="webContentInterceptor" class="org.springframework.web.servlet.mvc.WebContentInterceptor">
+                <beans:property name="cacheSeconds" value="0"/>
+                <beans:property name="useExpiresHeader" value="true"/>
+                <beans:property name="useCacheControlHeader" value="true"/>
+                <beans:property name="useCacheControlNoStore" value="true"/>
+                <!--<beans:property name="alwaysMustRevalidate" value="true"/>-->
+            </beans:bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <beans:bean id="frontierTemplateFilter" class="uk.ac.ebi.pride.web.util.frontier.CustomizedFrontierTemplateFilter">
+        <beans:property name="templateServiceAddress" value="${frontier.template.service.url}"/>
+        <beans:property name="jsonConfig" value="classpath:META-INF/webconfig/config.json"/>
+        <beans:property name="jsonConfigAuthenticated" value="classpath:META-INF/webconfig/configAuth.json"/>
+        <beans:property name="exceptions">
+            <beans:list>
+                <beans:value>/viewer/service</beans:value>
+            </beans:list>
+        </beans:property>
+        <!--<beans:property name="exceptions">-->
+            <!--<beans:list>-->
+                <!--<beans:value>jnlp</beans:value>-->
+                <!--<beans:value>searchService</beans:value>-->
+                <!--<beans:value>/files/</beans:value>-->
+                <!--<beans:value>/resources/css/prider.css</beans:value>-->
+                <!--<beans:value>/resources/javascript/prider.js</beans:value>-->
+                <!--<beans:value>/resources/javascript/aspera-utils.js</beans:value>-->
+                <!--<beans:value>/resources/javascript/google-analytics.js</beans:value>-->
+                <!--<beans:value>/resources/javascript/priderStats.js</beans:value>-->
+                <!--<beans:value>/resources/javascript/readmore.min.js</beans:value>-->
+                <!--<beans:value>/resources/img/thumb1.PNG</beans:value>-->
+                <!--<beans:value>/resources/img/thumb2.PNG</beans:value>-->
+                <!--<beans:value>/resources/img/thumb3.PNG</beans:value>-->
+                <!--<beans:value>/resources/img/thumb4.PNG</beans:value>-->
+                <!--<beans:value>/resources/img/thumb5.PNG</beans:value>-->
+                <!--<beans:value>/resources/img/tag.png</beans:value>-->
+                <!--<beans:value>/resources/img/loader.gif</beans:value>-->
+                <!--<beans:value>/resources/img/in.png</beans:value>-->
+                <!--<beans:value>/resources/img/out.png</beans:value>-->
+                <!--<beans:value>/ebisearch/</beans:value> &lt;!&ndash; for local testing of the EBI global search &ndash;&gt;-->
+            <!--</beans:list>-->
+        <!--</beans:property>-->
+    </beans:bean>
+    <beans:bean id="frontierTemplateFilterWebApp" class="uk.ac.ebi.pride.web.util.frontier.CustomizedFrontierTemplateFilter">
+        <beans:property name="templateServiceAddress" value="${frontier.template.service.url}"/>
+        <beans:property name="jsonConfig" value="classpath:META-INF/webconfig/configWebApp.json"/>
+        <beans:property name="jsonConfigAuthenticated" value="classpath:META-INF/webconfig/configAuthWebApp.json"/>
+        <beans:property name="exceptions">
+            <beans:list>
+                <beans:value>/viewer/service</beans:value>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+
+    <!-- Define controllers which only render pages (i.e. nothing added to the model) -->
+    <mvc:view-controller path="/login" view-name="login"/>
+    <mvc:view-controller path="/error" view-name="error"/>
+    <mvc:view-controller path="/passwordReset" view-name="passwordResetSuccessful"/>
+    <mvc:view-controller path="/submissionCharts" view-name="submissionCharts"/>
+    <mvc:view-controller path="/about" view-name="about"/>
+
+</beans:beans>

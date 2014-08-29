@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${pride.support.smtp.server}"/>
+    </bean>
+
+    <bean id="passwordResetEmailTemplate" factory-bean="prideSupportEmailSender" factory-method="getEmailTemplate">
+        <constructor-arg value="classpath:META-INF/email-template/password-reset.template"/>
+    </bean>
+
+    <bean id="emailAddressChangeEmailTemplate" factory-bean="prideSupportEmailSender" factory-method="getEmailTemplate">
+        <constructor-arg value="classpath:META-INF/email-template/email-change.template"/>
+    </bean>
+
+    <bean id="passwordChangeEmailTemplate" factory-bean="prideSupportEmailSender" factory-method="getEmailTemplate">
+        <constructor-arg value="classpath:META-INF/email-template/password-change.template"/>
+    </bean>
+
+    <bean id="publishProjectEmailTemplate" factory-bean="prideSupportEmailSender" factory-method="getEmailTemplate">
+        <constructor-arg value="classpath:META-INF/email-template/publish-project.template"/>
+    </bean>
+
+    <bean id="feedbackEmailTemplate" factory-bean="prideSupportEmailSender" factory-method="getEmailTemplate">
+        <constructor-arg value="classpath:META-INF/email-template/feedback.template"/>
+    </bean>
+
+    <bean id="registrationEmailTemplate" factory-bean="prideSupportEmailSender" factory-method="getEmailTemplate">
+        <constructor-arg value="classpath:META-INF/email-template/registration.template"/>
+    </bean>
+
+    <context:property-placeholder location="classpath:META-INF/props/email.properties" ignore-unresolvable="true"/>
+
+</beans>
