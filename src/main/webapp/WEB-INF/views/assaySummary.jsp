@@ -81,7 +81,7 @@
         </h5>
         <h5>
             <a href="${assayPsmsUrl}" class="icon icon-functional" data-icon="4">
-                <fmt:message key="assay.proteins.table"/>
+                <fmt:message key="assay.psms.table"/>
             </a>
         </h5>
     </div>
