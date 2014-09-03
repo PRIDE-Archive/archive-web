@@ -19,14 +19,18 @@
 
     <!--
          To build the project several settings are required which are provided via maven profiles
+         (using JNDI for DB connection)
          These are:
-                db-pride-repo-pridearch-ro-user  (only needed if not using JNDI)
-                db-pride-repo-pridepro           (only needed if not using JNDI)
                 pride-archive-user-service       -> Configure the urls property for the web service
                 pride-archive-solr-cores         -> Configure the solr cores
                 pride-archive-web-local          -> Configure the <deploy.url> property in the profile and the solr URL
                 pride-twitter
                 wgc-template-service-prod
+
+         If not using JNDI the DB connections will have to be configured
+                db-pride-repo-pridearch-ro-user  (only needed if not using JNDI)
+                db-pride-repo-pridepro           (only needed if not using JNDI)
+
      -->
 
     <licenses>
