@@ -6,6 +6,11 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="inspector" tagdir="/WEB-INF/tags/inspector" %>
 
+<%-- Hack to add to the header until it is configurable in the template service --%>
+<script type="application/javascript">
+    $('<link rel="import" href="//www.reactome.org/webcomponents/elements/reactome-analysis-url.html">').appendTo('head');
+</script>
+
 <%-- Breadcrumb for navigation --%>
 <%-- PRIDE > PRIDE Archive > Accession--%>
 <div class="grid_24 clearfix">
@@ -509,7 +514,7 @@
                 <th width="80px">
                     <fmt:message key="assay.accession"/>
                 </th>
-                <th width="500px">
+                <th width="450px">
                     <fmt:message key="assay.title"/>
                 </th>
                 <th width="80px">
@@ -527,7 +532,7 @@
                 <th width="120px">
                     <fmt:message key="assay.identified.spectrum.count"/>
                 </th>
-                <th width="100px">
+                <th width="150px">
                     <fmt:message key="assay.reactome.link"/>
                 </th>
             </tr>
@@ -542,7 +547,7 @@
                         </spring:url>
                         <a href="${showUrl}" class="icon icon-functional" data-icon="4">${assay.accession}</a>
                     </td>
-                    <td width="500px">
+                    <td width="450px">
                             ${assay.title}
                     </td>
                     <td width="80px">
@@ -568,10 +573,11 @@
                     <td width="120px">
                             ${assay.identifiedSpectrumCount}
                     </td>
-                    <td width="100px" style="text-align: center">
-                        <button onclick="reactomeAnalysis(this, ${assay.accession}, false)" class="reactome-analyse">
-                            Analyse
-                        </button>
+                    <td width="150px" style="text-align: center">
+                        <%--<button onclick="reactomeAnalysis(this, ${assay.accession}, false)" class="reactome-analyse">--%>
+                            <%--Analyse--%>
+                        <%--</button>--%>
+                            <reactome-analysis-url value="http://wwwdev.ebi.ac.uk/pride/ws/archive/protein/list/assay/31753.acc" project="false"></reactome-analysis-url>
                     </td>
                 </tr>
             </c:forEach>
