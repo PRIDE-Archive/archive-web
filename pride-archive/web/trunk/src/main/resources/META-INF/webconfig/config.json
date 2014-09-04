@@ -117,9 +117,6 @@
         ],
         "javascriptList": [
             {
-                "url": "//www.reactome.org/webcomponents/bower_components/platform/platform.js"
-            },
-            {
                 "url": "//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"
             },
             {
@@ -151,6 +148,9 @@
             },
             {
                 "url": "${deploy.url}resources/javascript/footable/footable.js"
+            },
+            {
+                "url": "${deploy.url}resources/javascript/reactome-analysis.js"
             }
         ],
         "bottomJavascriptList": [
