@@ -17,7 +17,7 @@
         </p>
     </nav>
     </div>
-    <c:set var="numFilters" value="${fn:length(titleFilters)+fn:length(speciesFilters)+fn:length(tissueFilters)+fn:length(diseaseFilters)+fn:length(ptmsFilters)+fn:length(instrumentFilters)+fn:length(quantificationFilters)+fn:length(experimentTypeFilters)+fn:length(projectTagFilters)}" />
+    <c:set var="numFilters" value="${fn:length(titleFilters)+fn:length(speciesFilters)+fn:length(tissueFilters)+fn:length(diseaseFilters)+fn:length(ptmsFilters)+fn:length(instrumentFilters)+fn:length(quantificationFilters)+fn:length(experimentTypeFilters)+fn:length(projectTagFilters)+fn:length(submissionTypeFilters)}" />
     <c:if test="${q!='' && numFilters<1}">
         <aside class="grid_6 omega shortcuts expander" id="search-extras">
             <div id="ebi_search_results">
@@ -70,26 +70,28 @@
                     <priderElement:inputHiddenList items="${experimentTypeFilters}" name="experimentTypeFilters"/>
                     <priderElement:inputHiddenList items="${titleFilters}" name="titleFilters"/>
                     <priderElement:inputHiddenList items="${projectTagFilters}" name="projectTagFilters"/>
+                    <priderElement:inputHiddenList items="${submissionTypeFilters}" name="submissionTypeFilters"/>
 
 
                     <ul id="filter-options">
                         <!-- filter field -->
                         <li>Field</li>
                         <select id="filter-field" name="filterField" style="overflow:hidden; max-width:100px">
-                            <option value="species-filter" ${(filterField == 'species')?'selected':''}>Species</option>
-                            <option value="tissue-filter" ${(filterField == 'tissue')?'selected':''}>Tissue</option>
-                            <option value="disease-filter" ${(filterField == 'disease')?'selected':''}>Disease</option>
-                            <option value="ptm-filter" ${(filterField == 'ptm')?'selected':''}>Modification</option>
-                            <option value="instrument-filter" ${(filterField == 'instrument')?'selected':''}>Instrument</option>
+                            <option value="species-filter">Species</option>
+                            <option value="tissue-filter">Tissue</option>
+                            <option value="disease-filter">Disease</option>
+                            <option value="ptm-filter">Modification</option>
+                            <option value="instrument-filter">Instrument</option>
                             <%--<option value="quantification-filter" ${(filterField == 'quantification')?'selected':''}>Quantification method</option>--%>
-                            <option value="exptype-filter" ${(filterField == 'expType')?'selected':''}>Experiment type</option>
+                            <option value="exptype-filter">Experiment type</option>
                             <%--<option value="title-filter" ${(filterField == 'title')?'selected':''}>Title</option>--%>
-                            <option value="tag-filter" ${(filterField == 'tag')?'selected':''}>Project tags</option>
+                            <option value="tag-filter">Project tags</option>
+                            <option value="submtype-filter">Submission type</option>
                         </select>
 
                         <li>Contains</li>
 
-                        <!-- select fitlers -->
+                        <!-- select filters -->
                         <priderElement:selectFilter id="species-filter" items="${availableSpeciesList}" name="newSpeciesFilter"/>
                         <priderElement:selectFilter id="tissue-filter" items="${availableTissueList}" name="newTissueFilter"/>
                         <priderElement:selectFilter id="disease-filter" items="${availableDiseaseList}" name="newDiseaseFilter"/>
@@ -98,6 +100,8 @@
                         <priderElement:selectFilter id="quantification-filter" items="${availableQuantificationMethodsList}" name="newQuantificationFilter"/>
                         <priderElement:selectFilter id="exptype-filter" items="${availableExperimentTypesList}" name="newExperimentTypeFilter"/>
                         <priderElement:selectFilter id="tag-filter" items="${availableProjectTagsList}" name="newProjectTagFilter"/>
+                        <priderElement:selectFilter id="submtype-filter" items="${availableSubmissionTypesList}" name="newSubmissionTypeFilter"/>
+
                         <li>
                             <input id='title-filter'
                                    type='text'
@@ -156,6 +160,7 @@
                             <priderElement:inputHiddenList items="${tissueFilters}" name="tissueFilters"/>
                             <priderElement:inputHiddenList items="${diseaseFilters}" name="diseaseFilters"/>
                             <priderElement:inputHiddenList items="${projectTagFilters}" name="projectTagFilters"/>
+                            <priderElement:inputHiddenList items="${submissionTypeFilters}" name="submissionTypeFilters"/>
                             <priderElement:inputHiddenListExcluding items="${speciesFilters}" name="speciesFilters" excludeItem="${theSpeciesFilter}"/>
                             ${theSpeciesFilter}
                             <button type="submit" class="remove-filter-button">
@@ -187,6 +192,7 @@
                                 <priderElement:inputHiddenList items="${speciesFilters}" name="speciesFilters"/>
                                 <priderElement:inputHiddenList items="${diseaseFilters}" name="diseaseFilters"/>
                                 <priderElement:inputHiddenList items="${projectTagFilters}" name="projectTagFilters"/>
+                                <priderElement:inputHiddenList items="${submissionTypeFilters}" name="submissionTypeFilters"/>
                                 <priderElement:inputHiddenListExcluding items="${tissueFilters}" name="tissueFilters" excludeItem="${theTissueFilter}"/>
                                 ${theTissueFilter}
                                 <button type="submit" class="remove-filter-button">
@@ -218,6 +224,7 @@
                                 <priderElement:inputHiddenList items="${speciesFilters}" name="speciesFilters"/>
                                 <priderElement:inputHiddenList items="${tissueFilters}" name="tissueFilters"/>
                                 <priderElement:inputHiddenList items="${projectTagFilters}" name="projectTagFilters"/>
+                                <priderElement:inputHiddenList items="${submissionTypeFilters}" name="submissionTypeFilters"/>
                                 <priderElement:inputHiddenListExcluding items="${diseaseFilters}" name="diseaseFilters" excludeItem="${theDiseaseFilter}"/>
                                 ${theDiseaseFilter}
                                 <button type="submit" class="remove-filter-button">
@@ -249,6 +256,7 @@
                                 <priderElement:inputHiddenList items="${tissueFilters}" name="tissueFilters"/>
                                 <priderElement:inputHiddenList items="${diseaseFilters}" name="diseaseFilters"/>
                                 <priderElement:inputHiddenList items="${projectTagFilters}" name="projectTagFilters"/>
+                                <priderElement:inputHiddenList items="${submissionTypeFilters}" name="submissionTypeFilters"/>
                                 <priderElement:inputHiddenListExcluding items="${ptmsFilters}" name="ptmsFilters" excludeItem="${thePtmsFilter}"/>
                                 ${thePtmsFilter}
                                 <button type="submit" class="remove-filter-button">
@@ -280,6 +288,7 @@
                             <priderElement:inputHiddenList items="${tissueFilters}" name="tissueFilters"/>
                             <priderElement:inputHiddenList items="${diseaseFilters}" name="diseaseFilters"/>
                             <priderElement:inputHiddenList items="${projectTagFilters}" name="projectTagFilters"/>
+                            <priderElement:inputHiddenList items="${submissionTypeFilters}" name="submissionTypeFilters"/>
                             <priderElement:inputHiddenListExcluding items="${instrumentFilters}" name="instrumentFilters" excludeItem="${theInstrumentFilter}"/>
                             ${theInstrumentFilter}
                             <button type="submit" class="remove-filter-button">
@@ -311,6 +320,7 @@
                             <priderElement:inputHiddenList items="${tissueFilters}" name="tissueFilters"/>
                             <priderElement:inputHiddenList items="${diseaseFilters}" name="diseaseFilters"/>
                             <priderElement:inputHiddenList items="${projectTagFilters}" name="projectTagFilters"/>
+                            <priderElement:inputHiddenList items="${submissionTypeFilters}" name="submissionTypeFilters"/>
                             <priderElement:inputHiddenListExcluding items="${quantificationFilters}" name="quantificationFilters" excludeItem="${theQuantificationFilter}"/>
                             ${theQuantificationFilter}
                             <button type="submit" class="remove-filter-button">
@@ -342,6 +352,7 @@
                             <priderElement:inputHiddenList items="${tissueFilters}" name="tissueFilters"/>
                             <priderElement:inputHiddenList items="${diseaseFilters}" name="diseaseFilters"/>
                             <priderElement:inputHiddenList items="${projectTagFilters}" name="projectTagFilters"/>
+                            <priderElement:inputHiddenList items="${submissionTypeFilters}" name="submissionTypeFilters"/>
                             <priderElement:inputHiddenListExcluding items="${experimentTypeFilters}" name="experimentTypeFilters" excludeItem="${theExpTypeFilter}"/>
                             ${theExpTypeFilter}
                             <button type="submit" class="remove-filter-button">
@@ -373,6 +384,7 @@
                                 <priderElement:inputHiddenList items="${quantificationFilters}" name="quantificationFilters"/>
                                 <priderElement:inputHiddenList items="${experimentTypeFilters}" name="experimentTypeFilters"/>
                                 <priderElement:inputHiddenList items="${projectTagFilters}" name="projectTagFilters"/>
+                                <priderElement:inputHiddenList items="${submissionTypeFilters}" name="submissionTypeFilters"/>
                                 <priderElement:inputHiddenListExcluding items="${titleFilters}" name="titleFilters" excludeItem="${theTitleFilter}"/>
                                 ${theTitleFilter}
                                 <button type="submit" class="remove-filter-button">
@@ -404,8 +416,41 @@
                                 <priderElement:inputHiddenList items="${quantificationFilters}" name="quantificationFilters"/>
                                 <priderElement:inputHiddenList items="${experimentTypeFilters}" name="experimentTypeFilters"/>
                                 <priderElement:inputHiddenList items="${titleFilters}" name="titleFilters"/>
+                                <priderElement:inputHiddenList items="${submissionTypeFilters}" name="submissionTypeFilters"/>
                                 <priderElement:inputHiddenListExcluding items="${projectTagFilters}" name="projectTagFilters" excludeItem="${theProjectTagFilter}"/>
                                 ${theProjectTagFilter}
+                                <button type="submit" class="remove-filter-button">
+                                    x
+                                </button>
+                                </br>
+                            </fieldset>
+                        </form>
+                    </c:forEach>
+                    </br>
+                </c:if>
+
+                <%--Submission Type filter--%>
+                <c:if test="${not empty submissionTypeFilters}">
+                    Submission Type contains: </br>
+                    <c:forEach var="theSubmissionTypeFilter" items="${submissionTypeFilters}">
+                        <form action="${searchUrl}" method="get">
+                            <fieldset>
+                                <input type='hidden' id='q' name='q' value='${q}'/>
+                                <input type='hidden' id='show' name='show' value='${show}'/>
+                                <input type='hidden' id='page' name='page' value='${page}'/>
+                                <input type='hidden' id='sort' name='sort' value='${sort}'/>
+                                <input type='hidden' id='order' name='order' value='${order}'/>
+                                <priderElement:inputHiddenList items="${instrumentFilters}" name="instrumentFilters"/>
+                                <priderElement:inputHiddenList items="${ptmsFilters}" name="ptmsFilters"/>
+                                <priderElement:inputHiddenList items="${speciesFilters}" name="speciesFilters"/>
+                                <priderElement:inputHiddenList items="${diseaseFilters}" name="diseaseFilters"/>
+                                <priderElement:inputHiddenList items="${tissueFilters}" name="tissueFilters"/>
+                                <priderElement:inputHiddenList items="${quantificationFilters}" name="quantificationFilters"/>
+                                <priderElement:inputHiddenList items="${experimentTypeFilters}" name="experimentTypeFilters"/>
+                                <priderElement:inputHiddenList items="${titleFilters}" name="titleFilters"/>
+                                <priderElement:inputHiddenList items="${projectTagFilters}" name="projectTagFilters"/>
+                                <priderElement:inputHiddenListExcluding items="${submissionTypeFilters}" name="submissionTypeFilters" excludeItem="${theSubmissionTypeFilter}"/>
+                                    ${theSubmissionTypeFilter}
                                 <button type="submit" class="remove-filter-button">
                                     x
                                 </button>
@@ -453,6 +498,7 @@
                                         quantificationFilters="${quantificationFilters}"
                                         experimentTypeFilters="${experimentTypeFilters}"
                                         projectTagFilters="${projectTagFilters}"
+                                        submissionTypeFilters="${submissionTypeFilters}"
                                         hrefClass="${1==page?'selected':''}"
                                         />
                                 </li>
@@ -476,6 +522,7 @@
                                             quantificationFilters="${quantificationFilters}"
                                             experimentTypeFilters="${experimentTypeFilters}"
                                             projectTagFilters="${projectTagFilters}"
+                                            submissionTypeFilters="${submissionTypeFilters}"
                                             hrefClass="${nPage==page?'selected':''}"
                                             />
                                     </li>
@@ -498,6 +545,7 @@
                                         quantificationFilters="${quantificationFilters}"
                                         experimentTypeFilters="${experimentTypeFilters}"
                                         projectTagFilters="${projectTagFilters}"
+                                        submissionTypeFilters="${submissionTypeFilters}"
                                         hrefClass="${numPages==page?'selected':''}"
                                         />
                                 </li>
@@ -535,6 +583,7 @@
                                         quantificationFilters="${quantificationFilters}"
                                         experimentTypeFilters="${experimentTypeFilters}"
                                         projectTagFilters="${projectTagFilters}"
+                                        submissionTypeFilters="${submissionTypeFilters}"
                                         hrefClass="${show==10?'selected':''}"
                                         /></li>
 
@@ -554,6 +603,7 @@
                                         quantificationFilters="${quantificationFilters}"
                                         experimentTypeFilters="${experimentTypeFilters}"
                                         projectTagFilters="${projectTagFilters}"
+                                        submissionTypeFilters="${submissionTypeFilters}"
                                         hrefClass="${show==20?'selected':''}"
                                         /></li>
 
@@ -574,6 +624,7 @@
                                             quantificationFilters="${quantificationFilters}"
                                             experimentTypeFilters="${experimentTypeFilters}"
                                             projectTagFilters="${projectTagFilters}"
+                                            submissionTypeFilters="${submissionTypeFilters}"
                                             hrefClass="${show==50?'selected':''}"
                                             /></li>
 
@@ -594,6 +645,7 @@
                                                 quantificationFilters="${quantificationFilters}"
                                                 experimentTypeFilters="${experimentTypeFilters}"
                                                 projectTagFilters="${projectTagFilters}"
+                                                submissionTypeFilters="${submissionTypeFilters}"
                                                 hrefClass="${show==100?'selected':''}"
                                                 /></li>
                                     </c:if> <!--50-->
@@ -626,6 +678,7 @@
                                 quantificationFilters="${quantificationFilters}"
                                 experimentTypeFilters="${experimentTypeFilters}"
                                 projectTagFilters="${projectTagFilters}"
+                                submissionTypeFilters="${submissionTypeFilters}"
                                 hrefClass="${sort=='id'?'selected':''}"
                                 /></li>
                             <%--Sort by Title--%>
@@ -645,6 +698,7 @@
                                 quantificationFilters="${quantificationFilters}"
                                 experimentTypeFilters="${experimentTypeFilters}"
                                 projectTagFilters="${projectTagFilters}"
+                                submissionTypeFilters="${submissionTypeFilters}"
                                 hrefClass="${sort=='project_title'?'selected':''}"
                                 /></li>
                             <%--Sort by Relevance--%>
@@ -664,6 +718,7 @@
                                 quantificationFilters="${quantificationFilters}"
                                 experimentTypeFilters="${experimentTypeFilters}"
                                 projectTagFilters="${projectTagFilters}"
+                                submissionTypeFilters="${submissionTypeFilters}"
                                 hrefClass="${sort=='score'?'selected':''}"
                                 /></li>
                             <%--Sort by Publication Date--%>
@@ -683,6 +738,7 @@
                                 quantificationFilters="${quantificationFilters}"
                                 experimentTypeFilters="${experimentTypeFilters}"
                                 projectTagFilters="${projectTagFilters}"
+                                submissionTypeFilters="${submissionTypeFilters}"
                                 hrefClass="${sort=='publication_date'?'selected':''}"
                                 /></li>
                             <%--display order--%>
@@ -710,6 +766,7 @@
                                                   quantificationFilters="${quantificationFilters}"
                                                   experimentTypeFilters="${experimentTypeFilters}"
                                                   projectTagFilters="${projectTagFilters}"
+                                                  submissionTypeFilters="${submissionTypeFilters}"
                                                   q="${q}"/>
                         <br>
                     </div>
@@ -738,6 +795,7 @@
                                         quantificationFilters="${quantificationFilters}"
                                         experimentTypeFilters="${experimentTypeFilters}"
                                         projectTagFilters="${projectTagFilters}"
+                                        submissionTypeFilters="${submissionTypeFilters}"
                                         hrefClass="${1==page?'selected':''}"
                                         />
                                 </li>
@@ -761,6 +819,7 @@
                                             quantificationFilters="${quantificationFilters}"
                                             experimentTypeFilters="${experimentTypeFilters}"
                                             projectTagFilters="${projectTagFilters}"
+                                            submissionTypeFilters="${submissionTypeFilters}"
                                             hrefClass="${nPage==page?'selected':''}"
                                             />
                                     </li>
@@ -783,6 +842,7 @@
                                         quantificationFilters="${quantificationFilters}"
                                         experimentTypeFilters="${experimentTypeFilters}"
                                         projectTagFilters="${projectTagFilters}"
+                                        submissionTypeFilters="${submissionTypeFilters}"
                                         hrefClass="${numPages==page?'selected':''}"
                                         />
                                 </li>
@@ -820,6 +880,7 @@
                                         quantificationFilters="${quantificationFilters}"
                                         experimentTypeFilters="${experimentTypeFilters}"
                                         projectTagFilters="${projectTagFilters}"
+                                        submissionTypeFilters="${submissionTypeFilters}"
                                         hrefClass="${show==10?'selected':''}"
                                         /></li>
 
@@ -839,6 +900,7 @@
                                         quantificationFilters="${quantificationFilters}"
                                         experimentTypeFilters="${experimentTypeFilters}"
                                         projectTagFilters="${projectTagFilters}"
+                                        submissionTypeFilters="${submissionTypeFilters}"
                                         hrefClass="${show==20?'selected':''}"
                                         /></li>
 
@@ -859,6 +921,7 @@
                                             quantificationFilters="${quantificationFilters}"
                                             experimentTypeFilters="${experimentTypeFilters}"
                                             projectTagFilters="${projectTagFilters}"
+                                            submissionTypeFilters="${submissionTypeFilters}"
                                             hrefClass="${show==50?'selected':''}"
                                             /></li>
 
@@ -879,6 +942,7 @@
                                                 quantificationFilters="${quantificationFilters}"
                                                 experimentTypeFilters="${experimentTypeFilters}"
                                                 projectTagFilters="${projectTagFilters}"
+                                                submissionTypeFilters="${submissionTypeFilters}"
                                                 hrefClass="${show==100?'selected':''}"
                                                 /></li>
                                     </c:if> <!--50-->

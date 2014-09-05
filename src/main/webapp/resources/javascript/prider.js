@@ -153,6 +153,8 @@ $(document).ready(function() {
         $( "#instrument-filter" ).hide();
         $( "#quantification-filter" ).hide();
         $( "#exptype-filter" ).hide();
+        $( "#tag-filter" ).hide();
+        $( "#submtype-filter" ).hide();
         var selected = $(this).val();
         $('#'+selected).show();
     });

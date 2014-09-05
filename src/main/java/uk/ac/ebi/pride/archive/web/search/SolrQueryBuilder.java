@@ -44,7 +44,8 @@ public class SolrQueryBuilder {
                 + SearchFields.PROJECT_TAGS.getIndexName() + "^" + SearchFields.PROJECT_TAGS.getFieldRelevance() + " "
                 + SearchFields.PROJECT_TAGS_AS_TEXT.getIndexName() + "^" + SearchFields.PROJECT_TAGS_AS_TEXT.getFieldRelevance() + " "
                 + SearchFields.PROTEIN_IDENTIFICATIONS.getIndexName() + "^" + SearchFields.PROTEIN_IDENTIFICATIONS.getFieldRelevance() + " "
-                + SearchFields.PEPTIDE_SEQUENCES.getIndexName() + "^" + SearchFields.PEPTIDE_SEQUENCES.getFieldRelevance()
+                + SearchFields.PEPTIDE_SEQUENCES.getIndexName() + "^" + SearchFields.PEPTIDE_SEQUENCES.getFieldRelevance() + " "
+                + SearchFields.SUBMISSION_TYPE.getIndexName() + "^" + SearchFields.SUBMISSION_TYPE.getFieldRelevance()
         ;
     }
 
@@ -60,9 +61,16 @@ public class SolrQueryBuilder {
             return "(id:PR* id:PX*^"+PX_RELEVANCE + ") AND (" + term +")"; // PX submissions are more relevant
     }
 
-    public static String[] buildQueryFilters(List<String> ptmsFilterList, List<String> speciesFilterList, List<String> tissueFilterList, List<String> diseaseFilterList,
-                                       List<String> titleFilterList, List<String> instrumentFilterList,
-                                       List<String> quantificationFilterList, List<String> experimentTypeFilterList, List<String> projectTagFilterList) {
+    public static String[] buildQueryFilters(List<String> ptmsFilterList,
+                                             List<String> speciesFilterList,
+                                             List<String> tissueFilterList,
+                                             List<String> diseaseFilterList,
+                                             List<String> titleFilterList,
+                                             List<String> instrumentFilterList,
+                                             List<String> quantificationFilterList,
+                                             List<String> experimentTypeFilterList,
+                                             List<String> projectTagFilterList,
+                                             List<String> submissionTypeFilterList) {
 
         LinkedList<String> queryFilterList = new LinkedList<String>();
 
@@ -161,7 +169,14 @@ public class SolrQueryBuilder {
                 String filter = filterIterator.next();
                 queryFilterList.add(SearchFields.PROJECT_TAGS.getIndexName()+":\""+filter+"\"");
             }
+        }
 
+        if (submissionTypeFilterList!=null) {
+            Iterator<String> filterIterator = submissionTypeFilterList.iterator();
+            while (filterIterator.hasNext()) {
+                String filter = filterIterator.next();
+                queryFilterList.add(SearchFields.SUBMISSION_TYPE.getIndexName()+":\""+filter+"\"");
+            }
         }
 
         return queryFilterList.toArray(new String[queryFilterList.size()]);

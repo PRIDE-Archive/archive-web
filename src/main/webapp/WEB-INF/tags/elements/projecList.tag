@@ -10,6 +10,7 @@
 <%@ attribute name="instrumentFilters" required="true" type="java.util.Collection" %>
 <%@ attribute name="quantificationFilters" required="true" type="java.util.Collection" %>
 <%@ attribute name="experimentTypeFilters" required="true" type="java.util.Collection" %>
+<%@ attribute name="submissionTypeFilters" required="true" type="java.util.Collection" %>
 <%@ attribute name="projectTagFilters" required="true" type="java.util.Collection" %>
 <%@ attribute name="q" required="true" %>
 
@@ -361,7 +362,13 @@
             Made public:
             <fmt:formatDate pattern="yyyy-MM-dd"
                             value="${project.publicationDate}"/>
-            <br>
+        </div>
+            <%--Submission Type --%>
+        <div class="project-widget-paragraph">
+            <c:if test="${fn:contains(project.highlights, 'submission_type')}">
+                Submission type:
+                ${project.highlights['submission_type'][0]}<br>
+            </c:if>
         </div>
 
             <%-- Project tags --%>
