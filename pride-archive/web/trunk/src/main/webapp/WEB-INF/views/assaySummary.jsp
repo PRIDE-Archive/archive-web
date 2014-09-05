@@ -104,18 +104,32 @@
         <tbody>
         <tr>
             <td>
-                <spring:url var="proteinPageUrl" value="/projects/{projectAccession}/assays/{assayAccession}/proteins">
-                    <spring:param name="projectAccession" value="${projectAccession}"/>
-                    <spring:param name="assayAccession" value="${assaySummary.accession}"/>
-                </spring:url>
-                <a href="${proteinPageUrl}">${assaySummary.proteinCount}</a>
+                <c:choose>
+                    <c:when test="${assaySummary.proteinCount > 0}">
+                        <spring:url var="proteinPageUrl" value="/projects/{projectAccession}/assays/{assayAccession}/proteins">
+                            <spring:param name="projectAccession" value="${projectAccession}"/>
+                            <spring:param name="assayAccession" value="${assaySummary.accession}"/>
+                        </spring:url>
+                        <a href="${proteinPageUrl}">${assaySummary.proteinCount}</a>
+                    </c:when>
+                    <c:otherwise>
+                        ${assaySummary.proteinCount}
+                    </c:otherwise>
+                </c:choose>
             </td>
             <td>
-                <spring:url var="psmPageUrl" value="/projects/{projectAccession}/assays/{assayAccession}/psms">
-                    <spring:param name="projectAccession" value="${projectAccession}"/>
-                    <spring:param name="assayAccession" value="${assaySummary.accession}"/>
-                </spring:url>
-                <a href="${psmPageUrl}">${assaySummary.peptideCount}</a>
+                <c:choose>
+                    <c:when test="${assaySummary.peptideCount > 0}">
+                        <spring:url var="psmPageUrl" value="/projects/{projectAccession}/assays/{assayAccession}/psms">
+                            <spring:param name="projectAccession" value="${projectAccession}"/>
+                            <spring:param name="assayAccession" value="${assaySummary.accession}"/>
+                        </spring:url>
+                        <a href="${psmPageUrl}">${assaySummary.peptideCount}</a>
+                    </c:when>
+                    <c:otherwise>
+                        ${assaySummary.peptideCount}
+                    </c:otherwise>
+                </c:choose>
             </td>
             <td>
                 ${assaySummary.uniquePeptideCount}
