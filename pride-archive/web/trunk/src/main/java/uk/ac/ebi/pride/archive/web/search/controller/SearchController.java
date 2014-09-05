@@ -13,7 +13,6 @@ import uk.ac.ebi.pride.archive.security.protein.ProteinIdentificationSecureSearc
 import uk.ac.ebi.pride.archive.web.search.SearchFields;
 import uk.ac.ebi.pride.archive.web.search.SolrQueryBuilder;
 import uk.ac.ebi.pride.proteinidentificationindex.search.model.ProteinIdentification;
-import uk.ac.ebi.pride.proteinindex.search.model.ProteinIdentified;
 import uk.ac.ebi.pride.psmindex.search.model.Psm;
 import uk.ac.ebi.pride.psmindex.search.service.PsmSearchService;
 
@@ -83,6 +82,9 @@ public class SearchController {
 
                                        @RequestParam(value = "newProjectTagFilter", defaultValue = "") String newProjectTagFilter,
                                        @RequestParam(value = "projectTagFilters", defaultValue = "") String[] projectTagFilters,
+
+                                       @RequestParam(value = "newSubmissionTypeFilter", defaultValue = "") String newSubmissionTypeFilter,
+                                       @RequestParam(value = "submissionTypeFilters", defaultValue = "") String[] submissionTypeFilters,
                                        Model model) throws org.apache.solr.common.SolrException {
 
         // foall: if no search term is provided, and therefore score is not very relevant, date has to be the sorting
@@ -157,10 +159,17 @@ public class SearchController {
         if (!"".equals(newProjectTagFilter))
             projectTagFilterList.add(newProjectTagFilter);
 
+        // add project tags filter to list
+        ArrayList<String> submissionTypeFilterList = new ArrayList<String>();
+        if (submissionTypeFilters != null && submissionTypeFilters.length > 0)
+            submissionTypeFilterList.addAll(Arrays.asList(submissionTypeFilters));
+        if (!"".equals(newSubmissionTypeFilter))
+            submissionTypeFilterList.add(newSubmissionTypeFilter);
+
         // search for projects
         searchForProjects(model, term, showResults, page, sortBy, order,
                 ptmsFilterList, speciesFilterList, tissueFilterList, diseaseFilterList, titleFilterList,
-                instrumentFilterList, quantificationFilterList, experimentTypeFilterList, projectTagFilterList);
+                instrumentFilterList, quantificationFilterList, experimentTypeFilterList, projectTagFilterList,submissionTypeFilterList);
 
         return "searchResult";
     }
@@ -175,7 +184,8 @@ public class SearchController {
                                    ArrayList<String> instrumentFilterList,
                                    ArrayList<String> quantificationFilterList,
                                    ArrayList<String> experimentTypeFilterList,
-                                   ArrayList<String> projectTagFilterList) {
+                                   ArrayList<String> projectTagFilterList,
+                                   ArrayList<String> submissionTypeFilterList) {
         Collection<ProjectSearchSummary> projects = null;
         Map<String, Long> availableSpecies = sortByValueDesc(
                 projectSearchService.getSpeciesCount(
@@ -190,7 +200,8 @@ public class SearchController {
                                 instrumentFilterList,
                                 quantificationFilterList,
                                 experimentTypeFilterList,
-                                projectTagFilterList
+                                projectTagFilterList,
+                                submissionTypeFilterList
                         )
                 ) // facet on the whole data set
         );
@@ -208,7 +219,8 @@ public class SearchController {
                                 instrumentFilterList,
                                 quantificationFilterList,
                                 experimentTypeFilterList,
-                                projectTagFilterList
+                                projectTagFilterList,
+                                submissionTypeFilterList
                         )
                 ) // facet on the whole data set
         );
@@ -226,7 +238,8 @@ public class SearchController {
                                 instrumentFilterList,
                                 quantificationFilterList,
                                 experimentTypeFilterList,
-                                projectTagFilterList
+                                projectTagFilterList,
+                                submissionTypeFilterList
                         )
                 ) // facet on the whole data set
         );
@@ -245,7 +258,8 @@ public class SearchController {
                                 instrumentFilterList,
                                 quantificationFilterList,
                                 experimentTypeFilterList,
-                                projectTagFilterList
+                                projectTagFilterList,
+                                submissionTypeFilterList
                         )
                 ) // facet on the whole data set
         );
@@ -263,7 +277,8 @@ public class SearchController {
                                 instrumentFilterList,
                                 quantificationFilterList,
                                 experimentTypeFilterList,
-                                projectTagFilterList
+                                projectTagFilterList,
+                                submissionTypeFilterList
                         )
                 ) // facet on the whole data set
         );
@@ -281,7 +296,8 @@ public class SearchController {
                                 instrumentFilterList,
                                 quantificationFilterList,
                                 experimentTypeFilterList,
-                                projectTagFilterList
+                                projectTagFilterList,
+                                submissionTypeFilterList
                         )
                 ) // facet on the whole data set
         );
@@ -299,7 +315,8 @@ public class SearchController {
                                 instrumentFilterList,
                                 quantificationFilterList,
                                 experimentTypeFilterList,
-                                projectTagFilterList
+                                projectTagFilterList,
+                                submissionTypeFilterList
                         )
                 ) // facet on the whole data set
         );
@@ -317,10 +334,31 @@ public class SearchController {
                                 instrumentFilterList,
                                 quantificationFilterList,
                                 experimentTypeFilterList,
-                                projectTagFilterList
+                                projectTagFilterList,
+                                submissionTypeFilterList
                         )
                 ) // facet on the whole data set
         );
+
+        Map<String, Long> availableSubmissionTypes = sortByValueDesc(
+                projectSearchService.getSubmissionTypeCount(
+                        SolrQueryBuilder.buildQueryTerm(term),
+                        SolrQueryBuilder.buildQueryFields(),
+                        SolrQueryBuilder.buildQueryFilters(
+                                ptmsFilterList,
+                                speciesFilterList,
+                                tissueFilterList,
+                                diseaseFilterList,
+                                titleFilterList,
+                                instrumentFilterList,
+                                quantificationFilterList,
+                                experimentTypeFilterList,
+                                projectTagFilterList,
+                                submissionTypeFilterList
+                        )
+                ) // facet on the whole data set
+        );
+
 
         int numPages = 0;
         long numResults = projectSearchService.numSearchResults(
@@ -335,7 +373,8 @@ public class SearchController {
                         instrumentFilterList,
                         quantificationFilterList,
                         experimentTypeFilterList,
-                        projectTagFilterList
+                        projectTagFilterList,
+                        submissionTypeFilterList
                 )
         );
 
@@ -360,7 +399,8 @@ public class SearchController {
                     instrumentFilterList,
                     quantificationFilterList,
                     experimentTypeFilterList,
-                    projectTagFilterList
+                    projectTagFilterList,
+                    submissionTypeFilterList
             );
             projects = projectSearchService.searchProjects(
                     queryTerm,
@@ -418,6 +458,10 @@ public class SearchController {
         // return project tag filters
         model.addAttribute("projectTagFilters", projectTagFilterList);
         model.addAttribute("availableProjectTagsList", availableProjectTags);
+
+        // return project tag filters
+        model.addAttribute("submissionTypeFilters", submissionTypeFilterList);
+        model.addAttribute("availableSubmissionTypesList", availableSubmissionTypes);
 
     }
 

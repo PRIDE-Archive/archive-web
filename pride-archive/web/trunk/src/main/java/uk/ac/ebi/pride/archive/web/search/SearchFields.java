@@ -39,8 +39,8 @@ public enum SearchFields {
     PROJECT_TAGS("project_tags", 5),
     PROJECT_TAGS_AS_TEXT("project_tags_as_text", 4),
     PROTEIN_IDENTIFICATIONS("protein_identifications", 25),
-    PEPTIDE_SEQUENCES("peptide_sequences", 25)
-    ;
+    PEPTIDE_SEQUENCES("peptide_sequences", 25),
+    SUBMISSION_TYPE("submission_type",5);
 
     private String indexName;
     private int fieldRelevance;

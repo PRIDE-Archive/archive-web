@@ -15,6 +15,7 @@
 <%@ attribute name="quantificationFilters" required="true" type="java.util.Collection" %>
 <%@ attribute name="experimentTypeFilters" required="true" type="java.util.Collection" %>
 <%@ attribute name="projectTagFilters" required="true" type="java.util.Collection" %>
+<%@ attribute name="submissionTypeFilters" required="true" type="java.util.Collection" %>
 <%@ attribute name="hrefClass" required="false" %>
 <spring:url var="showUrl" value="/simpleSearch">
     <spring:param name="q" value="${q}" />
@@ -48,6 +49,9 @@
     </c:forEach>
     <c:forEach var="theFilter" items="${projectTagFilters}">
         <spring:param name="projectTagFilters" value="${theFilter}"/>
+    </c:forEach>
+    <c:forEach var="theFilter" items="${submissionTypeFilters}">
+        <spring:param name="submissionTypeFilters" value="${theFilter}"/>
     </c:forEach>
 </spring:url>
 <a href="${showUrl}" class="${hrefClass}">${label}</a>
