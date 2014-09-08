@@ -77,9 +77,9 @@
         </p>
 
         <p class="justify-body-text">
-            <spring:url var="biomartUrl" value="http://www.ebi.ac.uk/pride/prideMart.do"/>
-            <a href="${biomartUrl}"><fmt:message key="welcome.access.biomart.caption"/></a>:
-            <fmt:message key="welcome.access.biomart.summary"/>
+            <spring:url var="webserviceUrl" value="http://www.ebi.ac.uk/pride/ws/archive"/>
+            <a href="${webserviceUrl}"><fmt:message key="welcome.access.webservice.caption"/></a>:
+            <fmt:message key="welcome.access.webservice.summary"/>
         </p>
 
         <p class="justify-body-text">
