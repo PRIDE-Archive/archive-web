@@ -19,6 +19,7 @@ public class PublishProjectValidator implements Validator {
 
     public static final String PUBMED_FORMAT_ERROR_MESSAGE = "Invalid PubMed ID(s)";
     public static final String DOI_FORMAT_ERROR_MESSAGE = "Invalid DOI ID(s)";
+    private static final String AUTHORISATION_REQUIREMENT_MESSAGE = "At least one value has to be provided as justification for the publish request.";
 
     public static final Pattern PUBMED_PATTERN = Pattern.compile("^\\d+$");
 
@@ -37,9 +38,18 @@ public class PublishProjectValidator implements Validator {
     public void validate(Object target, Errors errors) {
         PublishProject publishProject = (PublishProject)target;
 
-        // check pubmed id format
         String pubmedIds = publishProject.getPubmedId();
-        if (pubmedIds != null && !pubmedIds.trim().isEmpty()) {
+        String dois = publishProject.getDoi();
+        String refLine = publishProject.getReferenceLine();
+        String justification = publishProject.getPublishJustification();
+
+        boolean doisEmpty = (dois == null || dois.trim().isEmpty());
+        boolean pubmedIdsEmpty = (pubmedIds == null || pubmedIds.trim().isEmpty());
+        boolean refLineEmpty = (refLine == null || refLine.trim().isEmpty());
+        boolean justificationEmpty = (justification == null || justification.trim().isEmpty());
+
+        // check pubmed id format
+        if (!pubmedIdsEmpty) {
             String[] parts = pubmedIds.trim().split(",");
             for (String part : parts) {
                 Matcher matcher = PUBMED_PATTERN.matcher(part.trim());
@@ -51,8 +61,7 @@ public class PublishProjectValidator implements Validator {
         }
 
         // check doi format
-        String dois = publishProject.getDoi();
-        if (dois != null && !dois.trim().isEmpty()) {
+        if (!doisEmpty) {
             String[] parts = dois.trim().split(",");
             for (String part : parts) {
                 Matcher matcher = DOI_PATTERN.matcher(part.trim());
@@ -60,6 +69,15 @@ public class PublishProjectValidator implements Validator {
                     errors.rejectValue("doi", "required", null, DOI_FORMAT_ERROR_MESSAGE);
                     break;
                 }
+            }
+        }
+
+        // check authorisation requirements
+        if (!publishProject.isAuthorized()) {
+            // if the request does not come from an authorized user,
+            // we require at least one evidence that the project should be make public
+            if (doisEmpty && pubmedIdsEmpty && refLineEmpty && justificationEmpty) {
+                errors.rejectValue("authorized", "required", null, AUTHORISATION_REQUIREMENT_MESSAGE);
             }
         }
 
