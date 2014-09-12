@@ -52,6 +52,8 @@ public class PrideSupportEmailSender {
     public static final String PUBMED_PLACE_HOLDER = "[PUBMED]";
     public static final String DOI_PLACE_HOLDER = "[DOI]";
     public static final String REFERNCE_LINE_PLACE_HOLDER = "[REFLINE]";
+    public static final String USER_STRING = "[USER_STRING]";
+    public static final String REASON_LINE_PLACE_HOLDER = "[REASON]";
     public static final String NOT_AVAILABLE= "Not available";
 
     @Autowired
@@ -74,6 +76,9 @@ public class PrideSupportEmailSender {
 
     @Value("#{socialConfig['twitter.account']}")
     private String twitterAccount;
+
+    @Autowired
+    private String publishProjectEmailTemplate;
 
     public PrideSupportEmailSender() {
     }
@@ -160,8 +165,8 @@ public class PrideSupportEmailSender {
         }
     }
 
-    public void sendPublishProjectEmail(PublishProject publishProject, String projectAccession, String emailTemplate) {
-        String emailBody = emailTemplate;
+    public void sendPublishProjectEmail(PublishProject publishProject, String projectAccession) {
+        String emailBody = publishProjectEmailTemplate;
         emailBody = emailBody.replace(PROJECT_ACCESSION_PLACE_HOLDER, projectAccession);
 
         String pubmedId = publishProject.getPubmedId();
@@ -173,7 +178,16 @@ public class PrideSupportEmailSender {
         String referenceLine = publishProject.getReferenceLine();
         emailBody = emailBody.replace(REFERNCE_LINE_PLACE_HOLDER, referenceLine == null ? NOT_AVAILABLE : referenceLine);
 
-        emailBody = formatCommonFields(emailBody);
+        String reasonLine = publishProject.getPublishJustification();
+        emailBody = emailBody.replace(REASON_LINE_PLACE_HOLDER, reasonLine == null ? NOT_AVAILABLE : reasonLine);
+
+        String userString = publishProject.getUserName();
+        if (publishProject.isAuthorized()) {
+            userString += "\n(users status: authorized)";
+        } else {
+            userString += "\n(users status: not authorized)";
+        }
+        emailBody = emailBody.replace(USER_STRING, userString);
 
         try {
             sendEmail(new String[]{prideSupportEmailAddress}, PUBLISH_PROJECT_EMAIL_TITLE, emailBody);

@@ -468,8 +468,22 @@
         <!-- Result table and controls -->
         <%--No projects to show--%>
         <c:if test="${empty projectList}">
+            <%-- ToDo: this could be nicer --%>
             <div id="search-results" class="grid_18 right-column">
-                <p><fmt:message key="search.result.empty"/> <fmt:message key="search.result.forterm"/> <span class="searchterm">${q}</span> <fmt:message key="search.result.current.active.filters"/>. <fmt:message key="search.result.try.different"/>.</p>
+                <p>
+                    <fmt:message key="search.result.empty"/>
+                    <fmt:message key="search.result.forterm"/>
+                    <span class="searchterm">${q}</span>
+                    <fmt:message key="search.result.current.active.filters"/>.
+                    <fmt:message key="search.result.try.different"/>.
+                </p>
+                <p>
+                    <c:if test="${fn:startsWith(q, 'PXD') or fn:startsWith(q, 'PRD')}">
+                        <fmt:message key="search.result.request.project.publication"/>
+                        <spring:url var="projectPublishUrl" value="/projects/${q}/publish"/>
+                        <a href="${projectPublishUrl}">here.</a>
+                    </c:if>
+                </p>
             </div>
         </c:if>
         <%--There are projects to show--%>
@@ -655,102 +669,102 @@
                     </div>
                 </div>
 
-            <%--Sort by controls--%>
-            <div class="grid_24">
-                <div id="sort-by" class="clearfix">
-                    <%--Headers--%>
-                    <ul id="sort-by-menu" class="search-header">
-                        <li>Sort by: </li>
-                        <%-- Sort by Accession--%>
-                        <li><priderElement:hrefSearch
-                                label="Accession"
-                                q="${q}"
-                                show="${show}"
-                                page="${page}"
-                                sort="id"
-                                order="${(sort == 'id') ? ((order=='asc')?'desc':'asc') : order}"
-                                titleFilters="${titleFilters}"
-                                speciesFilters="${speciesFilters}"
-                                tissueFilters="${tissueFilters}"
-                                diseaseFilters="${diseaseFilters}"
-                                ptmsFilters="${ptmsFilters}"
-                                instrumentFilters="${instrumentFilters}"
-                                quantificationFilters="${quantificationFilters}"
-                                experimentTypeFilters="${experimentTypeFilters}"
-                                projectTagFilters="${projectTagFilters}"
-                                submissionTypeFilters="${submissionTypeFilters}"
-                                hrefClass="${sort=='id'?'selected':''}"
-                                /></li>
-                            <%--Sort by Title--%>
-                        <li><priderElement:hrefSearch
-                                label="Title"
-                                q="${q}"
-                                show="${show}"
-                                page="${page}"
-                                sort="project_title"
-                                order="${(sort == 'project_title') ? ((order=='asc')?'desc':'asc') : order}"
-                                titleFilters="${titleFilters}"
-                                speciesFilters="${speciesFilters}"
-                                tissueFilters="${tissueFilters}"
-                                diseaseFilters="${diseaseFilters}"
-                                ptmsFilters="${ptmsFilters}"
-                                instrumentFilters="${instrumentFilters}"
-                                quantificationFilters="${quantificationFilters}"
-                                experimentTypeFilters="${experimentTypeFilters}"
-                                projectTagFilters="${projectTagFilters}"
-                                submissionTypeFilters="${submissionTypeFilters}"
-                                hrefClass="${sort=='project_title'?'selected':''}"
-                                /></li>
-                            <%--Sort by Relevance--%>
-                        <li><priderElement:hrefSearch
-                                label="Relevance"
-                                q="${q}"
-                                show="${show}"
-                                page="${page}"
-                                sort="score"
-                                order="${(sort == 'score') ? ((order=='asc')?'desc':'asc') : order}"
-                                titleFilters="${titleFilters}"
-                                speciesFilters="${speciesFilters}"
-                                tissueFilters="${tissueFilters}"
-                                diseaseFilters="${diseaseFilters}"
-                                ptmsFilters="${ptmsFilters}"
-                                instrumentFilters="${instrumentFilters}"
-                                quantificationFilters="${quantificationFilters}"
-                                experimentTypeFilters="${experimentTypeFilters}"
-                                projectTagFilters="${projectTagFilters}"
-                                submissionTypeFilters="${submissionTypeFilters}"
-                                hrefClass="${sort=='score'?'selected':''}"
-                                /></li>
-                            <%--Sort by Publication Date--%>
-                        <li><priderElement:hrefSearch
-                                label="Publication date"
-                                q="${q}"
-                                show="${show}"
-                                page="${page}"
-                                sort="publication_date"
-                                order="${(sort == 'publication_date') ? ((order=='asc')?'desc':'asc') : order}"
-                                titleFilters="${titleFilters}"
-                                speciesFilters="${speciesFilters}"
-                                tissueFilters="${tissueFilters}"
-                                diseaseFilters="${diseaseFilters}"
-                                ptmsFilters="${ptmsFilters}"
-                                instrumentFilters="${instrumentFilters}"
-                                quantificationFilters="${quantificationFilters}"
-                                experimentTypeFilters="${experimentTypeFilters}"
-                                projectTagFilters="${projectTagFilters}"
-                                submissionTypeFilters="${submissionTypeFilters}"
-                                hrefClass="${sort=='publication_date'?'selected':''}"
-                                /></li>
-                            <%--display order--%>
-                        <c:if test="${order=='asc'}">
-                            <li>(Ascending)</li>
-                        </c:if>
-                        <c:if test="${order=='desc'}">
-                            <li>(Descending)</li>
-                        </c:if>
+                <%--Sort by controls--%>
+                <div class="grid_24">
+                    <div id="sort-by" class="clearfix">
+                            <%--Headers--%>
+                        <ul id="sort-by-menu" class="search-header">
+                            <li>Sort by: </li>
+                                <%-- Sort by Accession--%>
+                            <li><priderElement:hrefSearch
+                                    label="Accession"
+                                    q="${q}"
+                                    show="${show}"
+                                    page="${page}"
+                                    sort="id"
+                                    order="${(sort == 'id') ? ((order=='asc')?'desc':'asc') : order}"
+                                    titleFilters="${titleFilters}"
+                                    speciesFilters="${speciesFilters}"
+                                    tissueFilters="${tissueFilters}"
+                                    diseaseFilters="${diseaseFilters}"
+                                    ptmsFilters="${ptmsFilters}"
+                                    instrumentFilters="${instrumentFilters}"
+                                    quantificationFilters="${quantificationFilters}"
+                                    experimentTypeFilters="${experimentTypeFilters}"
+                                    projectTagFilters="${projectTagFilters}"
+                                    submissionTypeFilters="${submissionTypeFilters}"
+                                    hrefClass="${sort=='id'?'selected':''}"
+                                    /></li>
+                                <%--Sort by Title--%>
+                            <li><priderElement:hrefSearch
+                                    label="Title"
+                                    q="${q}"
+                                    show="${show}"
+                                    page="${page}"
+                                    sort="project_title"
+                                    order="${(sort == 'project_title') ? ((order=='asc')?'desc':'asc') : order}"
+                                    titleFilters="${titleFilters}"
+                                    speciesFilters="${speciesFilters}"
+                                    tissueFilters="${tissueFilters}"
+                                    diseaseFilters="${diseaseFilters}"
+                                    ptmsFilters="${ptmsFilters}"
+                                    instrumentFilters="${instrumentFilters}"
+                                    quantificationFilters="${quantificationFilters}"
+                                    experimentTypeFilters="${experimentTypeFilters}"
+                                    projectTagFilters="${projectTagFilters}"
+                                    submissionTypeFilters="${submissionTypeFilters}"
+                                    hrefClass="${sort=='project_title'?'selected':''}"
+                                    /></li>
+                                <%--Sort by Relevance--%>
+                            <li><priderElement:hrefSearch
+                                    label="Relevance"
+                                    q="${q}"
+                                    show="${show}"
+                                    page="${page}"
+                                    sort="score"
+                                    order="${(sort == 'score') ? ((order=='asc')?'desc':'asc') : order}"
+                                    titleFilters="${titleFilters}"
+                                    speciesFilters="${speciesFilters}"
+                                    tissueFilters="${tissueFilters}"
+                                    diseaseFilters="${diseaseFilters}"
+                                    ptmsFilters="${ptmsFilters}"
+                                    instrumentFilters="${instrumentFilters}"
+                                    quantificationFilters="${quantificationFilters}"
+                                    experimentTypeFilters="${experimentTypeFilters}"
+                                    projectTagFilters="${projectTagFilters}"
+                                    submissionTypeFilters="${submissionTypeFilters}"
+                                    hrefClass="${sort=='score'?'selected':''}"
+                                    /></li>
+                                <%--Sort by Publication Date--%>
+                            <li><priderElement:hrefSearch
+                                    label="Publication date"
+                                    q="${q}"
+                                    show="${show}"
+                                    page="${page}"
+                                    sort="publication_date"
+                                    order="${(sort == 'publication_date') ? ((order=='asc')?'desc':'asc') : order}"
+                                    titleFilters="${titleFilters}"
+                                    speciesFilters="${speciesFilters}"
+                                    tissueFilters="${tissueFilters}"
+                                    diseaseFilters="${diseaseFilters}"
+                                    ptmsFilters="${ptmsFilters}"
+                                    instrumentFilters="${instrumentFilters}"
+                                    quantificationFilters="${quantificationFilters}"
+                                    experimentTypeFilters="${experimentTypeFilters}"
+                                    projectTagFilters="${projectTagFilters}"
+                                    submissionTypeFilters="${submissionTypeFilters}"
+                                    hrefClass="${sort=='publication_date'?'selected':''}"
+                                    /></li>
+                                <%--display order--%>
+                            <c:if test="${order=='asc'}">
+                                <li>(Ascending)</li>
+                            </c:if>
+                            <c:if test="${order=='desc'}">
+                                <li>(Descending)</li>
+                            </c:if>
 
-                    </ul>
-                </div>
+                        </ul>
+                    </div>
                 </div>
 
                 <%--List of projects--%>

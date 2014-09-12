@@ -3,25 +3,31 @@ package uk.ac.ebi.pride.archive.web.project.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import uk.ac.ebi.pride.archive.repo.project.service.ProjectService;
 import uk.ac.ebi.pride.archive.security.assay.AssaySecureService;
 import uk.ac.ebi.pride.archive.security.project.ProjectSecureService;
+import uk.ac.ebi.pride.archive.web.user.model.PublishProject;
+import uk.ac.ebi.pride.archive.web.user.validator.PublishProjectValidator;
 import uk.ac.ebi.pride.archive.web.util.PageMaker;
+import uk.ac.ebi.pride.archive.web.util.PrideSupportEmailSender;
 import uk.ac.ebi.pride.archive.web.util.filter.EntityFilter;
 import uk.ac.ebi.pride.archive.repo.assay.service.AssaySummary;
 import uk.ac.ebi.pride.archive.repo.file.service.FileService;
 import uk.ac.ebi.pride.archive.repo.file.service.FileSummary;
 import uk.ac.ebi.pride.archive.repo.project.service.ProjectSummary;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Map;
 
 /**
  * @author Rui Wang
@@ -34,6 +40,7 @@ public class ProjectSummaryController {
     private static final Logger logger = LoggerFactory.getLogger(ProjectSummaryController.class);
 
     @Autowired
+    @Qualifier("projectSecureServiceImpl")
     private ProjectSecureService projectSecureService;
 
     @Autowired
@@ -89,6 +96,94 @@ public class ProjectSummaryController {
         ProjectSummary summary = projectSecureService.findByAccession(accession);
         // if yes, we redirect to the viewer page
         return new ModelAndView("redirect:" + "/viewer#protein=" + proteinID);
+    }
+
+
+
+
+    @Autowired
+    private PublishProjectValidator publishProjectValidator;
+
+    @Autowired
+    private PrideSupportEmailSender mailSender;
+
+    @Autowired
+    @Qualifier("projectServiceImpl")
+    private ProjectService projectService;
+
+
+    @InitBinder(value = "publishProject")
+    protected void initPublishProjectBinder(WebDataBinder binder) {
+        binder.setValidator(publishProjectValidator);
+    }
+
+    @RequestMapping(value = "projects/{accession}/publish", method = RequestMethod.GET)
+    public ModelAndView beforePublishProject(@PathVariable("accession") String accession) {
+        logger.info("Publish request for project " + accession);
+
+        String contactPride = "please contact pride-support [at] ebi.ac.uk.";
+        // check if a project exists with the provided accession and if it is still private
+        boolean projectIsPublic;
+        ProjectSummary project = projectService.findByAccession(accession);
+        if (project == null || project.getAccession() == null) {
+            // project does not exist in PRIDE, we show an error and provide a link to ProteomeCentral
+            String advice;
+            // if it's a PX accession we advise to check with ProteomeCentral
+            if (accession.contains("PXD")) {
+                advice = "You can check the identifier in <a href=\"http://proteomecentral.proteomexchange.org/cgi/GetDataset?ID="
+                        + accession +"\">ProteomeCentral</a>, the ProteomeXchange accession authority or " + contactPride;
+            } else {
+                advice = "If you think this record should exist " + contactPride;
+            }
+            return pageMaker.createErrorPage("Project not found",
+                    "The project accession - " + accession + " - is not recognised by the PRIDE Archive database.",
+                    advice);
+        } else if (project.isPublicProject()) {
+            // project already public, so we show an error page
+            return pageMaker.createErrorPage("Already public record",
+                    "The project accession - " + accession + " - is already flagged public in the PRIDE Archive database.",
+                    "If you cannot get access to this public record " + contactPride);
+        } else {
+            PublishProject publishProjectRequest = new PublishProject();
+            Authentication a = SecurityContextHolder.getContext().getAuthentication();
+            if (a.getPrincipal() instanceof  String) {
+                publishProjectRequest.setUserName( (String) a.getPrincipal() );
+            } else if (a.getPrincipal() instanceof UserDetails) {
+                UserDetails currentUser = (UserDetails) a.getPrincipal();
+                publishProjectRequest.setUserName( currentUser.getUsername() );
+                // add the authorisation status of the user
+                try {
+                    ProjectSummary aux = projectSecureService.findByAccession(accession);
+                    if (aux != null) {
+                        publishProjectRequest.setAuthorized(true);
+                    }
+                } catch (Exception e) {
+                    publishProjectRequest.setAuthorized(false);
+                }
+            } else {
+                throw new IllegalStateException("Unrecognised authentidation details!");
+            }
+
+            // proceed in the publication request process
+            return pageMaker.createBeforePublishProjectPage(publishProjectRequest, accession);
+        }
+    }
+
+    @RequestMapping(value = "projects/{accession}/publish", method = RequestMethod.POST)
+    public ModelAndView publishProject(@ModelAttribute("publishProject")
+                                       @Valid PublishProject publishProject,
+                                       BindingResult errors,
+                                       @PathVariable("accession") String accession) {
+
+        if (!errors.hasErrors()) {
+            String userName = publishProject.getUserName() + (publishProject.isAuthorized() ? " (authorized)" : " (NOT authorized)");
+            logger.debug("Publish request for project " + accession + " by user: " + userName);
+
+            mailSender.sendPublishProjectEmail(publishProject, accession);
+            return pageMaker.createAfterPublishProject(accession);
+        } else {
+            return pageMaker.createBeforePublishProjectPage(publishProject, accession);
+        }
     }
 
 

@@ -147,12 +147,9 @@
                                     </c:when>
                                     <c:otherwise>
                                         <sec:authorize access="hasRole('SUBMITTER')">
-                                            <spring:url var="publishProjectUrl"
-                                                        value="/users/projects/{projectAccession}/publish">
-                                                <spring:param name="projectAccession"
-                                                              value="${myProject.accession}"/>
+                                            <spring:url var="publishProjectUrl" value="/projects/{projectAccession}/publish">
+                                                <spring:param name="projectAccession" value="${myProject.accession}"/>
                                             </spring:url>
-
                                             <form action="${publishProjectUrl}" method="GET">
                                                 <button class="button" type="submit" value="Public">
                                                     <fmt:message key="make.project.public"/>

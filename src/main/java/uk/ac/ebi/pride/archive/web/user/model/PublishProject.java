@@ -8,6 +8,9 @@ public class PublishProject {
     private String pubmedId;
     private String doi;
     private String referenceLine;
+    private String publishJustification;
+    private String userName;
+    private boolean authorized;
 
     public PublishProject() {
     }
@@ -34,5 +37,29 @@ public class PublishProject {
 
     public void setReferenceLine(String referenceLine) {
         this.referenceLine = referenceLine;
+    }
+
+    public String getPublishJustification() {
+        return publishJustification;
+    }
+
+    public void setPublishJustification(String publishJustification) {
+        this.publishJustification = publishJustification;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public boolean isAuthorized() {
+        return authorized;
+    }
+
+    public void setAuthorized(boolean authorized) {
+        this.authorized = authorized;
     }
 }

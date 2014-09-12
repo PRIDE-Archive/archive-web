@@ -6,11 +6,6 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="inspector" tagdir="/WEB-INF/tags/inspector" %>
 
-<%-- Hack to add to the header until it is configurable in the template service --%>
-<%--<script type="application/javascript">--%>
-    <%--$('<link rel="import" href="//www.reactome.org/webcomponents/elements/reactome-analysis-url.html">').appendTo('head');--%>
-<%--</script>--%>
-
 <%-- Breadcrumb for navigation --%>
 <%-- PRIDE > PRIDE Archive > Accession--%>
 <div class="grid_24 clearfix">
