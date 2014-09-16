@@ -89,20 +89,11 @@ public class ProjectSummaryController {
         // get the assay list
         Collection<AssaySummary> assaySummaries = assaySecureService.findAllByProjectAccession(accession);
 
-        Collection<AssaySummaryAdapter> assaySummariesAdapter = new LinkedList<AssaySummaryAdapter>();
-
-        Long indexProteinCountAssay;
-        Long indexPsmCountAssay;
-        for (AssaySummary assaySummary : assaySummaries) {
-            indexProteinCountAssay = proteinIdentificationSearchService.countByAssayAccession(assaySummary.getAccession());
-            indexPsmCountAssay = psmSecureSearchService.countByAssayAccession(assaySummary.getAccession());
-            assaySummariesAdapter.add(new AssaySummaryAdapter(assaySummary,indexProteinCountAssay,indexPsmCountAssay));
-        }
 
         Long indexProteinCount = proteinIdentificationSearchService.countByProjectAccession(accession);
         Long indexPsmCount = psmSecureSearchService.countByProjectAccession(accession);
 
-        return pageMaker.createProjectSummaryPage(new ProjectSummaryAdapter(summary, indexProteinCount, indexPsmCount), assaySummariesAdapter);
+        return pageMaker.createProjectSummaryPage(new ProjectSummaryAdapter(summary, indexProteinCount, indexPsmCount), assaySummaries);
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
