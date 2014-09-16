@@ -555,32 +555,32 @@
                             ${assay.title}
                     </td>
                     <td width="80px">
-                        <c:choose>
-                            <c:when test="${assay.proteinCount > 0  and assay.indexProteinCount gt 0}">
-                                <spring:url var="proteinPageUrl" value="/projects/{projectAccession}/assays/{assayAccession}/proteins">
-                                    <spring:param name="projectAccession" value="${projectSummary.accession}"/>
-                                    <spring:param name="assayAccession" value="${assay.accession}"/>
-                                </spring:url>
-                                <a href="${proteinPageUrl}">${assay.proteinCount}</a>
-                            </c:when>
-                            <c:otherwise>
+                        <%--<c:choose>--%>
+                            <%--<c:when test="${assay.proteinCount > 0  and assay.indexProteinCount gt 0}">--%>
+                                <%--<spring:url var="proteinPageUrl" value="/projects/{projectAccession}/assays/{assayAccession}/proteins">--%>
+                                    <%--<spring:param name="projectAccession" value="${projectSummary.accession}"/>--%>
+                                    <%--<spring:param name="assayAccession" value="${assay.accession}"/>--%>
+                                <%--</spring:url>--%>
+                                <%--<a href="${proteinPageUrl}">${assay.proteinCount}</a>--%>
+                            <%--</c:when>--%>
+                            <%--<c:otherwise>--%>
                                 ${assay.proteinCount}
-                            </c:otherwise>
-                        </c:choose>
+                            <%--</c:otherwise>--%>
+                        <%--</c:choose>--%>
                     </td>
                     <td width="80px">
-                        <c:choose>
-                            <c:when test="${assay.peptideCount > 0 and assay.indexPsmCount gt 0}">
-                                <spring:url var="psmPageUrl" value="/projects/{projectAccession}/assays/{assayAccession}/psms">
-                                    <spring:param name="projectAccession" value="${projectSummary.accession}"/>
-                                    <spring:param name="assayAccession" value="${assay.accession}"/>
-                                </spring:url>
-                                <a href="${psmPageUrl}">${assay.peptideCount}</a>
-                            </c:when>
-                            <c:otherwise>
+                        <%--<c:choose>--%>
+                            <%--<c:when test="${assay.peptideCount > 0 and assay.indexPsmCount gt 0}">--%>
+                                <%--<spring:url var="psmPageUrl" value="/projects/{projectAccession}/assays/{assayAccession}/psms">--%>
+                                    <%--<spring:param name="projectAccession" value="${projectSummary.accession}"/>--%>
+                                    <%--<spring:param name="assayAccession" value="${assay.accession}"/>--%>
+                                <%--</spring:url>--%>
+                                <%--<a href="${psmPageUrl}">${assay.peptideCount}</a>--%>
+                            <%--</c:when>--%>
+                            <%--<c:otherwise>--%>
                                 ${assay.peptideCount}
-                            </c:otherwise>
-                        </c:choose>
+                            <%--</c:otherwise>--%>
+                        <%--</c:choose>--%>
                     </td>
                     <td width="100px">
                             ${assay.uniquePeptideCount}

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import uk.ac.ebi.pride.archive.dataprovider.file.ProjectFileType;
+import uk.ac.ebi.pride.archive.repo.assay.service.AssaySummary;
 import uk.ac.ebi.pride.archive.repo.file.service.FileSummary;
 import uk.ac.ebi.pride.archive.repo.project.service.ProjectSummary;
 import uk.ac.ebi.pride.archive.repo.statistics.service.StatisticsSummary;
@@ -45,7 +46,20 @@ public class PageMaker {
         return modelAndView;
     }
 
-    public ModelAndView createProjectSummaryPage(ProjectSummaryAdapter projectSummary, Collection<AssaySummaryAdapter> assaySummaries) {
+    public ModelAndView createProjectSummaryPage(ProjectSummaryAdapter projectSummary, Collection<AssaySummary> assaySummaries) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        modelAndView.addObject("projectSummary", projectSummary);
+        if (assaySummaries != null) {
+            modelAndView.addObject("assaySummaries", assaySummaries);
+        }
+
+        modelAndView.setViewName("projectSummary");
+
+        return modelAndView;
+    }
+
+    public ModelAndView createProjectSummaryPage(ProjectSummary projectSummary, Collection<AssaySummary> assaySummaries) {
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.addObject("projectSummary", projectSummary);
@@ -59,6 +73,20 @@ public class PageMaker {
     }
 
     public ModelAndView createAssaySummary(AssaySummaryAdapter assaySummary, String projectAccession) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        // project accession
+        if (projectAccession != null) {
+            modelAndView.addObject("projectAccession", projectAccession);
+        }
+        modelAndView.addObject("assaySummary", assaySummary);
+
+        modelAndView.setViewName("assaySummary");
+
+        return modelAndView;
+    }
+
+    public ModelAndView createAssaySummary(AssaySummary assaySummary, String projectAccession) {
         ModelAndView modelAndView = new ModelAndView();
 
         // project accession
