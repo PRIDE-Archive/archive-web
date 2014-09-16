@@ -14,6 +14,8 @@ import uk.ac.ebi.pride.archive.repo.file.service.FileService;
 import uk.ac.ebi.pride.archive.repo.file.service.FileSummary;
 import uk.ac.ebi.pride.archive.repo.project.service.ProjectService;
 import uk.ac.ebi.pride.archive.repo.project.service.ProjectSummary;
+import uk.ac.ebi.pride.archive.security.protein.ProteinIdentificationSecureSearchService;
+import uk.ac.ebi.pride.archive.security.psm.PsmSecureSearchService;
 import uk.ac.ebi.pride.archive.web.util.PageMaker;
 import uk.ac.ebi.pride.archive.web.util.filter.EntityFilter;
 
@@ -45,6 +47,12 @@ public class AssaySummaryController {
     @Autowired
     private PageMaker pageMaker;
 
+    @Autowired
+    private ProteinIdentificationSecureSearchService proteinIdentificationSearchService;
+
+    @Autowired
+    private PsmSecureSearchService psmSecureSearchService;
+
 
     @RequestMapping(value = "/assays/{assayAccession}", method = RequestMethod.GET)
     public ModelAndView getAssaySummary(@PathVariable String assayAccession) {
@@ -61,8 +69,10 @@ public class AssaySummaryController {
         Collection<AssaySummary> filteredAssays = removeAssayDuplicateCvParamFilter.filter(Arrays.asList(summary));
 
         summary = filteredAssays.iterator().next();
+        Long indexProteinCount = proteinIdentificationSearchService.countByAssayAccession(assayAccession);
+        Long indexPsmCount = psmSecureSearchService.countByAssayAccession(assayAccession);
 
-        return pageMaker.createAssaySummary(summary, projectAccession);
+        return pageMaker.createAssaySummary(new AssaySummaryAdapter(summary, indexProteinCount, indexPsmCount), projectAccession);
     }
 
     @RequestMapping(value = "/assays/{assayAccession}/files", method = RequestMethod.GET)

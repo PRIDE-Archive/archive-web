@@ -28,7 +28,7 @@
     <logger name="uk.ac.ebi.pride.archive.web" level="WARN"/>
     <logger name="org.springframework.data.solr" level="ERROR"/>
 
-    <root level="WARN">
+    <root level="ERROR">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="LOGFILE" />
     </root>

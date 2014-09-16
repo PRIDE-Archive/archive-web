@@ -6,12 +6,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import uk.ac.ebi.pride.archive.dataprovider.file.ProjectFileType;
-import uk.ac.ebi.pride.archive.repo.assay.service.AssaySummary;
 import uk.ac.ebi.pride.archive.repo.file.service.FileSummary;
 import uk.ac.ebi.pride.archive.repo.project.service.ProjectSummary;
 import uk.ac.ebi.pride.archive.repo.statistics.service.StatisticsSummary;
 import uk.ac.ebi.pride.archive.repo.user.service.UserSummary;
+import uk.ac.ebi.pride.archive.web.assay.controller.AssaySummaryAdapter;
 import uk.ac.ebi.pride.archive.web.feedback.model.Feedback;
+import uk.ac.ebi.pride.archive.web.project.controller.ProjectSummaryAdapter;
 import uk.ac.ebi.pride.archive.web.user.model.ChangePassword;
 import uk.ac.ebi.pride.archive.web.user.model.PublishProject;
 import uk.ac.ebi.pride.archive.web.user.model.UpdateUserSummary;
@@ -44,7 +45,7 @@ public class PageMaker {
         return modelAndView;
     }
 
-    public ModelAndView createProjectSummaryPage(ProjectSummary projectSummary, Collection<AssaySummary> assaySummaries) {
+    public ModelAndView createProjectSummaryPage(ProjectSummaryAdapter projectSummary, Collection<AssaySummaryAdapter> assaySummaries) {
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.addObject("projectSummary", projectSummary);
@@ -57,7 +58,7 @@ public class PageMaker {
         return modelAndView;
     }
 
-    public ModelAndView createAssaySummary(AssaySummary assaySummary, String projectAccession) {
+    public ModelAndView createAssaySummary(AssaySummaryAdapter assaySummary, String projectAccession) {
         ModelAndView modelAndView = new ModelAndView();
 
         // project accession

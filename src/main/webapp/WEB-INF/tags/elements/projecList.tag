@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ attribute name="projectList" required="true" type="java.util.Collection" %>
 <%@ attribute name="speciesFilters" required="true" type="java.util.Collection" %>
 <%@ attribute name="tissueFilters" required="true" type="java.util.Collection" %>
@@ -48,7 +48,13 @@
             <c:if test="${proteinIdentifiationsHighlighted}">
                 Protein identifications:
                 <c:forEach var="theProteinIdentificationHighlight" items="${project.highlights['protein_identifications']}">
-                    ${theProteinIdentificationHighlight}
+                    <spring:url var="projectProteinsUrl" value="/projects/{accession}/proteins?q={term}">
+                        <spring:param name="accession" value="${project.projectAccession}"/>
+                        <spring:param name="term" value="${q}"/>
+                    </spring:url>
+
+                    <a href="${projectProteinsUrl}">${theProteinIdentificationHighlight}</a>
+
                 </c:forEach>
                 <br>
             </c:if>
@@ -60,7 +66,12 @@
             <c:if test="${peptideSequencesHighlighted}">
                 Peptide sequences:
                 <c:forEach var="thePeptideSequenceHighlight" items="${project.highlights['peptide_sequences']}">
-                    ${thePeptideSequenceHighlight}
+                    <spring:url var="projectPsmUrl" value="/projects/{accession}/psms?q={term}">
+                        <spring:param name="accession" value="${project.projectAccession}"/>
+                        <spring:param name="term" value="${q}"/>
+                    </spring:url>
+
+                    <a href="${projectPsmUrl}">${thePeptideSequenceHighlight}</a>
                 </c:forEach>
                 <br>
             </c:if>
@@ -349,6 +360,38 @@
             </c:if>
         </div>
 
+        <div class="project-widget-paragraph">
+            <c:if test="${fn:contains(project.highlights, 'ptm_as_text')}">
+                Modifications:
+                ${project.highlights['ptm_as_text'][0]}<br>
+            </c:if>
+            <c:if test="${fn:contains(project.highlights, 'ptm_names')}">
+                Modifications:
+                ${project.highlights['ptm_names'][0]}<br>
+            </c:if>
+            <c:if test="${fn:contains(project.highlights, 'ptm_accessions')}">
+                Modifications:
+                ${project.highlights['ptm_accessions'][0]}<br>
+            </c:if>
+
+                <%--Highlight filters--%>
+            <c:if test="${not empty ptmsFilters}">
+                Modifications:
+                <c:forEach var="thePtmFilter" items="${ptmsFilters}">
+                    <c:set var="filterContainsTerm" value="false"/>
+                    <c:forTokens var="theSearchTerm" items="${q}" delims=" ">
+                        <c:if test="${fn:containsIgnoreCase(thePtmFilter, theSearchTerm)}">
+                            <c:set var="filterContainsTerm" value="true"/>
+                        </c:if>
+                    </c:forTokens>
+                    <c:if test="${not filterContainsTerm}">
+                        <span class='search-hit'>${thePtmFilter} </span>
+                    </c:if>
+                </c:forEach>
+                <br>
+            </c:if>
+        </div>
+
             <%--Samples--%>
         <div class="project-widget-paragraph">
             <c:if test="${fn:contains(project.highlights, 'sample_as_text')}">
@@ -368,6 +411,21 @@
             <c:if test="${fn:contains(project.highlights, 'submission_type')}">
                 Submission type:
                 ${project.highlights['submission_type'][0]}<br>
+            </c:if>
+            <c:if test="${not empty submissionTypeFilters}">
+                Submission type:
+                <c:forEach var="theSubmissionTypeFilter" items="${submissionTypeFilters}">
+                    <c:set var="filterContainsTerm" value="false"/>
+                    <c:forTokens var="theSearchTerm" items="${q}" delims=" ">
+                        <c:if test="${fn:containsIgnoreCase(theSubmissionTypeFilter, theSearchTerm)}">
+                            <c:set var="filterContainsTerm" value="true"/>
+                        </c:if>
+                    </c:forTokens>
+                    <c:if test="${not filterContainsTerm}">
+                        <span class='search-hit'>${theSubmissionTypeFilter}</span>
+                    </c:if>
+                </c:forEach>
+                <br>
             </c:if>
         </div>
 

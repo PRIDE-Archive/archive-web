@@ -74,16 +74,20 @@
                 <fmt:message key="assay.file.download.title"/>
             </a>
         </h5>
-        <h5>
-            <a href="${assayProteinsUrl}" class="icon icon-functional" data-icon="4">
-                <fmt:message key="assay.proteins.table"/>
-            </a>
-        </h5>
-        <h5>
-            <a href="${assayPsmsUrl}" class="icon icon-functional" data-icon="4">
-                <fmt:message key="assay.psms.table"/>
-            </a>
-        </h5>
+        <c:if test="${assaySummary.indexProteinCount > 0}">
+            <h5>
+                <a href="${assayProteinsUrl}" class="icon icon-functional" data-icon="4">
+                    <fmt:message key="assay.proteins.table"/>
+                </a>
+            </h5>
+        </c:if>
+        <c:if test="${assaySummary.indexPsmCount > 0 }">
+            <h5>
+                <a href="${assayPsmsUrl}" class="icon icon-functional" data-icon="4">
+                    <fmt:message key="assay.psms.table"/>
+                </a>
+            </h5>
+        </c:if>
     </div>
 </div>
 
@@ -105,7 +109,7 @@
         <tr>
             <td>
                 <c:choose>
-                    <c:when test="${assaySummary.proteinCount > 0}">
+                    <c:when test="${assaySummary.proteinCount > 0 and assaySummary.indexProteinCount > 0}">
                         <spring:url var="proteinPageUrl" value="/projects/{projectAccession}/assays/{assayAccession}/proteins">
                             <spring:param name="projectAccession" value="${projectAccession}"/>
                             <spring:param name="assayAccession" value="${assaySummary.accession}"/>
@@ -119,7 +123,7 @@
             </td>
             <td>
                 <c:choose>
-                    <c:when test="${assaySummary.peptideCount > 0}">
+                    <c:when test="${assaySummary.peptideCount > 0 and assaySummary.indexPsmCount > 0}">
                         <spring:url var="psmPageUrl" value="/projects/{projectAccession}/assays/{assayAccession}/psms">
                             <spring:param name="projectAccession" value="${projectAccession}"/>
                             <spring:param name="assayAccession" value="${assaySummary.accession}"/>
@@ -243,7 +247,7 @@
 
 
         <div class="grid_24">
-            <c:set var="cellTypes" value="${projectSummary.cellTypes}"/>
+            <c:set var="cellTypes" value="${assaySummary.cellTypes}"/>
             <div class="grid_12 alpha">
                 <c:if test="${not empty cellTypes}">
                     <h5><fmt:message key="celltype"/></h5>
@@ -263,7 +267,7 @@
             </div>
 
 
-            <c:set var="diseases" value="${projectSummary.diseases}"/>
+            <c:set var="diseases" value="${assaySummary.diseases}"/>
             <div class="grid_12 omega clearfix">
                 <c:if test="${not empty diseases}">
                     <h5><fmt:message key="disease"/></h5>

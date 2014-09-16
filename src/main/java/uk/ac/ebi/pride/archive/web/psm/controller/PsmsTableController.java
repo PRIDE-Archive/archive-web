@@ -16,10 +16,13 @@ import uk.ac.ebi.pride.archive.security.assay.AssaySecureService;
 import uk.ac.ebi.pride.archive.security.project.ProjectSecureService;
 import uk.ac.ebi.pride.archive.security.psm.PsmSecureSearchService;
 import uk.ac.ebi.pride.archive.web.util.PageMaker;
+import uk.ac.ebi.pride.archive.web.util.SearchUtils;
 import uk.ac.ebi.pride.indexutils.results.PageWrapper;
 import uk.ac.ebi.pride.psmindex.search.model.Psm;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * User: ntoro
@@ -74,8 +77,14 @@ public class PsmsTableController {
             ptmsFilters.add("\"" + newPtmsFilter + "\"");
         }
 
-        PageWrapper<Psm> psmPage = psmSearchService.findByAssayAccessionHighlightsOnModificationNames(assayAccession, query, ptmsFilters, page);
-        Map<String, Long> availablePtms = psmSearchService.findByAssayAccessionFacetOnModificationNames(assayAccession, query, ptmsFilters);
+        //The query is escaped
+        String filteredQuery = query;
+        if(filteredQuery  != null && !filteredQuery.isEmpty()){
+            filteredQuery = SearchUtils.escapeQueryCharsExceptStartAndQuestionMark(query);
+        }
+
+        PageWrapper<Psm> psmPage = psmSearchService.findByAssayAccessionHighlightsOnModificationNames(assayAccession, filteredQuery, ptmsFilters, page);
+        Map<String, Long> availablePtms = psmSearchService.findByAssayAccessionFacetOnModificationNames(assayAccession, filteredQuery, ptmsFilters);
 
         return pageMaker.createPsmsTablePage(projectAccession, assayAccession, psmPage.getPage(), psmPage.getHighlights(), query, availablePtms, ptmsFilters);
 
@@ -114,8 +123,14 @@ public class PsmsTableController {
             ptmsFilters.add("\"" + newPtmsFilter + "\"");
         }
 
-        PageWrapper<Psm> psmPage = psmSearchService.findByProjectAccessionHighlightsOnModificationNames(projectAccession, query, ptmsFilters, page);
-        Map<String, Long> availablePtms = psmSearchService.findByProjectAccessionFacetOnModificationNames(projectAccession, query, ptmsFilters);
+        //The query is escaped
+        String filteredQuery = query;
+        if(filteredQuery  != null && !filteredQuery.isEmpty()){
+            filteredQuery = SearchUtils.escapeQueryCharsExceptStartAndQuestionMark(query);
+        }
+
+        PageWrapper<Psm> psmPage = psmSearchService.findByProjectAccessionHighlightsOnModificationNames(projectAccession, filteredQuery, ptmsFilters, page);
+        Map<String, Long> availablePtms = psmSearchService.findByProjectAccessionFacetOnModificationNames(projectAccession, filteredQuery, ptmsFilters);
 
         return pageMaker.createPsmsTablePage(projectAccession, null, psmPage.getPage(), psmPage.getHighlights(), query, availablePtms, ptmsFilters);
     }
