@@ -110,7 +110,7 @@
                         </c:if>
                     </c:forTokens>
                     <c:if test="${not filterContainsTerm}">
-                        <span class='search-hit'>${theSpeciesFilter} </span>
+                        <span class='search-hit'>${theSpeciesFilter}</span>&NonBreakingSpace;
                     </c:if>
                 </c:forEach>
             </c:if>
@@ -180,32 +180,34 @@
             <c:set var="diseaseHighlighted" value="${fn:contains(project.highlights, 'disease_as_text')}"/>
             <c:set var="diseaseDescendantsHighlighted"
                    value="${fn:contains(project.highlights, 'disease_descendants_as_text')}"/>
-            <c:if test="${diseaseHighlighted or diseaseDescendantsHighlighted}">
+
+            <c:if test="${diseaseHighlighted or diseaseDescendantsHighlighted or not empty diseaseFilters}">
                 Diseases:
-                <c:choose>
-                    <c:when test="${diseaseHighlighted}">
-                        ${project.highlights['disease_as_text'][0]}
-                    </c:when>
-                    <c:when test="${diseaseDescendantsHighlighted}">
-                        ${project.highlights['disease_descendants_as_text'][0]}
-                    </c:when>
-                </c:choose>
-                <br>
-            </c:if>
+                <c:if test="${diseaseHighlighted or diseaseDescendantsHighlighted}">
+                    <c:choose>
+                        <c:when test="${diseaseHighlighted}">
+                            ${project.highlights['disease_as_text'][0]}
+                        </c:when>
+                        <c:when test="${diseaseDescendantsHighlighted}">
+                            ${project.highlights['disease_descendants_as_text'][0]}
+                        </c:when>
+                    </c:choose>
+                </c:if>
                 <%--Highlight filters--%>
-            <c:if test="${not empty diseaseFilters}">
-                Diseases:
-                <c:forEach var="theDiseaseFilter" items="${diseaseFilters}">
-                    <c:set var="filterContainsTerm" value="false"/>
-                    <c:forTokens var="theSearchTerm" items="${q}" delims=" ">
-                        <c:if test="${fn:containsIgnoreCase(theDiseaseFilter, theSearchTerm)}">
-                            <c:set var="filterContainsTerm" value="true"/>
+                <c:if test="${not empty diseaseFilters}">
+                    Diseases:
+                    <c:forEach var="theDiseaseFilter" items="${diseaseFilters}">
+                        <c:set var="filterContainsTerm" value="false"/>
+                        <c:forTokens var="theSearchTerm" items="${q}" delims=" ">
+                            <c:if test="${fn:containsIgnoreCase(theDiseaseFilter, theSearchTerm)}">
+                                <c:set var="filterContainsTerm" value="true"/>
+                            </c:if>
+                        </c:forTokens>
+                        <c:if test="${not filterContainsTerm}">
+                            <span class='search-hit'>${theDiseaseFilter}</span>&NonBreakingSpace;
                         </c:if>
-                    </c:forTokens>
-                    <c:if test="${not filterContainsTerm}">
-                        <span class='search-hit'>${theDiseaseFilter} </span>
-                    </c:if>
-                </c:forEach>
+                    </c:forEach>
+                </c:if>
                 <br>
             </c:if>
         </div>
@@ -215,32 +217,32 @@
             <c:set var="tissueHighlighted" value="${fn:contains(project.highlights, 'tissue_as_text')}"/>
             <c:set var="tissueDescendantsHighlighted"
                    value="${fn:contains(project.highlights, 'tissue_descendants_as_text')}"/>
-            <c:if test="${tissueHighlighted or tissueDescendantsHighlighted}">
+            <c:if test="${tissueHighlighted or tissueDescendantsHighlighted or not empty tissueFilters}">
                 Tissues:
-                <c:choose>
-                    <c:when test="${tissueHighlighted}">
-                        ${project.highlights['tissue_as_text'][0]}
-                    </c:when>
-                    <c:when test="${tissueDescendantsHighlighted}">
-                        ${project.highlights['tissue_descendants_as_text'][0]}
-                    </c:when>
-                </c:choose>
-                <br>
-            </c:if>
-            <%--Highlight filters--%>
-            <c:if test="${not empty tissueFilters}">
-                Tissues:
-                <c:forEach var="theTissueFilter" items="${tissueFilters}">
-                    <c:set var="filterContainsTerm" value="false"/>
-                    <c:forTokens var="theSearchTerm" items="${q}" delims=" ">
-                        <c:if test="${fn:containsIgnoreCase(theTissueFilter, theSearchTerm)}">
-                            <c:set var="filterContainsTerm" value="true"/>
+                <c:if test="${tissueHighlighted or tissueDescendantsHighlighted}">
+                    <c:choose>
+                        <c:when test="${tissueHighlighted}">
+                            ${project.highlights['tissue_as_text'][0]}
+                        </c:when>
+                        <c:when test="${tissueDescendantsHighlighted}">
+                            ${project.highlights['tissue_descendants_as_text'][0]}
+                        </c:when>
+                    </c:choose>
+                </c:if>
+                <%--Highlight filters--%>
+                <c:if test="${not empty tissueFilters}">
+                    <c:forEach var="theTissueFilter" items="${tissueFilters}">
+                        <c:set var="filterContainsTerm" value="false"/>
+                        <c:forTokens var="theSearchTerm" items="${q}" delims=" ">
+                            <c:if test="${fn:containsIgnoreCase(theTissueFilter, theSearchTerm)}">
+                                <c:set var="filterContainsTerm" value="true"/>
+                            </c:if>
+                        </c:forTokens>
+                        <c:if test="${not filterContainsTerm}">
+                            <span class='search-hit'>${theTissueFilter}</span>&NonBreakingSpace;
                         </c:if>
-                    </c:forTokens>
-                    <c:if test="${not filterContainsTerm}">
-                        <span class='search-hit'>${theTissueFilter} </span>
-                    </c:if>
-                </c:forEach>
+                    </c:forEach>
+                </c:if>
                 <br>
             </c:if>
         </div>
@@ -266,128 +268,110 @@
 
             <%--Instrument model--%>
         <div class="project-widget-paragraph">
-            <c:if test="${fn:contains(project.highlights, 'instrument_models_as_text')}">
-                Instrument model:
-                ${project.highlights['instrument_models_as_text'][0]}<br>
-            </c:if>
-                <%--Highlight filters--%>
-            <c:if test="${not empty instrumentFilters}">
+            <c:if test="${fn:contains(project.highlights, 'instrument_models_as_text') or not empty instrumentFilters}">
                 Instrument:
-                <c:forEach var="theInstrumentFilter" items="${instrumentFilters}">
-                    <c:set var="filterContainsTerm" value="false"/>
-                    <c:forTokens var="theSearchTerm" items="${q}" delims=" ">
-                        <c:if test="${fn:containsIgnoreCase(theInstrumentFilter, theSearchTerm)}">
-                            <c:set var="filterContainsTerm" value="true"/>
+                <c:if test="${fn:contains(project.highlights, 'instrument_models_as_text')}">
+                    ${project.highlights['instrument_models_as_text'][0]}
+                </c:if>
+                    <%--Highlight filters--%>
+                <c:if test="${not empty instrumentFilters}">
+                    <c:forEach var="theInstrumentFilter" items="${instrumentFilters}">
+                        <c:set var="filterContainsTerm" value="false"/>
+                        <c:forTokens var="theSearchTerm" items="${q}" delims=" ">
+                            <c:if test="${fn:containsIgnoreCase(theInstrumentFilter, theSearchTerm)}">
+                                <c:set var="filterContainsTerm" value="true"/>
+                            </c:if>
+                        </c:forTokens>
+                        <c:if test="${not filterContainsTerm}">
+                            <span class='search-hit'>${theInstrumentFilter}</span>&NonBreakingSpace;
                         </c:if>
-                    </c:forTokens>
-                    <c:if test="${not filterContainsTerm}">
-                        <span class='search-hit'>${theInstrumentFilter} </span>
-                    </c:if>
-                </c:forEach>
+                    </c:forEach>
+                </c:if>
                 <br>
             </c:if>
         </div>
 
             <%--Quantification method--%>
         <div class="project-widget-paragraph">
-            <c:if test="${fn:contains(project.highlights, 'quantification_methods_as_text')}">
-                Quantification method:
-                ${project.highlights['quantification_methods_as_text'][0]}<br>
-            </c:if>
-                <%--Highlight filters--%>
-            <c:if test="${not empty quantificationFilters}">
-                Quantification method:
-                <c:forEach var="theQuantificationFilter" items="${quantificationFilters}">
-                    <c:set var="filterContainsTerm" value="false"/>
-                    <c:forTokens var="theSearchTerm" items="${q}" delims=" ">
-                        <c:if test="${fn:containsIgnoreCase(theQuantificationFilter, theSearchTerm)}">
-                            <c:set var="filterContainsTerm" value="true"/>
+            <c:if test="${fn:contains(project.highlights, 'quantification_methods_as_text') or not empty quantificationFilters}">
+            Quantification method:
+                <c:if test="${fn:contains(project.highlights, 'quantification_methods_as_text')}">
+                    ${project.highlights['quantification_methods_as_text'][0]}
+                </c:if>
+                    <%--Highlight filters--%>
+                <c:if test="${not empty quantificationFilters}">
+                    <c:forEach var="theQuantificationFilter" items="${quantificationFilters}">
+                        <c:set var="filterContainsTerm" value="false"/>
+                        <c:forTokens var="theSearchTerm" items="${q}" delims=" ">
+                            <c:if test="${fn:containsIgnoreCase(theQuantificationFilter, theSearchTerm)}">
+                                <c:set var="filterContainsTerm" value="true"/>
+                            </c:if>
+                        </c:forTokens>
+                        <c:if test="${not filterContainsTerm}">
+                            <span class='search-hit'>${theQuantificationFilter}</span>&NonBreakingSpace;
                         </c:if>
-                    </c:forTokens>
-                    <c:if test="${not filterContainsTerm}">
-                        <span class='search-hit'>${theQuantificationFilter} </span>
-                    </c:if>
-                </c:forEach>
+                    </c:forEach>
+                </c:if>
                 <br>
             </c:if>
         </div>
 
             <%--Experiment type--%>
         <div class="project-widget-paragraph">
-            <c:if test="${fn:contains(project.highlights, 'experiment_types_as_text')}">
+            <c:if test="${fn:contains(project.highlights, 'experiment_types_as_text') or not empty experimentTypeFilters}">
                 Experiment type:
-                ${project.highlights['experiment_types_as_text'][0]}<br>
-            </c:if>
-                <%--Highlight filters--%>
-            <c:if test="${not empty experimentTypeFilters}">
-                Experiment type:
-                <c:forEach var="theExperimentTypeFilter" items="${experimentTypeFilters}">
-                    <c:set var="filterContainsTerm" value="false"/>
-                    <c:forTokens var="theSearchTerm" items="${q}" delims=" ">
-                        <c:if test="${fn:containsIgnoreCase(theExperimentTypeFilter, theSearchTerm)}">
-                            <c:set var="filterContainsTerm" value="true"/>
+                <c:if test="${fn:contains(project.highlights, 'experiment_types_as_text')}">
+                    ${project.highlights['experiment_types_as_text'][0]}
+                </c:if>
+                    <%--Highlight filters--%>
+                <c:if test="${not empty experimentTypeFilters}">
+                    <c:forEach var="theExperimentTypeFilter" items="${experimentTypeFilters}">
+                        <c:set var="filterContainsTerm" value="false"/>
+                        <c:forTokens var="theSearchTerm" items="${q}" delims=" ">
+                            <c:if test="${fn:containsIgnoreCase(theExperimentTypeFilter, theSearchTerm)}">
+                                <c:set var="filterContainsTerm" value="true"/>
+                            </c:if>
+                        </c:forTokens>
+                        <c:if test="${not filterContainsTerm}">
+                            <span class='search-hit'>${theExperimentTypeFilter}</span>&NonBreakingSpace;
                         </c:if>
-                    </c:forTokens>
-                    <c:if test="${not filterContainsTerm}">
-                        <span class='search-hit'>${theExperimentTypeFilter} </span>
-                    </c:if>
-                </c:forEach>
+                    </c:forEach>
+                </c:if>
                 <br>
             </c:if>
         </div>
 
             <%--PTMs--%>
         <div class="project-widget-paragraph">
-            <c:if test="${fn:contains(project.highlights, 'ptm_as_text')}">
+            <c:if test="${fn:contains(project.highlights, 'ptm_as_text')
+                or fn:contains(project.highlights, 'ptm_names')
+                or fn:contains(project.highlights, 'ptm_accessions')
+                or not empty ptmsFilters}">
                 Modifications:
-                ${project.highlights['ptm_as_text'][0]}<br>
-            </c:if>
-                <%--Highlight filters--%>
-            <c:if test="${not empty ptmsFilters}">
-                Modifications:
-                <c:forEach var="thePtmFilter" items="${ptmsFilters}">
-                    <c:set var="filterContainsTerm" value="false"/>
-                    <c:forTokens var="theSearchTerm" items="${q}" delims=" ">
-                        <c:if test="${fn:containsIgnoreCase(thePtmFilter, theSearchTerm)}">
-                            <c:set var="filterContainsTerm" value="true"/>
-                        </c:if>
-                    </c:forTokens>
-                    <c:if test="${not filterContainsTerm}">
-                        <span class='search-hit'>${thePtmFilter} </span>
-                    </c:if>
-                </c:forEach>
-                <br>
-            </c:if>
-        </div>
+                <c:if test="${fn:contains(project.highlights, 'ptm_as_text')}">
+                    ${project.highlights['ptm_as_text'][0]}
+                </c:if>
+                <c:if test="${fn:contains(project.highlights, 'ptm_names')}">
+                    ${project.highlights['ptm_names'][0]}
+                </c:if>
+                <c:if test="${fn:contains(project.highlights, 'ptm_accessions')}">
+                    ${project.highlights['ptm_accessions'][0]}
+                </c:if>
 
-        <div class="project-widget-paragraph">
-            <c:if test="${fn:contains(project.highlights, 'ptm_as_text')}">
-                Modifications:
-                ${project.highlights['ptm_as_text'][0]}<br>
-            </c:if>
-            <c:if test="${fn:contains(project.highlights, 'ptm_names')}">
-                Modifications:
-                ${project.highlights['ptm_names'][0]}<br>
-            </c:if>
-            <c:if test="${fn:contains(project.highlights, 'ptm_accessions')}">
-                Modifications:
-                ${project.highlights['ptm_accessions'][0]}<br>
-            </c:if>
-
-                <%--Highlight filters--%>
-            <c:if test="${not empty ptmsFilters}">
-                Modifications:
-                <c:forEach var="thePtmFilter" items="${ptmsFilters}">
-                    <c:set var="filterContainsTerm" value="false"/>
-                    <c:forTokens var="theSearchTerm" items="${q}" delims=" ">
-                        <c:if test="${fn:containsIgnoreCase(thePtmFilter, theSearchTerm)}">
-                            <c:set var="filterContainsTerm" value="true"/>
+                    <%--Highlight filters--%>
+                <c:if test="${not empty ptmsFilters}">
+                    <c:forEach var="thePtmFilter" items="${ptmsFilters}">
+                        <c:set var="filterContainsTerm" value="false"/>
+                        <c:forTokens var="theSearchTerm" items="${q}" delims=" ">
+                            <c:if test="${fn:containsIgnoreCase(thePtmFilter, theSearchTerm)}">
+                                <c:set var="filterContainsTerm" value="true"/>
+                            </c:if>
+                        </c:forTokens>
+                        <c:if test="${not filterContainsTerm}">
+                            <span class='search-hit'>${thePtmFilter}</span>&NonBreakingSpace;
                         </c:if>
-                    </c:forTokens>
-                    <c:if test="${not filterContainsTerm}">
-                        <span class='search-hit'>${thePtmFilter} </span>
-                    </c:if>
-                </c:forEach>
+                    </c:forEach>
+                </c:if>
                 <br>
             </c:if>
         </div>
@@ -406,25 +390,27 @@
             <fmt:formatDate pattern="yyyy-MM-dd"
                             value="${project.publicationDate}"/>
         </div>
+
             <%--Submission Type --%>
         <div class="project-widget-paragraph">
-            <c:if test="${fn:contains(project.highlights, 'submission_type')}">
+            <c:if test="${fn:contains(project.highlights, 'submission_type') or not empty submissionTypeFilters}">
                 Submission type:
-                ${project.highlights['submission_type'][0]}<br>
-            </c:if>
-            <c:if test="${not empty submissionTypeFilters}">
-                Submission type:
-                <c:forEach var="theSubmissionTypeFilter" items="${submissionTypeFilters}">
-                    <c:set var="filterContainsTerm" value="false"/>
-                    <c:forTokens var="theSearchTerm" items="${q}" delims=" ">
-                        <c:if test="${fn:containsIgnoreCase(theSubmissionTypeFilter, theSearchTerm)}">
-                            <c:set var="filterContainsTerm" value="true"/>
+                <c:if test="${fn:contains(project.highlights, 'submission_type')}">
+                    ${project.highlights['submission_type'][0]}
+                </c:if>
+                <c:if test="${not empty submissionTypeFilters}">
+                    <c:forEach var="theSubmissionTypeFilter" items="${submissionTypeFilters}">
+                        <c:set var="filterContainsTerm" value="false"/>
+                        <c:forTokens var="theSearchTerm" items="${q}" delims=" ">
+                            <c:if test="${fn:containsIgnoreCase(theSubmissionTypeFilter, theSearchTerm)}">
+                                <c:set var="filterContainsTerm" value="true"/>
+                            </c:if>
+                        </c:forTokens>
+                        <c:if test="${not filterContainsTerm}">
+                            <span class='search-hit'>${theSubmissionTypeFilter}</span>&NonBreakingSpace;
                         </c:if>
-                    </c:forTokens>
-                    <c:if test="${not filterContainsTerm}">
-                        <span class='search-hit'>${theSubmissionTypeFilter}</span>
-                    </c:if>
-                </c:forEach>
+                    </c:forEach>
+                </c:if>
                 <br>
             </c:if>
         </div>
@@ -462,6 +448,5 @@
                 </c:forEach>
             </c:if>
         </div>
-
     </div>
 </c:forEach>

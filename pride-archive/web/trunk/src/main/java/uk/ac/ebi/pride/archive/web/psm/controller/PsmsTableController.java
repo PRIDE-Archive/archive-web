@@ -92,7 +92,7 @@ public class PsmsTableController {
 
     @RequestMapping(value = "/assays/{assayAccession}/psms", method = RequestMethod.GET)
     public ModelAndView getAssayPsms(@PathVariable String assayAccession,
-                                     @PageableDefault(page = 0, value = 50) Pageable page,
+                                     @PageableDefault(page = 0, value = 30) Pageable page,
                                      @RequestParam(value = "q", required = false) String query,
                                      @RequestParam(value = "newPtmsFilter", defaultValue = "") String newPtmsFilter,
                                      @RequestParam(value = "ptmsFilters", defaultValue = "") List<String> ptmsFilters) {
@@ -103,7 +103,7 @@ public class PsmsTableController {
 
     @RequestMapping(value = "/projects/{projectAccession}/psms", method = RequestMethod.GET)
     public ModelAndView getProjectPsms(@PathVariable String projectAccession,
-                                       @PageableDefault(page = 0, value = 50) Pageable page,
+                                       @PageableDefault(page = 0, value = 30) Pageable page,
                                        @RequestParam(value = "q", required = false) String query,
                                        @RequestParam(value = "newPtmsFilter", required = false) String newPtmsFilter,
                                        @RequestParam(value = "ptmsFilters", required = false) List<String> ptmsFilters) {
