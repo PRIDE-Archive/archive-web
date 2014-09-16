@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@attribute name="id" required="true"%>
+<%@ attribute name="id" required="true"%>
 <%@ attribute name="items" required="true" type="java.util.Map" %>
 <%@ attribute name="name" required="true" %>
 <select id="${id}" name="${name}" style="overflow:hidden; max-width:150px; display:none;">

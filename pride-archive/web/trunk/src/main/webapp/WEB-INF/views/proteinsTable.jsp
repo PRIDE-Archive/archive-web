@@ -198,6 +198,11 @@
                     </span>
                 </th>
 
+                <th><strong>Uniprot Ref</strong></th>
+
+                <th><strong>Ensembl Ref</strong></th>
+
+
                 <%-- Description column--%>
                 <th><strong>Name</strong></th>
 
@@ -206,6 +211,9 @@
 
                 <%-- Ambiguity group column--%>
                 <th><strong>Ambiguity Group</strong></th>
+
+                <%-- Alternative mappings --%>
+                <th data-hide="all"><strong>Alternative mappings</strong></th>
 
             </tr>
             </thead>
@@ -216,7 +224,7 @@
             <c:forEach items="${page.content}" var="protein" varStatus="status">
                 <%-- todo: add table row colour alternation --%>
                 <tr>
-                    <td>${first + status.count}</td>
+                    <td style="white-space: nowrap;">${first + status.count}</td>
 
                     <%-- Submitted protein accession column--%>
 
@@ -228,7 +236,7 @@
                                 <spring:param name="proteinID" value="${protein.assayAccession}__${protein.submittedAccession}"/>
                             </spring:url>
                             <c:choose>
-                                <c:when test="${not empty protein.sequence}">
+                                <c:when test="${not empty protein.inferredSequence or not empty protein.submittedSequence}">
                                     <a href="${proteinViewerUrl}">
                                         <c:choose>
                                             <c:when test="${fn:contains(highlights[protein], 'submitted_accession')}">
@@ -281,39 +289,75 @@
                         </c:choose>
                     </td>
 
+                    <%-- Uniprot protein accession column--%>
+                    <td>
+                        <spring:url var="uniprotUrl" value="http://www.uniprot.org/uniprot/{uniprotAcc}">
+                            <spring:param name="uniprotAcc" value="${protein.uniprotMapping}"/>
+                        </spring:url>
+                        <c:choose>
+                            <c:when test="${fn:contains(highlights[protein], 'uniprot_mapping')}">
+                                <c:forEach var="highlight" items="${highlights[protein]['uniprot_mapping']}">
+                                    <a href="${uniprotUrl}">${highlight}</a>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="${uniprotUrl}">${protein.uniprotMapping}</a>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+
+                    <%-- Ensembl protein accession column--%>
+                    <td>
+                        <c:choose>
+                            <c:when test="${fn:contains(highlights[protein], 'ensembl_mapping')}">
+                                <c:forEach var="highlight" items="${highlights[protein]['ensembl_mapping']}">
+                                    ${highlight}
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                ${protein.ensemblMapping}
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+
                     <%-- Description column--%>
                     <td>${protein.name}</td>
 
                     <%-- Modifications column--%>
+                    <%-- At modification level we display only the modification name --%>
                     <td>
                         <ul>
-                            <c:forEach var="modification" items="${protein.modifications}">
-                                <c:choose>
-                                    <c:when test="${not empty modification.name}">
-                                        <li>
-                                            <c:if test="${not empty modification.mainPosition}">
-                                                ${modification.mainPosition} -
-                                            </c:if>
-                                            ${modification.name}
-                                        </li>
-                                    </c:when>
-                                    <c:when test="${not empty modification.neutralLoss}">
-                                        <li>
-                                            <c:if test="${not empty modification.mainPosition}">
-                                                ${modification.mainPosition} -
-                                            </c:if>
-                                            ${modification.neutralLoss.name} (${modification.neutralLoss.value})
-                                        </li>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <li>
-                                            <c:if test="${not empty modification.mainPosition}">
-                                                ${modification.mainPosition} -
-                                            </c:if>
-                                            ${modification.accession}
-                                        </li>
-                                    </c:otherwise>
-                                </c:choose>
+                            <c:forEach var="modification" items="${protein.modificationNames}">
+                                <li>
+                                    ${modification}
+                                </li>
+
+                                <%--<c:choose>--%>
+                                    <%--<c:when test="${not empty modification.name}">--%>
+                                        <%--<li>--%>
+                                            <%--<c:if test="${not empty modification.mainPosition}">--%>
+                                                <%--${modification.mainPosition} ---%>
+                                            <%--</c:if>--%>
+                                                <%--${modification.name}--%>
+                                        <%--</li>--%>
+                                    <%--</c:when>--%>
+                                    <%--<c:when test="${not empty modification.neutralLoss}">--%>
+                                        <%--<li>--%>
+                                            <%--<c:if test="${not empty modification.mainPosition}">--%>
+                                                <%--${modification.mainPosition} ---%>
+                                            <%--</c:if>--%>
+                                                <%--${modification.neutralLoss.name} (${modification.neutralLoss.value})--%>
+                                        <%--</li>--%>
+                                    <%--</c:when>--%>
+                                    <%--<c:otherwise>--%>
+                                        <%--<li>--%>
+                                            <%--<c:if test="${not empty modification.mainPosition}">--%>
+                                                <%--${modification.mainPosition} ---%>
+                                            <%--</c:if>--%>
+                                                <%--${modification.accession}--%>
+                                        <%--</li>--%>
+                                    <%--</c:otherwise>--%>
+                                <%--</c:choose>--%>
                             </c:forEach>
                         </ul>
                     </td>
@@ -340,6 +384,28 @@
                                 </c:choose>
                             </c:forEach>
                         </ul>
+                    </td>
+                    <%-- Alternative mappings --%>
+                    <td>
+                        <c:forEach var="alternativeMapping" items="${protein.otherMappings}">
+                            <c:choose>
+                                <c:when test="${fn:contains(highlights[protein], 'other_mappings')}">
+                                    <c:forEach var="highlight" items="${highlights[protein]['other_mappings']}">
+                                        <c:choose>
+                                            <c:when test="${fn:contains(highlight, alternativeMapping)}">
+                                                ${highlight}
+                                            </c:when>
+                                            <c:otherwise>
+                                                ${alternativeMapping}
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                </c:when>
+                                <c:otherwise>
+                                    ${alternativeMapping}
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
                     </td>
                 </tr>
             </c:forEach>

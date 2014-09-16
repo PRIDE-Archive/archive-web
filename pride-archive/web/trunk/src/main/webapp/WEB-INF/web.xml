@@ -16,7 +16,7 @@
             WEB-INF/spring/mvc-config.xml
         </param-value>
 	</context-param>
-	
+
     <!-- JNDI setup -->
     <resource-env-ref>
         <resource-env-ref-name>jdbc/pridepro</resource-env-ref-name>
@@ -117,7 +117,7 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
 	</servlet>
-		
+
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>

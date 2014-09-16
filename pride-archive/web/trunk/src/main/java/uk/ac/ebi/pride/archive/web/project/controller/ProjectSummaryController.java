@@ -12,22 +12,26 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import uk.ac.ebi.pride.archive.repo.assay.service.AssaySummary;
+import uk.ac.ebi.pride.archive.repo.file.service.FileService;
+import uk.ac.ebi.pride.archive.repo.file.service.FileSummary;
 import uk.ac.ebi.pride.archive.repo.project.service.ProjectService;
+import uk.ac.ebi.pride.archive.repo.project.service.ProjectSummary;
 import uk.ac.ebi.pride.archive.security.assay.AssaySecureService;
 import uk.ac.ebi.pride.archive.security.project.ProjectSecureService;
+import uk.ac.ebi.pride.archive.security.protein.ProteinIdentificationSecureSearchService;
+import uk.ac.ebi.pride.archive.security.psm.PsmSecureSearchService;
+import uk.ac.ebi.pride.archive.web.assay.controller.AssaySummaryAdapter;
 import uk.ac.ebi.pride.archive.web.user.model.PublishProject;
 import uk.ac.ebi.pride.archive.web.user.validator.PublishProjectValidator;
 import uk.ac.ebi.pride.archive.web.util.PageMaker;
 import uk.ac.ebi.pride.archive.web.util.PrideSupportEmailSender;
 import uk.ac.ebi.pride.archive.web.util.filter.EntityFilter;
-import uk.ac.ebi.pride.archive.repo.assay.service.AssaySummary;
-import uk.ac.ebi.pride.archive.repo.file.service.FileService;
-import uk.ac.ebi.pride.archive.repo.file.service.FileSummary;
-import uk.ac.ebi.pride.archive.repo.project.service.ProjectSummary;
 
 import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * @author Rui Wang
@@ -38,6 +42,16 @@ import java.util.Collection;
 public class ProjectSummaryController {
 
     private static final Logger logger = LoggerFactory.getLogger(ProjectSummaryController.class);
+
+    @Autowired
+    private PublishProjectValidator publishProjectValidator;
+
+    @Autowired
+    private PrideSupportEmailSender mailSender;
+
+    @Autowired
+    @Qualifier("projectServiceImpl")
+    private ProjectService projectService;
 
     @Autowired
     @Qualifier("projectSecureServiceImpl")
@@ -55,21 +69,40 @@ public class ProjectSummaryController {
     @Autowired
     private PageMaker pageMaker;
 
+    @Autowired
+    private ProteinIdentificationSecureSearchService proteinIdentificationSearchService;
+
+    @Autowired
+    private PsmSecureSearchService psmSecureSearchService;
+
     @RequestMapping(value = "projects/{accession}", method = RequestMethod.GET)
     public ModelAndView getProjectSummary(@PathVariable String accession) {
 
 //        try {
-            // get the project metadata
-            ProjectSummary summary = projectSecureService.findByAccession(accession);
+        // get the project metadata
+        ProjectSummary summary = projectSecureService.findByAccession(accession);
 
-            // filter project cv params
-            Collection<ProjectSummary> filteredProjectSummaries = removeProjectDuplicateCvParamFilter.filter(Arrays.asList(summary));
-            summary = filteredProjectSummaries.iterator().next();
+        // filter project cv params
+        Collection<ProjectSummary> filteredProjectSummaries = removeProjectDuplicateCvParamFilter.filter(Arrays.asList(summary));
+        summary = filteredProjectSummaries.iterator().next();
 
-            // get the assay list
-            Collection<AssaySummary> assaySummaries = assaySecureService.findAllByProjectAccession(accession);
+        // get the assay list
+        Collection<AssaySummary> assaySummaries = assaySecureService.findAllByProjectAccession(accession);
 
-            return pageMaker.createProjectSummaryPage(summary, assaySummaries);
+        Collection<AssaySummaryAdapter> assaySummariesAdapter = new LinkedList<AssaySummaryAdapter>();
+
+        Long indexProteinCountAssay;
+        Long indexPsmCountAssay;
+        for (AssaySummary assaySummary : assaySummaries) {
+            indexProteinCountAssay = proteinIdentificationSearchService.countByAssayAccession(assaySummary.getAccession());
+            indexPsmCountAssay = psmSecureSearchService.countByAssayAccession(assaySummary.getAccession());
+            assaySummariesAdapter.add(new AssaySummaryAdapter(assaySummary,indexProteinCountAssay,indexPsmCountAssay));
+        }
+
+        Long indexProteinCount = proteinIdentificationSearchService.countByProjectAccession(accession);
+        Long indexPsmCount = psmSecureSearchService.countByProjectAccession(accession);
+
+        return pageMaker.createProjectSummaryPage(new ProjectSummaryAdapter(summary, indexProteinCount, indexPsmCount), assaySummariesAdapter);
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
@@ -97,20 +130,6 @@ public class ProjectSummaryController {
         // if yes, we redirect to the viewer page
         return new ModelAndView("redirect:" + "/viewer#protein=" + proteinID);
     }
-
-
-
-
-    @Autowired
-    private PublishProjectValidator publishProjectValidator;
-
-    @Autowired
-    private PrideSupportEmailSender mailSender;
-
-    @Autowired
-    @Qualifier("projectServiceImpl")
-    private ProjectService projectService;
-
 
     @InitBinder(value = "publishProject")
     protected void initPublishProjectBinder(WebDataBinder binder) {

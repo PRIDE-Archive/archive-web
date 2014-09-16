@@ -12,6 +12,7 @@ import uk.ac.ebi.pride.archive.search.service.dao.solr.ProjectSearchDaoSolr;
 import uk.ac.ebi.pride.archive.security.protein.ProteinIdentificationSecureSearchService;
 import uk.ac.ebi.pride.archive.web.search.SearchFields;
 import uk.ac.ebi.pride.archive.web.search.SolrQueryBuilder;
+import uk.ac.ebi.pride.archive.web.util.SearchUtils;
 import uk.ac.ebi.pride.proteinidentificationindex.search.model.ProteinIdentification;
 import uk.ac.ebi.pride.psmindex.search.model.Psm;
 import uk.ac.ebi.pride.psmindex.search.service.PsmSearchService;
@@ -169,7 +170,7 @@ public class SearchController {
         // search for projects
         searchForProjects(model, term, showResults, page, sortBy, order,
                 ptmsFilterList, speciesFilterList, tissueFilterList, diseaseFilterList, titleFilterList,
-                instrumentFilterList, quantificationFilterList, experimentTypeFilterList, projectTagFilterList,submissionTypeFilterList);
+                instrumentFilterList, quantificationFilterList, experimentTypeFilterList, projectTagFilterList, submissionTypeFilterList);
 
         return "searchResult";
     }
@@ -187,231 +188,51 @@ public class SearchController {
                                    ArrayList<String> projectTagFilterList,
                                    ArrayList<String> submissionTypeFilterList) {
         Collection<ProjectSearchSummary> projects = null;
-        Map<String, Long> availableSpecies = sortByValueDesc(
-                projectSearchService.getSpeciesCount(
-                        SolrQueryBuilder.buildQueryTerm(term),
-                        SolrQueryBuilder.buildQueryFields(),
-                        SolrQueryBuilder.buildQueryFilters(
-                                ptmsFilterList,
-                                speciesFilterList,
-                                tissueFilterList,
-                                diseaseFilterList,
-                                titleFilterList,
-                                instrumentFilterList,
-                                quantificationFilterList,
-                                experimentTypeFilterList,
-                                projectTagFilterList,
-                                submissionTypeFilterList
-                        )
-                ) // facet on the whole data set
+
+        //We remove the reserved words in solr first and later we remove more than one double spaces,
+        // they can create syntax errors in the query.
+        term = cleanTerm(term);
+
+        String queryTerm = SolrQueryBuilder.buildQueryTerm(term);
+        String queryFields = SolrQueryBuilder.buildQueryFields();
+        String queryFilters[] = SolrQueryBuilder.buildQueryFilters(
+                ptmsFilterList,
+                speciesFilterList,
+                tissueFilterList,
+                diseaseFilterList,
+                titleFilterList,
+                instrumentFilterList,
+                quantificationFilterList,
+                experimentTypeFilterList,
+                projectTagFilterList,
+                submissionTypeFilterList
         );
 
-        Map<String, Long> availableTissue = sortByValueDesc(
-                projectSearchService.getTissueCount(
-                        SolrQueryBuilder.buildQueryTerm(term),
-                        SolrQueryBuilder.buildQueryFields(),
-                        SolrQueryBuilder.buildQueryFilters(
-                                ptmsFilterList,
-                                speciesFilterList,
-                                tissueFilterList,
-                                diseaseFilterList,
-                                titleFilterList,
-                                instrumentFilterList,
-                                quantificationFilterList,
-                                experimentTypeFilterList,
-                                projectTagFilterList,
-                                submissionTypeFilterList
-                        )
-                ) // facet on the whole data set
-        );
+        // facet on the whole data set
 
-        Map<String, Long> availableDisease = sortByValueDesc(
-                projectSearchService.getDiseaseCount(
-                        SolrQueryBuilder.buildQueryTerm(term),
-                        SolrQueryBuilder.buildQueryFields(),
-                        SolrQueryBuilder.buildQueryFilters(
-                                ptmsFilterList,
-                                speciesFilterList,
-                                tissueFilterList,
-                                diseaseFilterList,
-                                titleFilterList,
-                                instrumentFilterList,
-                                quantificationFilterList,
-                                experimentTypeFilterList,
-                                projectTagFilterList,
-                                submissionTypeFilterList
-                        )
-                ) // facet on the whole data set
-        );
-
-
-        Map<String, Long> availableInstruments = sortByValueDesc(
-                projectSearchService.getInstrumentModelCount(
-                        SolrQueryBuilder.buildQueryTerm(term),
-                        SolrQueryBuilder.buildQueryFields(),
-                        SolrQueryBuilder.buildQueryFilters(
-                                ptmsFilterList,
-                                speciesFilterList,
-                                tissueFilterList,
-                                diseaseFilterList,
-                                titleFilterList,
-                                instrumentFilterList,
-                                quantificationFilterList,
-                                experimentTypeFilterList,
-                                projectTagFilterList,
-                                submissionTypeFilterList
-                        )
-                ) // facet on the whole data set
-        );
-
-        Map<String, Long> availableQMethods = sortByValueDesc(
-                projectSearchService.getQuantificationMethodsCount(
-                        SolrQueryBuilder.buildQueryTerm(term),
-                        SolrQueryBuilder.buildQueryFields(),
-                        SolrQueryBuilder.buildQueryFilters(
-                                ptmsFilterList,
-                                speciesFilterList,
-                                tissueFilterList,
-                                diseaseFilterList,
-                                titleFilterList,
-                                instrumentFilterList,
-                                quantificationFilterList,
-                                experimentTypeFilterList,
-                                projectTagFilterList,
-                                submissionTypeFilterList
-                        )
-                ) // facet on the whole data set
-        );
-
-        Map<String, Long> availableExperimentTypes = sortByValueDesc(
-                projectSearchService.getExperimentTypesCount(
-                        SolrQueryBuilder.buildQueryTerm(term),
-                        SolrQueryBuilder.buildQueryFields(),
-                        SolrQueryBuilder.buildQueryFilters(
-                                ptmsFilterList,
-                                speciesFilterList,
-                                tissueFilterList,
-                                diseaseFilterList,
-                                titleFilterList,
-                                instrumentFilterList,
-                                quantificationFilterList,
-                                experimentTypeFilterList,
-                                projectTagFilterList,
-                                submissionTypeFilterList
-                        )
-                ) // facet on the whole data set
-        );
-
-        Map<String, Long> availablePtms = sortByValueDesc(
-                projectSearchService.getPtmCount(
-                        SolrQueryBuilder.buildQueryTerm(term),
-                        SolrQueryBuilder.buildQueryFields(),
-                        SolrQueryBuilder.buildQueryFilters(
-                                ptmsFilterList,
-                                speciesFilterList,
-                                tissueFilterList,
-                                diseaseFilterList,
-                                titleFilterList,
-                                instrumentFilterList,
-                                quantificationFilterList,
-                                experimentTypeFilterList,
-                                projectTagFilterList,
-                                submissionTypeFilterList
-                        )
-                ) // facet on the whole data set
-        );
-
-        Map<String, Long> availableProjectTags = sortByValueDesc(
-                projectSearchService.getProjectTagCount(
-                        SolrQueryBuilder.buildQueryTerm(term),
-                        SolrQueryBuilder.buildQueryFields(),
-                        SolrQueryBuilder.buildQueryFilters(
-                                ptmsFilterList,
-                                speciesFilterList,
-                                tissueFilterList,
-                                diseaseFilterList,
-                                titleFilterList,
-                                instrumentFilterList,
-                                quantificationFilterList,
-                                experimentTypeFilterList,
-                                projectTagFilterList,
-                                submissionTypeFilterList
-                        )
-                ) // facet on the whole data set
-        );
-
-        Map<String, Long> availableSubmissionTypes = sortByValueDesc(
-                projectSearchService.getSubmissionTypeCount(
-                        SolrQueryBuilder.buildQueryTerm(term),
-                        SolrQueryBuilder.buildQueryFields(),
-                        SolrQueryBuilder.buildQueryFilters(
-                                ptmsFilterList,
-                                speciesFilterList,
-                                tissueFilterList,
-                                diseaseFilterList,
-                                titleFilterList,
-                                instrumentFilterList,
-                                quantificationFilterList,
-                                experimentTypeFilterList,
-                                projectTagFilterList,
-                                submissionTypeFilterList
-                        )
-                ) // facet on the whole data set
-        );
-
+        Map<String, Long> availableSpecies = sortByValueDesc(projectSearchService.getSpeciesCount(queryTerm, queryFields, queryFilters));
+        Map<String, Long> availableTissue = sortByValueDesc(projectSearchService.getTissueCount(queryTerm, queryFields, queryFilters));
+        Map<String, Long> availableDisease = sortByValueDesc(projectSearchService.getDiseaseCount(queryTerm, queryFields, queryFilters));
+        Map<String, Long> availableInstruments = sortByValueDesc(projectSearchService.getInstrumentModelCount(queryTerm, queryFields, queryFilters));
+        Map<String, Long> availableQMethods = sortByValueDesc(projectSearchService.getQuantificationMethodsCount(queryTerm, queryFields, queryFilters));
+        Map<String, Long> availableExperimentTypes = sortByValueDesc(projectSearchService.getExperimentTypesCount(queryTerm, queryFields, queryFilters));
+        Map<String, Long> availablePtms = sortByValueDesc(projectSearchService.getPtmCount(queryTerm, queryFields, queryFilters));
+        Map<String, Long> availableProjectTags = sortByValueDesc(projectSearchService.getProjectTagCount(queryTerm, queryFields, queryFilters));
+        Map<String, Long> availableSubmissionTypes = sortByValueDesc(projectSearchService.getSubmissionTypeCount(queryTerm, queryFields, queryFilters));
 
         int numPages = 0;
-        long numResults = projectSearchService.numSearchResults(
-                SolrQueryBuilder.buildQueryTerm(term),
-                SolrQueryBuilder.buildQueryFields(),
-                SolrQueryBuilder.buildQueryFilters(
-                        ptmsFilterList,
-                        speciesFilterList,
-                        tissueFilterList,
-                        diseaseFilterList,
-                        titleFilterList,
-                        instrumentFilterList,
-                        quantificationFilterList,
-                        experimentTypeFilterList,
-                        projectTagFilterList,
-                        submissionTypeFilterList
-                )
-        );
+        long numResults = projectSearchService.numSearchResults(queryTerm, queryFields, queryFilters);
 
         if (numResults > 0) {
             numPages = roundUp(numResults, showResults);
             page = (page > numPages) ? numPages : page;
             int start = showResults * (page - 1);
-            int offset = showResults;
 
-            //We remove the reserved words in solr first and later we remove more than one double spaces,
-            // they can create syntax errors in the query.
-            term = cleanTerm(term);
-
-            String queryTerm = SolrQueryBuilder.buildQueryTerm(term);
-            String queryFields = SolrQueryBuilder.buildQueryFields();
-            String queryFilters[] = SolrQueryBuilder.buildQueryFilters(
-                    ptmsFilterList,
-                    speciesFilterList,
-                    tissueFilterList,
-                    diseaseFilterList,
-                    titleFilterList,
-                    instrumentFilterList,
-                    quantificationFilterList,
-                    experimentTypeFilterList,
-                    projectTagFilterList,
-                    submissionTypeFilterList
-            );
-            projects = projectSearchService.searchProjects(
-                    queryTerm,
-                    queryFields,
-                    queryFilters,
-                    start, offset, sortBy, order);
+            projects = projectSearchService.searchProjects(queryTerm, queryFields, queryFilters, start, showResults, sortBy, order);
 
         }
 
         filterAssayAccessions(projects, term);
-
         highlightProteinAccessions(projects, term);
         highlightPeptideSequences(projects, term);
 
@@ -474,37 +295,77 @@ public class SearchController {
                 if (termTokens.length > 0) { // if we get any patterns from the search terms...
                     // go through projects to find highlights
                     for (ProjectSearchSummary projectSearchSummary : projects) {
+
                         for (String termToken : termTokens) {
+                            //We need escape every token to avoid syntax problems
+                            termToken = SearchUtils.escapeQueryCharsExceptStartAndQuestionMark(termToken);
                             // get protein identifications for this project and possibly the search term
                             List<ProteinIdentification> proteinIdentifications =
-                                    proteinIdentificationSearchService.findBySynonymAndProjectAccession(
-                                            termToken, projectSearchSummary.getProjectAccession()
-                                    );
-                            Iterator<ProteinIdentification> it = proteinIdentifications.iterator();
+                                    proteinIdentificationSearchService.findByProjectAccessionAndAnyMapping(
+                                            projectSearchSummary.getProjectAccession(), termToken);
+
+                            Map<String, Long> countAccessions = new TreeMap<String, Long>();
+                            for (ProteinIdentification proteinIdentification : proteinIdentifications) {
+
+                                Long count = countAccessions.get(proteinIdentification.getAccession());
+                                if(count == null)
+                                    count = 1L;
+                                else
+                                    count++;
+                                countAccessions.put(proteinIdentification.getAccession(), count);
+
+                                if (proteinIdentification.getUniprotMapping() != null && !proteinIdentification.getUniprotMapping().isEmpty()) {
+                                    if (starMatch(proteinIdentification.getUniprotMapping(), termToken) && !starMatch(proteinIdentification.getAccession(), termToken)) {
+                                        count = countAccessions.get(proteinIdentification.getEnsemblMapping());
+                                        if (count == null)
+                                            count = 1L;
+                                        else
+                                            count++;
+                                        countAccessions.put(proteinIdentification.getUniprotMapping(), count);
+                                    }
+                                }
+
+                                if (proteinIdentification.getEnsemblMapping() != null && !proteinIdentification.getEnsemblMapping().isEmpty()) {
+                                    if (starMatch(proteinIdentification.getEnsemblMapping(), termToken) && !starMatch(proteinIdentification.getAccession(), termToken)) {
+                                        count = countAccessions.get(proteinIdentification.getUniprotMapping());
+                                        if (count == null)
+                                            count = 1L;
+                                        else
+                                            count++;
+                                        countAccessions.put(proteinIdentification.getEnsemblMapping(), count);
+                                    }
+                                }
+
+                                for ( String proteinIdentificationMapping : proteinIdentification.getOtherMappings() ) {
+                                    if ( starMatch(proteinIdentificationMapping, termToken) && !starMatch(proteinIdentification.getAccession(), termToken) ) {
+                                        count = countAccessions.get(proteinIdentificationMapping);
+                                        if(count == null)
+                                            count = 1L;
+                                        else
+                                            count++;
+                                        countAccessions.put(proteinIdentificationMapping, count);
+                                    }
+                                }
+                            }
+
                             int numHighlightsAdded = 0;
+                            Iterator<Map.Entry<String, Long>> it = countAccessions.entrySet().iterator();
                             while (it.hasNext() && numHighlightsAdded < MAX_PROTEIN_IDENTIFICATION_HIGHLIGHTS) {
-                                ProteinIdentification proteinIdentification = it.next();
+                                Map.Entry<String, Long> entry = it.next();
+                                // add the highlight
+
                                 // initialize the highlights for the field if needed (most likely)
                                 if (projectSearchSummary.getHighlights().get(SearchFields.PROTEIN_IDENTIFICATIONS.getIndexName()) == null) {
                                     projectSearchSummary.getHighlights().put(
                                             SearchFields.PROTEIN_IDENTIFICATIONS.getIndexName(), new LinkedList<String>()
                                     );
                                 }
-                                // add the highlight
                                 projectSearchSummary.getHighlights().get(SearchFields.PROTEIN_IDENTIFICATIONS.getIndexName()).add(
-                                        ProjectSearchDaoSolr.HIGHLIGHT_PRE_FRAGMENT + proteinIdentification.getAccession() + ProjectSearchDaoSolr.HIGHLIGHT_POST_FRAGMENT
+                                        ProjectSearchDaoSolr.HIGHLIGHT_PRE_FRAGMENT + entry.getKey() + " (" + entry.getValue() + ")"+ ProjectSearchDaoSolr.HIGHLIGHT_POST_FRAGMENT
                                 );
-                                // add the synonym highlighting if is not the accession itself and matches the search term
-                                for ( String proteinIdentificationSynonym: proteinIdentification.getSynonyms() ) {
-                                    if ( starMatch(proteinIdentificationSynonym, termToken) && !starMatch(proteinIdentification.getAccession(), termToken) ) {
-                                        projectSearchSummary.getHighlights().get(SearchFields.PROTEIN_IDENTIFICATIONS.getIndexName()).add(
-                                                ProjectSearchDaoSolr.HIGHLIGHT_PRE_FRAGMENT + "(" + proteinIdentificationSynonym + ")" + ProjectSearchDaoSolr.HIGHLIGHT_POST_FRAGMENT
-                                        );
-                                    }
-                                }
+
                                 numHighlightsAdded++;
                             }
-
                             if (numHighlightsAdded > 0 && numHighlightsAdded < proteinIdentifications.size()) {
                                 // add the (More) bit
                                 projectSearchSummary.getHighlights().get(SearchFields.PROTEIN_IDENTIFICATIONS.getIndexName()).add(
@@ -518,23 +379,6 @@ public class SearchController {
         }
     }
 
-    private boolean starMatch(String text, String starExp) {
-        String textCopy = new String(text);
-        String [] tokens = starExp.split("\\*");
-        boolean matches = true;
-        int tokenIndex = 0;
-        while (matches && tokenIndex<tokens.length) {
-            String starExpToken = tokens[tokenIndex];
-            if (textCopy.contains(starExpToken)) {
-                textCopy = textCopy.substring(textCopy.indexOf(starExpToken)+starExpToken.length(),textCopy.length());
-                tokenIndex++;
-            } else {
-                matches = (tokenIndex>=tokens.length);
-            }
-        }
-        return matches;
-    }
-
     private void highlightPeptideSequences(Collection<ProjectSearchSummary> projects, String term) {
         if (projects != null) {
             if (!term.isEmpty()) {
@@ -545,6 +389,9 @@ public class SearchController {
                     // go through projects to find highlights
                     for (ProjectSearchSummary projectSearchSummary : projects) {
                         for (String termToken : termTokens) {
+
+                            //We need escape every token to avoid syntax problems
+                            termToken = SearchUtils.escapeQueryCharsExceptStartAndQuestionMark(termToken);
 
                             // We avoid queries with less than 4 amino acids and more that 100 and with letters that
                             // don't represent amino acids except the star.
@@ -621,6 +468,23 @@ public class SearchController {
         }
     }
 
+    private boolean starMatch(String text, String starExp) {
+        String textCopy = new String(text);
+        String [] tokens = starExp.split("\\*");
+        boolean matches = true;
+        int tokenIndex = 0;
+        while (matches && tokenIndex<tokens.length) {
+            String starExpToken = tokens[tokenIndex];
+            if (textCopy.contains(starExpToken)) {
+                textCopy = textCopy.substring(textCopy.indexOf(starExpToken)+starExpToken.length(),textCopy.length());
+                tokenIndex++;
+            } else {
+                matches = (tokenIndex>=tokens.length);
+            }
+        }
+        return matches;
+    }
+
     private String cleanTerm(String term) {
 
         if (term != null && !term.equals("")) {
@@ -641,20 +505,19 @@ public class SearchController {
         else return (int) ((num + divisor - 1) / divisor);
     }
 
-    static Map sortByValueDesc(Map map) {
+    static <K,V extends Comparable<V>> Map<K,V>  sortByValueDesc(Map<K,V> map) {
         if (map != null) {
-            List list = new LinkedList(map.entrySet());
-            Collections.sort(list, new Comparator() {
-                public int compare(Object o1, Object o2) {
-                    return ((Comparable) ((Map.Entry) (o1)).getValue())
-                            .compareTo(((Map.Entry) (o2)).getValue());
+            List<Map.Entry<K,V>> list = new LinkedList<Map.Entry<K,V>>(map.entrySet());
+            Collections.sort(list, new Comparator<Map.Entry<K,V>>() {
+                public int compare(Map.Entry<K,V> o1, Map.Entry<K,V> o2) {
+                    return (o1.getValue()).compareTo(o2.getValue());
                 }
             });
+
             Collections.reverse(list);
 
-            Map result = new LinkedHashMap();
-            for (Iterator it = list.iterator(); it.hasNext(); ) {
-                Map.Entry entry = (Map.Entry) it.next();
+            Map<K,V> result = new LinkedHashMap<K,V>();
+            for (Map.Entry<K, V> entry : list) {
                 result.put(entry.getKey(), entry.getValue());
             }
             return result;

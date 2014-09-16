@@ -75,7 +75,9 @@
         <c:if test="${fn:toLowerCase(projectSummary.submissionType) != 'partial'}">
             <%-- launch pride inspector --%>
             <h5>
-                <span class="icon icon-functional" data-icon="4" id="inspector-confirm"><fmt:message key="pride.inspector.title"/></span>
+                <span class="icon icon-functional" data-icon="4" id="inspector-confirm">
+                    <fmt:message key="pride.inspector.title"/>
+                </span>
             </h5>
         </c:if>
 
@@ -83,25 +85,32 @@
         <spring:url var="projectFileUrl" value="/projects/{accession}/files">
             <spring:param name="accession" value="${projectSummary.accession}"/>
         </spring:url>
-        <spring:url var="projectProteinsUrl" value="/projects/{accession}/proteins">
-            <spring:param name="accession" value="${projectSummary.accession}"/>
-        </spring:url>
-        <spring:url var="projectPsmsUrl" value="/projects/{accession}/psms">
-            <spring:param name="accession" value="${projectSummary.accession}"/>
-        </spring:url>
         <h5>
             <a href="${projectFileUrl}" class="icon icon-functional" data-icon="=">
-                <fmt:message key="project.file.download.title"/> </a>
+                <fmt:message key="project.file.download.title"/>
+            </a>
         </h5>
-        <h5>
-            <a href="${projectProteinsUrl}" class="icon icon-functional" data-icon="4">
-                <fmt:message key="project.proteins.table"/> </a>
-        </h5>
-        <h5>
-            <a href="${projectPsmsUrl}" class="icon icon-functional" data-icon="4">
-                <fmt:message key="project.psms.table"/> </a>
-        </h5>
+        <c:if test="${fn:toLowerCase(projectSummary.submissionType) != 'partial' and projectSummary.indexProteinCount > 0}">
+            <spring:url var="projectProteinsUrl" value="/projects/{accession}/proteins">
+                <spring:param name="accession" value="${projectSummary.accession}"/>
+            </spring:url>
+            <h5>
+                <a href="${projectProteinsUrl}" class="icon icon-functional" data-icon="4">
+                    <fmt:message key="project.proteins.table"/>
+                </a>
+            </h5>
+        </c:if>
 
+        <c:if test="${fn:toLowerCase(projectSummary.submissionType) != 'partial' and projectSummary.indexPsmCount gt 0 }">
+            <spring:url var="projectPsmsUrl" value="/projects/{accession}/psms">
+                <spring:param name="accession" value="${projectSummary.accession}"/>
+            </spring:url>
+            <h5>
+                <a href="${projectPsmsUrl}" class="icon icon-functional" data-icon="4">
+                    <fmt:message key="project.psms.table"/>
+                </a>
+            </h5>
+        </c:if>
     </div>
 </div>
 
@@ -547,7 +556,7 @@
                     </td>
                     <td width="80px">
                         <c:choose>
-                            <c:when test="${assay.proteinCount > 0}">
+                            <c:when test="${assay.proteinCount > 0  and assay.indexProteinCount gt 0}">
                                 <spring:url var="proteinPageUrl" value="/projects/{projectAccession}/assays/{assayAccession}/proteins">
                                     <spring:param name="projectAccession" value="${projectSummary.accession}"/>
                                     <spring:param name="assayAccession" value="${assay.accession}"/>
@@ -561,7 +570,7 @@
                     </td>
                     <td width="80px">
                         <c:choose>
-                            <c:when test="${assay.peptideCount > 0}">
+                            <c:when test="${assay.peptideCount > 0 and assay.indexPsmCount gt 0}">
                                 <spring:url var="psmPageUrl" value="/projects/{projectAccession}/assays/{assayAccession}/psms">
                                     <spring:param name="projectAccession" value="${projectSummary.accession}"/>
                                     <spring:param name="assayAccession" value="${assay.accession}"/>

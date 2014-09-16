@@ -55,10 +55,10 @@ public class SolrQueryBuilder {
 //        else
 //            return term;
         if ("".equals(term))
-            return "id:PR* id:PX*^"+PX_RELEVANCE; // PX submissions are more relevant
+            return "id:PRD* id:PXD*^"+PX_RELEVANCE; // PX submissions are more relevant
         else
 //            return term;
-            return "(id:PR* id:PX*^"+PX_RELEVANCE + ") AND (" + term +")"; // PX submissions are more relevant
+            return "(id:PRD* id:PXD*^"+PX_RELEVANCE + ") AND (" + term +")"; // PX submissions are more relevant
     }
 
     public static String[] buildQueryFilters(List<String> ptmsFilterList,

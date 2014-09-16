@@ -3,16 +3,12 @@ package uk.ac.ebi.pride.archive.web.protein.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.solr.core.query.result.HighlightEntry;
-import org.springframework.data.solr.core.query.result.HighlightPage;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import uk.ac.ebi.pride.archive.repo.assay.service.AssaySummary;
 import uk.ac.ebi.pride.archive.repo.project.service.ProjectSummary;
@@ -20,13 +16,11 @@ import uk.ac.ebi.pride.archive.security.assay.AssaySecureService;
 import uk.ac.ebi.pride.archive.security.project.ProjectSecureService;
 import uk.ac.ebi.pride.archive.security.protein.ProteinIdentificationSecureSearchService;
 import uk.ac.ebi.pride.archive.web.util.PageMaker;
+import uk.ac.ebi.pride.archive.web.util.SearchUtils;
 import uk.ac.ebi.pride.indexutils.results.PageWrapper;
 import uk.ac.ebi.pride.proteinidentificationindex.search.model.ProteinIdentification;
-import uk.ac.ebi.pride.proteinindex.search.model.ProteinIdentified;
-import uk.ac.ebi.pride.psmindex.search.model.Psm;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +46,12 @@ public class ProteinsTableController {
     @Autowired
     private PageMaker pageMaker;
 
+    //This trims automatically the request parameters
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor("\b\t\r\n\f", true));
+    }
+
     @RequestMapping(value = "/projects/{projectAccession}/assays/{assayAccession}/proteins", method = RequestMethod.GET)
     public ModelAndView getProjectAssayProteins(@PathVariable String assayAccession,
                                                 @PathVariable String projectAccession,
@@ -75,8 +75,14 @@ public class ProteinsTableController {
             ptmsFilters.add("\"" + newPtmsFilter + "\"");
         }
 
-        PageWrapper<ProteinIdentification> proteinPage = proteinIdentificationSearchService.findByAssayAccessionHighlightsOnModificationNames(assayAccession, query, ptmsFilters, page);
-        Map<String, Long> availablePtms = proteinIdentificationSearchService.findByAssayAccessionFacetOnModificationNames(assayAccession, query, ptmsFilters);
+        //The query is escaped
+        String filteredQuery = query;
+        if(filteredQuery  != null && !filteredQuery.isEmpty()){
+//            filteredQuery = ClientUtils.escapeQueryChars(query);
+        }
+
+        PageWrapper<ProteinIdentification> proteinPage = proteinIdentificationSearchService.findByAssayAccessionHighlightsOnModificationNames(assayAccession, filteredQuery, ptmsFilters, page);
+        Map<String, Long> availablePtms = proteinIdentificationSearchService.findByAssayAccessionFacetOnModificationNames(assayAccession, filteredQuery, ptmsFilters);
 
         return pageMaker.createProteinsTablePage(projectAccession, assayAccession, proteinPage.getPage(), proteinPage.getHighlights(), query, availablePtms, ptmsFilters);
     }
@@ -114,8 +120,13 @@ public class ProteinsTableController {
             ptmsFilters.add("\"" + newPtmsFilter + "\"");
         }
 
-        PageWrapper<ProteinIdentification> proteinPage =  proteinIdentificationSearchService.findByProjectAccessionHighlightsOnModificationNames(projectAccession, query, ptmsFilters, page);
-        Map<String, Long>  availablePtms = proteinIdentificationSearchService.findByProjectAccessionFacetOnModificationNames(projectAccession, query, ptmsFilters);
+        String filteredQuery = query;
+        if(filteredQuery  != null && !filteredQuery.isEmpty()){
+            filteredQuery = SearchUtils.escapeQueryCharsExceptStartAndQuestionMark(query);
+        }
+
+        PageWrapper<ProteinIdentification> proteinPage =  proteinIdentificationSearchService.findByProjectAccessionHighlightsOnModificationNames(projectAccession, filteredQuery, ptmsFilters, page);
+        Map<String, Long>  availablePtms = proteinIdentificationSearchService.findByProjectAccessionFacetOnModificationNames(projectAccession, filteredQuery, ptmsFilters);
 
         return pageMaker.createProteinsTablePage(projectAccession, null, proteinPage.getPage(), proteinPage.getHighlights(), query, availablePtms, ptmsFilters);
     }
