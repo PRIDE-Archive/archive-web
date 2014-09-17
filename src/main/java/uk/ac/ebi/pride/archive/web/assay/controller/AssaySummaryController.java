@@ -53,6 +53,8 @@ public class AssaySummaryController {
     @Autowired
     private PsmSecureSearchService psmSecureSearchService;
 
+    // ToDo: add sensible mapping for /assays
+    // ToDo: add sensible mapping for /projects/{projectAccession}/assays
 
     @RequestMapping(value = "/assays/{assayAccession}", method = RequestMethod.GET)
     public ModelAndView getAssaySummary(@PathVariable String assayAccession) {

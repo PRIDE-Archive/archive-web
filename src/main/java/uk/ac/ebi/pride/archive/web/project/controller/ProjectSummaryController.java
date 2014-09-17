@@ -75,6 +75,11 @@ public class ProjectSummaryController {
     @Autowired
     private PsmSecureSearchService psmSecureSearchService;
 
+    @RequestMapping(value = "projects", method = RequestMethod.GET)
+    public ModelAndView getProjects() {
+        return new ModelAndView("redirect:/simpleSearch?q=&submit=Search");
+    }
+
     @RequestMapping(value = "projects/{accession}", method = RequestMethod.GET)
     public ModelAndView getProjectSummary(@PathVariable String accession) {
 
