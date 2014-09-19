@@ -486,6 +486,7 @@
                 </p>
             </div>
         </c:if>
+
         <%--There are projects to show--%>
         <c:if test="${not empty projectList}">
             <div id="search-results" class="grid_18 right-column">
@@ -495,12 +496,12 @@
                     <c:if test="${numPages>1}">
                         <div id="paging-buttons" class="grid_12 alpha">
                             <ul class="search-menu">
-                                    <%--First --%>
+                                <%-- First --%>
                                 <li><priderElement:hrefSearch
                                         label="1"
                                         q="${q}"
                                         show="${show}"
-                                        page="1"
+                                        page="0"
                                         sort="${sort}"
                                         order="${order}"
                                         titleFilters="${titleFilters}"
@@ -513,18 +514,19 @@
                                         experimentTypeFilters="${experimentTypeFilters}"
                                         projectTagFilters="${projectTagFilters}"
                                         submissionTypeFilters="${submissionTypeFilters}"
-                                        hrefClass="${1==page?'selected':''}"
+                                        hrefClass="${0==page?'selected':''}"
                                         />
                                 </li>
-                                <c:if test="${page>4}"><li>...</li></c:if>
+                                <c:if test="${page>3}"><li>...</li></c:if>
 
-                                    <%--In between pages--%>
-                                <c:forEach var="nPage" begin="${(page<5) ? 2 : (page-2)}" end="${(page>(numPages-4)) ? numPages-1 : (page+2)}">
+                                <%-- In between pages --%>
+                                <%--<c:forEach var="nPage" begin="${(page<5) ? 2 : (page-2)}" end="${(page>(numPages-4)) ? numPages-1 : (page+2)}">--%>
+                                <c:forEach var="nPage" begin="${(page<4) ? 2 : (page-1)}" end="${(page>(numPages-3)) ? numPages-1 : (page+3)}">
                                     <li><priderElement:hrefSearch
                                             label="${nPage}"
                                             q="${q}"
                                             show="${show}"
-                                            page="${nPage}"
+                                            page="${nPage-1}"
                                             sort="${sort}"
                                             order="${order}"
                                             titleFilters="${titleFilters}"
@@ -537,17 +539,17 @@
                                             experimentTypeFilters="${experimentTypeFilters}"
                                             projectTagFilters="${projectTagFilters}"
                                             submissionTypeFilters="${submissionTypeFilters}"
-                                            hrefClass="${nPage==page?'selected':''}"
+                                            hrefClass="${nPage-1==page?'selected':''}"
                                             />
                                     </li>
                                 </c:forEach>
-                                    <%-- Last   --%>
-                                <c:if test="${page<(numPages-4)}"><li>...</li></c:if>
+                                <%-- Last --%>
+                                <c:if test="${page<(numPages-3)}"><li>...</li></c:if>
                                 <li><priderElement:hrefSearch
                                         label="${numPages}"
                                         q="${q}"
                                         show="${show}"
-                                        page="${numPages}"
+                                        page="${numPages-1}"
                                         sort="${sort}"
                                         order="${order}"
                                         titleFilters="${titleFilters}"
@@ -560,7 +562,7 @@
                                         experimentTypeFilters="${experimentTypeFilters}"
                                         projectTagFilters="${projectTagFilters}"
                                         submissionTypeFilters="${submissionTypeFilters}"
-                                        hrefClass="${numPages==page?'selected':''}"
+                                        hrefClass="${numPages-1==page?'selected':''}"
                                         />
                                 </li>
 
@@ -792,12 +794,12 @@
                     <c:if test="${numPages>1}">
                         <div id="paging-buttons" class="grid_12 alpha">
                             <ul class="search-menu">
-                                    <%--First --%>
+                                    <%-- First --%>
                                 <li><priderElement:hrefSearch
                                         label="1"
                                         q="${q}"
                                         show="${show}"
-                                        page="1"
+                                        page="0"
                                         sort="${sort}"
                                         order="${order}"
                                         titleFilters="${titleFilters}"
@@ -810,18 +812,19 @@
                                         experimentTypeFilters="${experimentTypeFilters}"
                                         projectTagFilters="${projectTagFilters}"
                                         submissionTypeFilters="${submissionTypeFilters}"
-                                        hrefClass="${1==page?'selected':''}"
+                                        hrefClass="${0==page?'selected':''}"
                                         />
                                 </li>
-                                <c:if test="${page>4}"><li>...</li></c:if>
+                                <c:if test="${page>3}"><li>...</li></c:if>
 
-                                    <%--In between pages--%>
-                                <c:forEach var="nPage" begin="${(page<5) ? 2 : (page-2)}" end="${(page>(numPages-4)) ? numPages-1 : (page+2)}">
+                                    <%-- In between pages --%>
+                                    <%--<c:forEach var="nPage" begin="${(page<5) ? 2 : (page-2)}" end="${(page>(numPages-4)) ? numPages-1 : (page+2)}">--%>
+                                <c:forEach var="nPage" begin="${(page<4) ? 2 : (page-1)}" end="${(page>(numPages-3)) ? numPages-1 : (page+3)}">
                                     <li><priderElement:hrefSearch
                                             label="${nPage}"
                                             q="${q}"
                                             show="${show}"
-                                            page="${nPage}"
+                                            page="${nPage-1}"
                                             sort="${sort}"
                                             order="${order}"
                                             titleFilters="${titleFilters}"
@@ -834,17 +837,17 @@
                                             experimentTypeFilters="${experimentTypeFilters}"
                                             projectTagFilters="${projectTagFilters}"
                                             submissionTypeFilters="${submissionTypeFilters}"
-                                            hrefClass="${nPage==page?'selected':''}"
+                                            hrefClass="${nPage-1==page?'selected':''}"
                                             />
                                     </li>
                                 </c:forEach>
-                                    <%-- Last   --%>
-                                <c:if test="${page<(numPages-4)}"><li>...</li></c:if>
+                                    <%-- Last --%>
+                                <c:if test="${page<(numPages-3)}"><li>...</li></c:if>
                                 <li><priderElement:hrefSearch
                                         label="${numPages}"
                                         q="${q}"
                                         show="${show}"
-                                        page="${numPages}"
+                                        page="${numPages-1}"
                                         sort="${sort}"
                                         order="${order}"
                                         titleFilters="${titleFilters}"
@@ -857,7 +860,7 @@
                                         experimentTypeFilters="${experimentTypeFilters}"
                                         projectTagFilters="${projectTagFilters}"
                                         submissionTypeFilters="${submissionTypeFilters}"
-                                        hrefClass="${numPages==page?'selected':''}"
+                                        hrefClass="${numPages-1==page?'selected':''}"
                                         />
                                 </li>
 

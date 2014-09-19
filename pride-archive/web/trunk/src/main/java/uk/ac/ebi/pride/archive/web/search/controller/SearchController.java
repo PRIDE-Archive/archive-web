@@ -53,7 +53,7 @@ public class SearchController {
     @RequestMapping(value = "simpleSearch", method = RequestMethod.GET)
     public String simpleSearchProjects(@RequestParam("q") String term,
                                        @RequestParam(value = "show", defaultValue = "10") int showResults,
-                                       @RequestParam(value = "page", defaultValue = "1") int page,
+                                       @RequestParam(value = "page", defaultValue = "0") int page,
                                        @RequestParam(value = "sort", defaultValue = "") String sortBy,
                                        @RequestParam(value = "order", defaultValue = DESCENDING_ORDER) String order,
 
@@ -226,7 +226,7 @@ public class SearchController {
         if (numResults > 0) {
             numPages = roundUp(numResults, showResults);
             page = (page > numPages) ? numPages : page;
-            int start = showResults * (page - 1);
+            int start = showResults * (page);
 
             projects = projectSearchService.searchProjects(queryTerm, queryFields, queryFilters, start, showResults, sortBy, order);
 
