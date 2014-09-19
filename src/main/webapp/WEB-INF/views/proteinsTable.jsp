@@ -157,8 +157,8 @@
     <%-- todo: add underline--%>
     <%-- todo: review the css layout, need to make the whole thing right align --%>
 
-    <div class="grid_5 push_19 omega">
-        <table:paginator page="${page}" q="${q}" ptmsFilters="${ptmsFilters}"/>
+    <div class="grid_20 push_4 omega">
+        <table:paginator2 page="${page}" q="${q}" ptmsFilters="${ptmsFilters}"/>
     </div>
 
     <div class="grid_24">
