@@ -225,7 +225,7 @@ public class SearchController {
 
         if (numResults > 0) {
             numPages = roundUp(numResults, showResults);
-            page = (page > numPages) ? numPages : page;
+            page = (page > numPages) ? numPages-1 : page;
             int start = showResults * (page);
 
             projects = projectSearchService.searchProjects(queryTerm, queryFields, queryFilters, start, showResults, sortBy, order);
