@@ -617,3 +617,11 @@ a.sortLink {
 .reactome-error {
     color: red;
 }
+
+.float_r {
+    float: right;
+}
+
+.float_l {
+    float: left;
+}
