@@ -97,56 +97,56 @@ public class SearchController {
         }
 
         // add instrument filter to list
-        ArrayList<String> instrumentFilterList = new ArrayList<String>();
+        HashSet<String> instrumentFilterList = new HashSet<String>();
         if (instrumentFilters != null && instrumentFilters.length > 0)
             instrumentFilterList.addAll(Arrays.asList(instrumentFilters));
         if (!"".equals(newInstrumentFilter))
             instrumentFilterList.add(newInstrumentFilter);
 
         // add ptm filter to list
-        ArrayList<String> ptmsFilterList = new ArrayList<String>();
+        HashSet<String> ptmsFilterList = new HashSet<String>();
         if (ptmsFilters != null && ptmsFilters.length > 0)
             ptmsFilterList.addAll(Arrays.asList(ptmsFilters));
         if (!"".equals(newPtmsFilter))
             ptmsFilterList.add(newPtmsFilter);
 
         // add species filter to list
-        ArrayList<String> speciesFilterList = new ArrayList<String>();
+        HashSet<String> speciesFilterList = new HashSet<String>();
         if (speciesFilters != null && speciesFilters.length > 0)
             speciesFilterList.addAll(Arrays.asList(speciesFilters));
         if (!"".equals(newSpeciesFilter))
             speciesFilterList.add(newSpeciesFilter);
 
         // add tissue filter to list
-        ArrayList<String> tissueFilterList = new ArrayList<String>();
+        HashSet<String> tissueFilterList = new HashSet<String>();
         if (tissueFilters != null && tissueFilters.length > 0)
             tissueFilterList.addAll(Arrays.asList(tissueFilters));
         if (!"".equals(newTissueFilter))
             tissueFilterList.add(newTissueFilter);
 
         // add disease filter to list
-        ArrayList<String> diseaseFilterList = new ArrayList<String>();
+        HashSet<String> diseaseFilterList = new HashSet<String>();
         if (diseaseFilters != null && diseaseFilters.length > 0)
             diseaseFilterList.addAll(Arrays.asList(diseaseFilters));
         if (!"".equals(newDiseaseFilter))
             diseaseFilterList.add(newDiseaseFilter);
 
         // add title filter to list
-        ArrayList<String> titleFilterList = new ArrayList<String>();
+        HashSet<String> titleFilterList = new HashSet<String>();
         if (titleFilters != null && titleFilters.length > 0)
             titleFilterList.addAll(Arrays.asList(titleFilters));
         if (!"".equals(newTitleFilter))
             titleFilterList.add(newTitleFilter);
 
         // add quantification filter to list
-        ArrayList<String> quantificationFilterList = new ArrayList<String>();
+        HashSet<String> quantificationFilterList = new HashSet<String>();
         if (quantificationFilters != null && quantificationFilters.length > 0)
             quantificationFilterList.addAll(Arrays.asList(quantificationFilters));
         if (!"".equals(newQuantificationFilter))
             quantificationFilterList.add(newQuantificationFilter);
 
         // add experiment type filter to list
-        ArrayList<String> experimentTypeFilterList = new ArrayList<String>();
+        HashSet<String> experimentTypeFilterList = new HashSet<String>();
         if (experimentTypeFilters != null && experimentTypeFilters.length > 0)
             experimentTypeFilterList.addAll(Arrays.asList(experimentTypeFilters));
         if (!"".equals(newExperimentTypeFilter))
@@ -154,14 +154,14 @@ public class SearchController {
 
 
         // add project tags filter to list
-        ArrayList<String> projectTagFilterList = new ArrayList<String>();
+        HashSet<String> projectTagFilterList = new HashSet<String>();
         if (projectTagFilters != null && projectTagFilters.length > 0)
             projectTagFilterList.addAll(Arrays.asList(projectTagFilters));
         if (!"".equals(newProjectTagFilter))
             projectTagFilterList.add(newProjectTagFilter);
 
         // add project tags filter to list
-        ArrayList<String> submissionTypeFilterList = new ArrayList<String>();
+        HashSet<String> submissionTypeFilterList = new HashSet<String>();
         if (submissionTypeFilters != null && submissionTypeFilters.length > 0)
             submissionTypeFilterList.addAll(Arrays.asList(submissionTypeFilters));
         if (!"".equals(newSubmissionTypeFilter))
@@ -177,16 +177,16 @@ public class SearchController {
 
 
     private void searchForProjects(Model model, String term, int showResults, int page, String sortBy, String order,
-                                   ArrayList<String> ptmsFilterList,
-                                   ArrayList<String> speciesFilterList,
-                                   ArrayList<String> tissueFilterList,
-                                   ArrayList<String> diseaseFilterList,
-                                   ArrayList<String> titleFilterList,
-                                   ArrayList<String> instrumentFilterList,
-                                   ArrayList<String> quantificationFilterList,
-                                   ArrayList<String> experimentTypeFilterList,
-                                   ArrayList<String> projectTagFilterList,
-                                   ArrayList<String> submissionTypeFilterList) {
+                                   Iterable<String> ptmsFilterList,
+                                   Iterable<String> speciesFilterList,
+                                   Iterable<String> tissueFilterList,
+                                   Iterable<String> diseaseFilterList,
+                                   Iterable<String> titleFilterList,
+                                   Iterable<String> instrumentFilterList,
+                                   Iterable<String> quantificationFilterList,
+                                   Iterable<String> experimentTypeFilterList,
+                                   Iterable<String> projectTagFilterList,
+                                   Iterable<String> submissionTypeFilterList) {
         Collection<ProjectSearchSummary> projects = null;
 
         //We remove the reserved words in solr first and later we remove more than one double spaces,

@@ -3,6 +3,7 @@ package uk.ac.ebi.pride.archive.web.search;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Jose A. Dianes
@@ -61,16 +62,16 @@ public class SolrQueryBuilder {
             return "(id:PRD* id:PXD*^"+PX_RELEVANCE + ") AND (" + term +")"; // PX submissions are more relevant
     }
 
-    public static String[] buildQueryFilters(List<String> ptmsFilterList,
-                                             List<String> speciesFilterList,
-                                             List<String> tissueFilterList,
-                                             List<String> diseaseFilterList,
-                                             List<String> titleFilterList,
-                                             List<String> instrumentFilterList,
-                                             List<String> quantificationFilterList,
-                                             List<String> experimentTypeFilterList,
-                                             List<String> projectTagFilterList,
-                                             List<String> submissionTypeFilterList) {
+    public static String[] buildQueryFilters(Iterable<String> ptmsFilterList,
+                                             Iterable<String> speciesFilterList,
+                                             Iterable<String> tissueFilterList,
+                                             Iterable<String> diseaseFilterList,
+                                             Iterable<String> titleFilterList,
+                                             Iterable<String> instrumentFilterList,
+                                             Iterable<String> quantificationFilterList,
+                                             Iterable<String> experimentTypeFilterList,
+                                             Iterable<String> projectTagFilterList,
+                                             Iterable<String> submissionTypeFilterList) {
 
         LinkedList<String> queryFilterList = new LinkedList<String>();
 
