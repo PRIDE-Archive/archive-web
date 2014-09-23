@@ -404,9 +404,7 @@
                 </tbody>
         </table>
         <%--pagination--%>
-        <div class="grid_5 push_19 omega">
-            <table:paginator page="${page}" q="${q}" ptmsFilters="${ptmsFilters}"/>
-        </div>
+        <table:paginator2 page="${page}" q="${q}" ptmsFilters="${ptmsFilters}"/>
     </div> <%--grid_19--%>
 </div> <%--grid_24--%>
 
