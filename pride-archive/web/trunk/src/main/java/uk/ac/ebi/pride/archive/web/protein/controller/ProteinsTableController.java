@@ -55,7 +55,7 @@ public class ProteinsTableController {
     @RequestMapping(value = "/projects/{projectAccession}/assays/{assayAccession}/proteins", method = RequestMethod.GET)
     public ModelAndView getProjectAssayProteins(@PathVariable String assayAccession,
                                                 @PathVariable String projectAccession,
-                                                @PageableDefault(page = 0, value = 50) Pageable page,
+                                                @PageableDefault(page = 0, value = 10) Pageable page,
                                                 @RequestParam(value = "q", required = false) String query,
                                                 @RequestParam(value = "newPtmsFilter", required = false) String newPtmsFilter,
                                                 @RequestParam(value = "ptmsFilters", required = false) List<String> ptmsFilters) {
@@ -89,7 +89,7 @@ public class ProteinsTableController {
 
     @RequestMapping(value = "/assays/{assayAccession}/proteins", method = RequestMethod.GET)
     public ModelAndView getAssayProteins(@PathVariable String assayAccession,
-                                         @PageableDefault(page = 0, value = 30) Pageable page,
+                                         @PageableDefault(page = 0, value = 10) Pageable page,
                                          @RequestParam(value = "q", required = false) String query,
                                          @RequestParam(value = "newPtmsFilter", defaultValue = "") String newPtmsFilter,
                                          @RequestParam(value = "ptmsFilters", defaultValue = "") List<String> ptmsFilters) {
@@ -100,7 +100,7 @@ public class ProteinsTableController {
 
     @RequestMapping(value = "/projects/{projectAccession}/proteins", method = RequestMethod.GET)
     public ModelAndView getProjectProteins(@PathVariable String projectAccession,
-                                           @PageableDefault(page = 0, value = 30) Pageable page,
+                                           @PageableDefault(page = 0, value = 10) Pageable page,
                                            @RequestParam(value = "q", required = false) String query,
                                            @RequestParam(value = "newPtmsFilter", required = false) String newPtmsFilter,
                                            @RequestParam(value = "ptmsFilters", required = false) List<String> ptmsFilters) {

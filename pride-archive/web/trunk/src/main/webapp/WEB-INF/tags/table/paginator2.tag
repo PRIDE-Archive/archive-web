@@ -46,25 +46,27 @@
 
     <c:if test="${page.number<(page.totalPages-3)}">...</c:if>
 
-    <spring:url value="" var="last">
-        <spring:param name="page" value="${page.totalPages-1}"/>
-        <spring:param name="size" value="${page.size}"/>
-        <spring:param name="q" value="${q}"/>
+    <c:if test="${page.totalPages > 1}">
+        <spring:url value="" var="last">
+            <spring:param name="page" value="${page.totalPages-1}"/>
+            <spring:param name="size" value="${page.size}"/>
+            <spring:param name="q" value="${q}"/>
 
-        <c:forEach var="sortOrder" items="${fn:split(page.sort,',')}">
-            <spring:param name="sort" value="${sortOrder}"/>
-        </c:forEach>
+            <c:forEach var="sortOrder" items="${fn:split(page.sort,',')}">
+                <spring:param name="sort" value="${sortOrder}"/>
+            </c:forEach>
 
-        <c:forEach var="theFilter" items="${ptmsFilters}">
-            <spring:param name="ptmsFilters" value="${theFilter}"/>
-        </c:forEach>
-    </spring:url>
-    <a href="${last}" class="${page.totalPages-1==page.number?'selected':''}">${page.totalPages}</a>
+            <c:forEach var="theFilter" items="${ptmsFilters}">
+                <spring:param name="ptmsFilters" value="${theFilter}"/>
+            </c:forEach>
+        </spring:url>
+        <a href="${last}" class="${page.totalPages-1==page.number?'selected':''}">${page.totalPages}</a>
+    </c:if>
 </span>
 
 <span class="float_r">
-    <fmt:message key="search.show.entries"/>
     <c:if test="${page.totalElements>10}">
+        <fmt:message key="search.show.entries"/>
         <spring:url value="" var="ten">
             <spring:param name="page" value="0"/>
             <spring:param name="size" value="10"/>
