@@ -5,6 +5,7 @@ import org.springframework.social.twitter.api.Tweet;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
+import uk.ac.ebi.pride.archive.dataprovider.file.ProjectFileSource;
 import uk.ac.ebi.pride.archive.dataprovider.file.ProjectFileType;
 import uk.ac.ebi.pride.archive.repo.assay.service.AssaySummary;
 import uk.ac.ebi.pride.archive.repo.file.service.FileSummary;
@@ -105,25 +106,7 @@ public class PageMaker {
 
         modelAndView.addObject("projectSummary", projectSummary);
         // now we split the file list into types and sort them by file name
-        HashMap<String, List<FileSummary>> fileSummaries = new HashMap<String, List<FileSummary>>();
-        for (ProjectFileType theType: ProjectFileType.values())
-            fileSummaries.put(theType.name(), new LinkedList<FileSummary>());
-        for (FileSummary theFileSummary: fileList)
-                fileSummaries.get(theFileSummary.getFileType().name()).add(theFileSummary);
-        for (ProjectFileType theType: ProjectFileType.values()) {
-            Collections.sort(fileSummaries.get(theType.name()),
-                    new Comparator() {
-                        public int compare(Object o1, Object o2) {
-                            return ((Comparable) ((FileSummary) (o1)).getFileName())
-                                    .compareTo(((FileSummary) (o2)).getFileName());
-                        }
-                    }
-            );
-            modelAndView.addObject("fileSummaries" + theType.name(), fileSummaries.get(theType.name()));
-        }
-
-
-//        modelAndView.addObject("fileSummaries", fileList);
+        buildFileSummaries(modelAndView, fileList);
 
         modelAndView.setViewName("projectFileDownload");
 
@@ -142,27 +125,58 @@ public class PageMaker {
 
         modelAndView.addObject("assayAccession", assayAccession);
         // now we split the file list into types and sort them by file name
-        HashMap<String, List<FileSummary>> fileSummaries = new HashMap<String, List<FileSummary>>();
-        for (ProjectFileType theType: ProjectFileType.values())
-            fileSummaries.put(theType.name(), new LinkedList<FileSummary>());
-        for (FileSummary theFileSummary: fileList)
-            fileSummaries.get(theFileSummary.getFileType().name()).add(theFileSummary);
+        buildFileSummaries(modelAndView, fileList);
+
+        modelAndView.setViewName("assayFileDownload");
+
+        return modelAndView;
+    }
+
+    private void buildFileSummaries(ModelAndView modelAndView, Collection<FileSummary> fileList){
+
+        // now we split the file list into types and sort them by file name
+        HashMap<String, List<FileSummary>> fileSummariesByType = new HashMap<String, List<FileSummary>>();
+        HashMap<String, List<FileSummary>> fileSummariesBySource = new HashMap<String, List<FileSummary>>();
+
         for (ProjectFileType theType: ProjectFileType.values()) {
-            Collections.sort(fileSummaries.get(theType.name()),
+            fileSummariesByType.put(theType.name(), new LinkedList<FileSummary>());
+        }
+
+        for (ProjectFileType theType: ProjectFileType.values()) {
+            fileSummariesBySource.put(theType.name(), new LinkedList<FileSummary>());
+        }
+
+        for (FileSummary theFileSummary: fileList){
+            if(!theFileSummary.getFileSource().equals(ProjectFileSource.GENERATED)){
+                fileSummariesByType.get(theFileSummary.getFileType().name()).add(theFileSummary);
+            } else {
+                fileSummariesBySource.get(theFileSummary.getFileType().name()).add(theFileSummary);
+            }
+        }
+
+        for (ProjectFileType theType: ProjectFileType.values()) {
+            Collections.sort(fileSummariesByType.get(theType.name()),
                     new Comparator() {
                         public int compare(Object o1, Object o2) {
                             return ((Comparable) ((FileSummary) (o1)).getFileName())
                                     .compareTo(((FileSummary) (o2)).getFileName());
                         }
                     }
-                    );
-            modelAndView.addObject("fileSummaries" + theType.name(), fileSummaries.get(theType.name()));
+            );
+            modelAndView.addObject("fileSummaries" + theType.name(), fileSummariesByType.get(theType.name()));
         }
 
-
-        modelAndView.setViewName("assayFileDownload");
-
-        return modelAndView;
+        for (ProjectFileType theType : ProjectFileType.values()) {
+            Collections.sort(fileSummariesBySource.get(theType.name()),
+                    new Comparator() {
+                        public int compare(Object o1, Object o2) {
+                            return ((Comparable) ((FileSummary) (o1)).getFileName())
+                                    .compareTo(((FileSummary) (o2)).getFileName());
+                        }
+                    }
+            );
+            modelAndView.addObject("fileGeneratedSummaries" + theType.name(), fileSummariesBySource.get(theType.name()));
+        }
     }
 
     public ModelAndView createErrorPage(String errorTitle, String errorMessage) {

@@ -56,7 +56,7 @@ public class PsmsTableController {
     @RequestMapping(value = "/projects/{projectAccession}/assays/{assayAccession}/psms", method = RequestMethod.GET)
     public ModelAndView getProjectAssayPsms(@PathVariable String assayAccession,
                                             @PathVariable String projectAccession,
-                                            @PageableDefault(page = 0, value = 50) Pageable page,
+                                            @PageableDefault(page = 0, value = 10) Pageable page,
                                             @RequestParam(value = "q", required = false) String query,
                                             @RequestParam(value = "newPtmsFilter", required = false) String newPtmsFilter,
                                             @RequestParam(value = "ptmsFilters", required = false) List<String> ptmsFilters) {
@@ -80,7 +80,7 @@ public class PsmsTableController {
         //The query is escaped
         String filteredQuery = query;
         if(filteredQuery  != null && !filteredQuery.isEmpty()){
-            filteredQuery = SearchUtils.escapeQueryCharsExceptStartAndQuestionMark(query);
+            filteredQuery = SearchUtils.escapeQueryCharsExceptStartQuestionMarkWhitespace(query);
         }
 
         PageWrapper<Psm> psmPage = psmSearchService.findByAssayAccessionHighlightsOnModificationNames(assayAccession, filteredQuery, ptmsFilters, page);
@@ -92,7 +92,7 @@ public class PsmsTableController {
 
     @RequestMapping(value = "/assays/{assayAccession}/psms", method = RequestMethod.GET)
     public ModelAndView getAssayPsms(@PathVariable String assayAccession,
-                                     @PageableDefault(page = 0, value = 30) Pageable page,
+                                     @PageableDefault(page = 0, value = 10) Pageable page,
                                      @RequestParam(value = "q", required = false) String query,
                                      @RequestParam(value = "newPtmsFilter", defaultValue = "") String newPtmsFilter,
                                      @RequestParam(value = "ptmsFilters", defaultValue = "") List<String> ptmsFilters) {
@@ -103,7 +103,7 @@ public class PsmsTableController {
 
     @RequestMapping(value = "/projects/{projectAccession}/psms", method = RequestMethod.GET)
     public ModelAndView getProjectPsms(@PathVariable String projectAccession,
-                                       @PageableDefault(page = 0, value = 30) Pageable page,
+                                       @PageableDefault(page = 0, value = 10) Pageable page,
                                        @RequestParam(value = "q", required = false) String query,
                                        @RequestParam(value = "newPtmsFilter", required = false) String newPtmsFilter,
                                        @RequestParam(value = "ptmsFilters", required = false) List<String> ptmsFilters) {
@@ -126,7 +126,7 @@ public class PsmsTableController {
         //The query is escaped
         String filteredQuery = query;
         if(filteredQuery  != null && !filteredQuery.isEmpty()){
-            filteredQuery = SearchUtils.escapeQueryCharsExceptStartAndQuestionMark(query);
+            filteredQuery = SearchUtils.escapeQueryCharsExceptStartQuestionMarkWhitespace(query);
         }
 
         PageWrapper<Psm> psmPage = psmSearchService.findByProjectAccessionHighlightsOnModificationNames(projectAccession, filteredQuery, ptmsFilters, page);

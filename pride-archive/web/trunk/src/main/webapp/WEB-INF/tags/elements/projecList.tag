@@ -52,10 +52,9 @@
                         <spring:param name="accession" value="${project.projectAccession}"/>
                         <spring:param name="term" value="${q}"/>
                     </spring:url>
-
-                    <a href="${projectProteinsUrl}">${theProteinIdentificationHighlight}</a>
-
+                    ${theProteinIdentificationHighlight}
                 </c:forEach>
+                <a href="${projectProteinsUrl}">(More)</a>
                 <br>
             </c:if>
         </div>
@@ -149,9 +148,7 @@
                     <spring:url var="showUrl" value="/projects/{projectAccession}">
                         <spring:param name="projectAccession" value="${project.projectAccession}"/>
                     </spring:url>
-                    <a href="${showUrl}">
-                        (More)
-                    </a>
+                    <a href="${showUrl}">(More)</a>
                     <br>
                 </c:when>
                 <c:otherwise>
@@ -162,9 +159,7 @@
                         <spring:url var="showUrl" value="/projects/{projectAccession}">
                             <spring:param name="projectAccession" value="${project.projectAccession}"/>
                         </spring:url>
-                        <a href="${showUrl}">
-                            (More)
-                        </a>
+                        <a href="${showUrl}">(More)</a>
                         </c:when>
                         <c:otherwise>
                             Not available

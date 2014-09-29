@@ -28,7 +28,6 @@
     display: none;
 }
 
-
 .search-hit {
     background-color: #FFFF00;
 }
@@ -625,3 +624,30 @@ a.sortLink {
 .float_l {
     float: left;
 }
+
+img.table_icon  {
+    height: 16px;
+    border: 3px solid lightgrey;
+    border-radius: 5px;
+    text-decoration: none;
+    margin: 0;
+
+}
+
+img.table_icon_hl {
+    height: 16px;
+    border: 3px solid yellow;
+    border-radius: 5px;
+    text-decoration: none;
+    margin: 0;
+
+}
+td a.no_visual_link {
+    border-bottom-color: transparent;
+}
+
+.modified_aa {
+    font-weight: bold;
+    color: #ff5d5f;
+}
+

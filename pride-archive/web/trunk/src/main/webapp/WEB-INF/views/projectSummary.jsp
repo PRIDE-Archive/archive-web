@@ -221,6 +221,13 @@
         <fmt:formatDate value="${projectSummary.submissionDate}" pattern="dd/MM/yyyy"/>
     </p>
 
+    <%-- publication date --%>
+    <h5><fmt:message key="publication.date"/></h5>
+
+    <p>
+        <fmt:formatDate value="${projectSummary.publicationDate}" pattern="dd/MM/yyyy"/>
+    </p>
+
 </div>
 
 <div class="grid_7 right-column">
