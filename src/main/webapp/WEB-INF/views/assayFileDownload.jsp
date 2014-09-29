@@ -79,9 +79,9 @@
         <priderElement:fileListTable fileList="${fileSummariesSEARCH}" projectSummary="${projectSummary}" />
     </c:if>
 
-    <c:if test="${not empty fileSummariesQUANTIFICATION}">
-        <h5>${fn:length(fileSummariesQUANTIFICATION)} <fmt:message key="file.quantification.files"/></h5>
-        <priderElement:fileListTable fileList="${fileSummariesQUANTIFICATION}" projectSummary="${projectSummary}" />
+    <c:if test="${not empty fileSummariesQUANT}">
+        <h5>${fn:length(fileSummariesQUANT)} <fmt:message key="file.quantification.files"/></h5>
+        <priderElement:fileListTable fileList="${fileSummariesQUANT}" projectSummary="${projectSummary}" />
     </c:if>
 
     <c:if test="${not empty fileSummariesGEL}">
@@ -89,11 +89,70 @@
         <priderElement:fileListTable fileList="${fileSummariesGEL}" projectSummary="${projectSummary}" />
     </c:if>
 
+    <c:if test="${not empty fileSummariesMS_IMAGE_DATA}">
+        <h5>${fn:length(fileSummariesMS_IMAGE_DATA)} <fmt:message key="file.ms.image.files"/></h5>
+        <priderElement:fileListTable fileList="${fileSummariesMS_IMAGE_DATA}" projectSummary="${projectSummary}" />
+    </c:if>
+
+    <c:if test="${not empty fileSummariesOPTICAL_IMAGE}">
+        <h5>${fn:length(fileSummariesOPTICAL_IMAGE)} <fmt:message key="file.optical.image.files"/></h5>
+        <priderElement:fileListTable fileList="${fileSummariesOPTICAL_IMAGE}" projectSummary="${projectSummary}" />
+    </c:if>
+
     <c:if test="${not empty fileSummariesOTHER}">
         <h5>${fn:length(fileSummariesOTHER)} <fmt:message key="file.other.files"/></h5>
         <priderElement:fileListTable fileList="${fileSummariesOTHER}" projectSummary="${projectSummary}" />
     </c:if>
 
+</div>
+
+<div class="grid_23 clearfix file-list">
+    <h4><fmt:message key="file.generated.files"/></h4>
+
+    <c:if test="${not empty fileGeneratedSummariesRESULT}">
+        <h5>${fn:length(fileGeneratedSummariesRESULT)} <fmt:message key="file.result.files"/></h5>
+        <priderElement:fileListTable fileList="${fileGeneratedSummariesRESULT}" projectSummary="${projectSummary}" />
+    </c:if>
+
+    <c:if test="${not empty fileGeneratedSummariesRAW}">
+        <h5>${fn:length(fileGeneratedSummariesRAW)} <fmt:message key="file.raw.files"/></h5>
+        <priderElement:fileListTable fileList="${fileGeneratedSummariesRAW}" projectSummary="${projectSummary}" />
+    </c:if>
+
+    <c:if test="${not empty fileGeneratedSummariesPEAK}">
+        <h5>${fn:length(fileGeneratedSummariesPEAK)} <fmt:message key="file.peak.files"/></h5>
+        <priderElement:fileListTable fileList="${fileGeneratedSummariesPEAK}" projectSummary="${projectSummary}" />
+    </c:if>
+
+    <c:if test="${not empty fileGeneratedSummariesSEARCH}">
+        <h5>${fn:length(fileGeneratedSummariesSEARCH)} <fmt:message key="file.search.files"/></h5>
+        <priderElement:fileListTable fileList="${fileGeneratedSummariesSEARCH}" projectSummary="${projectSummary}" />
+    </c:if>
+
+    <c:if test="${not empty fileGeneratedSummariesQUANT}">
+        <h5>${fn:length(fileGeneratedSummariesQUANT)} <fmt:message key="file.quantification.files"/></h5>
+        <priderElement:fileListTable fileList="${fileGeneratedSummariesQUANT}" projectSummary="${projectSummary}" />
+    </c:if>
+
+    <c:if test="${not empty fileGeneratedSummariesGEL}">
+        <h5>${fn:length(fileGeneratedSummariesGEL)} <fmt:message key="file.gel.files"/></h5>
+        <priderElement:fileListTable fileList="${fileGeneratedSummariesGEL}" projectSummary="${projectSummary}" />
+    </c:if>
+
+    <c:if test="${not empty fileGeneratedSummariesMS_IMAGE_DATA}">
+        <h5>${fn:length(fileGeneratedSummariesMS_IMAGE_DATA)} <fmt:message key="file.ms.image.files"/></h5>
+        <priderElement:fileListTable fileList="${fileGeneratedSummariesMS_IMAGE_DATA}" projectSummary="${projectSummary}" />
+    </c:if>
+
+    <c:if test="${not empty fileGeneratedSummariesOPTICAL_IMAGE}">
+        <h5>${fn:length(fileGeneratedSummariesOPTICAL_IMAGE)} <fmt:message key="file.optical.image.files"/></h5>
+        <priderElement:fileListTable fileList="${fileGeneratedSummariesOPTICAL_IMAGE}" projectSummary="${projectSummary}" />
+    </c:if>
+
+    <c:if test="${not empty fileGeneratedSummariesOTHER}">
+        <h5>${fn:length(fileGeneratedSummariesOTHER)} <fmt:message key="file.other.files"/></h5>
+        <priderElement:fileListTable fileList="${fileGeneratedSummariesOTHER}" projectSummary="${projectSummary}" />
+    </c:if>
 </div>
 
 <spring:url var="prideInspectorUrl" value="/assays/{accession}/jnlp">

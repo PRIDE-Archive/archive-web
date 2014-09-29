@@ -141,6 +141,9 @@
                 "url": "${deploy.url}resources/javascript/footable/footable.js"
             },
             {
+                "url": "${deploy.url}resources/javascript/footable/footable.striping.js"
+            },
+            {
                 "url": "${deploy.url}resources/javascript/reactome-analysis.js"
             }
         ],

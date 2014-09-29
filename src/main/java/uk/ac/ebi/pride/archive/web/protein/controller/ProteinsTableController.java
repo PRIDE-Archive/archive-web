@@ -78,7 +78,7 @@ public class ProteinsTableController {
         //The query is escaped
         String filteredQuery = query;
         if(filteredQuery  != null && !filteredQuery.isEmpty()){
-//            filteredQuery = ClientUtils.escapeQueryChars(query);
+            filteredQuery = SearchUtils.escapeQueryCharsExceptStartQuestionMarkWhitespace(query);
         }
 
         PageWrapper<ProteinIdentification> proteinPage = proteinIdentificationSearchService.findByAssayAccessionHighlightsOnModificationNames(assayAccession, filteredQuery, ptmsFilters, page);
@@ -122,7 +122,7 @@ public class ProteinsTableController {
 
         String filteredQuery = query;
         if(filteredQuery  != null && !filteredQuery.isEmpty()){
-            filteredQuery = SearchUtils.escapeQueryCharsExceptStartAndQuestionMark(query);
+            filteredQuery = SearchUtils.escapeQueryCharsExceptStartQuestionMarkWhitespace(query);
         }
 
         PageWrapper<ProteinIdentification> proteinPage =  proteinIdentificationSearchService.findByProjectAccessionHighlightsOnModificationNames(projectAccession, filteredQuery, ptmsFilters, page);

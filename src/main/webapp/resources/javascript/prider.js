@@ -1,4 +1,4 @@
-    (function( $ ) {
+(function( $ ) {
     $.widget( "custom.combobox", {
         _create: function() {
             this.wrapper = $( "<span>" )
@@ -171,3 +171,5 @@ $(document).ready(function() {
 
 
 });
+
+$( document ).tooltip()

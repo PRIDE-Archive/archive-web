@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import uk.ac.ebi.pride.archive.search.service.ProjectSearchService;
 import uk.ac.ebi.pride.archive.search.service.ProjectSearchSummary;
-import uk.ac.ebi.pride.archive.search.service.dao.solr.ProjectSearchDaoSolr;
 import uk.ac.ebi.pride.archive.security.protein.ProteinIdentificationSecureSearchService;
-import uk.ac.ebi.pride.archive.web.search.SearchFields;
 import uk.ac.ebi.pride.archive.web.search.SolrQueryBuilder;
 import uk.ac.ebi.pride.archive.web.util.SearchUtils;
 import uk.ac.ebi.pride.proteinidentificationindex.search.model.ProteinIdentification;
@@ -20,6 +18,10 @@ import uk.ac.ebi.pride.psmindex.search.service.PsmSearchService;
 import java.util.*;
 
 import static org.hibernate.internal.util.collections.ArrayHelper.toList;
+import static uk.ac.ebi.pride.archive.search.service.dao.solr.ProjectSearchDaoSolr.HIGHLIGHT_POST_FRAGMENT;
+import static uk.ac.ebi.pride.archive.search.service.dao.solr.ProjectSearchDaoSolr.HIGHLIGHT_PRE_FRAGMENT;
+import static uk.ac.ebi.pride.archive.web.search.SearchFields.PEPTIDE_SEQUENCES;
+import static uk.ac.ebi.pride.archive.web.search.SearchFields.PROTEIN_IDENTIFICATIONS;
 
 /**
  * @author Jose A. Dianes
@@ -298,78 +300,21 @@ public class SearchController {
 
                         for (String termToken : termTokens) {
                             //We need escape every token to avoid syntax problems
-                            termToken = SearchUtils.escapeQueryCharsExceptStartAndQuestionMark(termToken);
+                            termToken = SearchUtils.escapeQueryCharsExceptStartQuestionMarkWhitespace(termToken);
                             // get protein identifications for this project and possibly the search term
                             List<ProteinIdentification> proteinIdentifications =
                                     proteinIdentificationSearchService.findByProjectAccessionAndAnyMapping(
                                             projectSearchSummary.getProjectAccession(), termToken);
 
-                            Map<String, Long> countAccessions = new TreeMap<String, Long>();
-                            for (ProteinIdentification proteinIdentification : proteinIdentifications) {
-
-                                Long count = countAccessions.get(proteinIdentification.getAccession());
-                                if(count == null)
-                                    count = 1L;
-                                else
-                                    count++;
-                                countAccessions.put(proteinIdentification.getAccession(), count);
-
-                                if (proteinIdentification.getUniprotMapping() != null && !proteinIdentification.getUniprotMapping().isEmpty()) {
-                                    if (starMatch(proteinIdentification.getUniprotMapping(), termToken) && !starMatch(proteinIdentification.getAccession(), termToken)) {
-                                        count = countAccessions.get(proteinIdentification.getEnsemblMapping());
-                                        if (count == null)
-                                            count = 1L;
-                                        else
-                                            count++;
-                                        countAccessions.put(proteinIdentification.getUniprotMapping(), count);
-                                    }
-                                }
-
-                                if (proteinIdentification.getEnsemblMapping() != null && !proteinIdentification.getEnsemblMapping().isEmpty()) {
-                                    if (starMatch(proteinIdentification.getEnsemblMapping(), termToken) && !starMatch(proteinIdentification.getAccession(), termToken)) {
-                                        count = countAccessions.get(proteinIdentification.getUniprotMapping());
-                                        if (count == null)
-                                            count = 1L;
-                                        else
-                                            count++;
-                                        countAccessions.put(proteinIdentification.getEnsemblMapping(), count);
-                                    }
-                                }
-
-                                for ( String proteinIdentificationMapping : proteinIdentification.getOtherMappings() ) {
-                                    if ( starMatch(proteinIdentificationMapping, termToken) && !starMatch(proteinIdentification.getAccession(), termToken) ) {
-                                        count = countAccessions.get(proteinIdentificationMapping);
-                                        if(count == null)
-                                            count = 1L;
-                                        else
-                                            count++;
-                                        countAccessions.put(proteinIdentificationMapping, count);
-                                    }
-                                }
-                            }
-
-                            int numHighlightsAdded = 0;
-                            Iterator<Map.Entry<String, Long>> it = countAccessions.entrySet().iterator();
-                            while (it.hasNext() && numHighlightsAdded < MAX_PROTEIN_IDENTIFICATION_HIGHLIGHTS) {
-                                Map.Entry<String, Long> entry = it.next();
-                                // add the highlight
+                            if(proteinIdentifications!= null && proteinIdentifications.size() > 0) {
+                                int count = proteinIdentifications.size();
 
                                 // initialize the highlights for the field if needed (most likely)
-                                if (projectSearchSummary.getHighlights().get(SearchFields.PROTEIN_IDENTIFICATIONS.getIndexName()) == null) {
-                                    projectSearchSummary.getHighlights().put(
-                                            SearchFields.PROTEIN_IDENTIFICATIONS.getIndexName(), new LinkedList<String>()
-                                    );
+                                if (projectSearchSummary.getHighlights().get(PROTEIN_IDENTIFICATIONS.getIndexName()) == null) {
+                                    projectSearchSummary.getHighlights().put(PROTEIN_IDENTIFICATIONS.getIndexName(), new LinkedList<String>());
                                 }
-                                projectSearchSummary.getHighlights().get(SearchFields.PROTEIN_IDENTIFICATIONS.getIndexName()).add(
-                                        ProjectSearchDaoSolr.HIGHLIGHT_PRE_FRAGMENT + entry.getKey() + " (" + entry.getValue() + ")"+ ProjectSearchDaoSolr.HIGHLIGHT_POST_FRAGMENT
-                                );
-
-                                numHighlightsAdded++;
-                            }
-                            if (numHighlightsAdded > 0 && numHighlightsAdded < proteinIdentifications.size()) {
-                                // add the (More) bit
-                                projectSearchSummary.getHighlights().get(SearchFields.PROTEIN_IDENTIFICATIONS.getIndexName()).add(
-                                        MORE_TEXT
+                                projectSearchSummary.getHighlights().get(PROTEIN_IDENTIFICATIONS.getIndexName()).add(
+                                        HIGHLIGHT_PRE_FRAGMENT + termToken + " (" + count + ")" + HIGHLIGHT_POST_FRAGMENT
                                 );
                             }
                         }
@@ -391,7 +336,7 @@ public class SearchController {
                         for (String termToken : termTokens) {
 
                             //We need escape every token to avoid syntax problems
-                            termToken = SearchUtils.escapeQueryCharsExceptStartAndQuestionMark(termToken);
+                            termToken = SearchUtils.escapeQueryCharsExceptStartQuestionMarkWhitespace(termToken);
 
                             // We avoid queries with less than 4 amino acids and more that 100 and with letters that
                             // don't represent amino acids except the star.
@@ -419,23 +364,21 @@ public class SearchController {
                                     while (it.hasNext() && numHighlightsAdded < MAX_PEPTIDE_SEQUENCE_HIGHLIGHTS) {
                                         String sequence = it.next();
                                         // initialize the highlights for the field if needed (most likely)
-                                        if (projectSearchSummary.getHighlights().get(SearchFields.PEPTIDE_SEQUENCES.getIndexName()) == null) {
-                                            projectSearchSummary.getHighlights().put(
-                                                    SearchFields.PEPTIDE_SEQUENCES.getIndexName(), new LinkedList<String>()
-                                            );
+                                        if (projectSearchSummary.getHighlights().get(PEPTIDE_SEQUENCES.getIndexName()) == null) {
+                                            projectSearchSummary.getHighlights().put(PEPTIDE_SEQUENCES.getIndexName(), new LinkedList<String>());
                                         }
 
-                                        String pepHighlight = ProjectSearchDaoSolr.HIGHLIGHT_PRE_FRAGMENT + sequence + ProjectSearchDaoSolr.HIGHLIGHT_POST_FRAGMENT;
+                                        String pepHighlight = HIGHLIGHT_PRE_FRAGMENT + sequence + HIGHLIGHT_POST_FRAGMENT;
                                         //the peptide sequences is not added before becasue we remove the repetitions before
-                                        projectSearchSummary.getHighlights().get(SearchFields.PEPTIDE_SEQUENCES.getIndexName()).add(pepHighlight);
+                                        projectSearchSummary.getHighlights().get(PEPTIDE_SEQUENCES.getIndexName()).add(pepHighlight);
                                         numHighlightsAdded++;
 
                                     }
 
                                     if (numHighlightsAdded > 0 && numHighlightsAdded < peptideSequences.size()) {
                                         // add the (More) bit
-                                        projectSearchSummary.getHighlights().get(SearchFields.PEPTIDE_SEQUENCES.getIndexName()).add(
-                                                String.format(MORE_WITH_NUMBER_TEXT,peptideSequences.size() - MAX_PEPTIDE_SEQUENCE_HIGHLIGHTS)
+                                        projectSearchSummary.getHighlights().get(PEPTIDE_SEQUENCES.getIndexName()).add(
+                                                String.format(MORE_WITH_NUMBER_TEXT, peptideSequences.size() - MAX_PEPTIDE_SEQUENCE_HIGHLIGHTS)
                                         );
                                     }
                                 }
