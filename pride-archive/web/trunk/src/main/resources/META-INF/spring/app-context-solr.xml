@@ -19,6 +19,9 @@
         <constructor-arg name="baseURL" value="${solr.server.psm.core.url}" />
     </bean>
 
+    <bean id="spectrumSolrServer" class="org.apache.solr.client.solrj.impl.HttpSolrServer">
+        <constructor-arg name="baseURL" value="${solr.server.spectrum.core.url}" />
+    </bean>
 
     <!--DAOs and repositories-->
     <bean id="projectSearchDao" class="uk.ac.ebi.pride.archive.search.service.dao.solr.ProjectSearchDaoSolr">
@@ -37,6 +40,10 @@
         <constructor-arg name="solrServer" ref="psmSolrServer"/>
     </bean>
 
+    <bean id="spectrumSolrTemplate" class="org.springframework.data.solr.core.SolrTemplate">
+        <constructor-arg name="solrServer" ref="spectrumSolrServer"/>
+    </bean>
+
     <!-- Protein repository -->
     <bean id="solrProteinIdentificationRepositoryFactory" class="uk.ac.ebi.pride.proteinidentificationindex.search.service.repository.SolrProteinIdentificationRepositoryFactory">
         <constructor-arg ref="proteinSolrTemplate"/>
@@ -53,6 +60,15 @@
 
     <bean id="psmSearchService" class="uk.ac.ebi.pride.psmindex.search.service.PsmSearchService">
         <constructor-arg value="#{ solrPsmRepositoryFactory.create() }"/>
+    </bean>
+
+    <!-- Spectrum repository -->
+    <bean id="solrSpectrumRepositoryFactory" class="uk.ac.ebi.pride.spectrumindex.search.service.repository.SolrSpectrumRepositoryFactory">
+        <constructor-arg ref="spectrumSolrTemplate"/>
+    </bean>
+
+    <bean id="spectrumSearchService" class="uk.ac.ebi.pride.spectrumindex.search.service.SpectrumSearchService">
+        <constructor-arg value="#{ solrSpectrumRepositoryFactory.create() }"/>
     </bean>
 
     <!--Properties-->

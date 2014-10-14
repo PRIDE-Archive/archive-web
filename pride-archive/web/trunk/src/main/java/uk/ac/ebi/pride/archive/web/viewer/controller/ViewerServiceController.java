@@ -12,6 +12,7 @@ import uk.ac.ebi.pride.archive.web.service.controller.viewer.InvalidDataExceptio
 import uk.ac.ebi.pride.archive.web.service.controller.viewer.ViewerControllerImpl;
 import uk.ac.ebi.pride.archive.web.service.model.viewer.PeptideList;
 import uk.ac.ebi.pride.archive.web.service.model.viewer.Protein;
+import uk.ac.ebi.pride.archive.web.service.model.viewer.Spectrum;
 import uk.ac.ebi.pride.web.util.exception.RestError;
 
 import java.security.Principal;
@@ -73,6 +74,26 @@ public class ViewerServiceController {
         return result;
     }
 
+    @RequestMapping(value = "/spectrum/{variationID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK) // 200
+    public
+    @ResponseBody
+    Spectrum getSpectrumData(@PathVariable("variationID") String variationID) throws InvalidDataException, NotFoundException {
+        System.out.println("Spectrum request for variation with ID: " + variationID);
+        // retrieve the assay accession in order to perform a security check
+        String assayAccession = ViewerControllerImpl.getAssayAccessionFromVariationID(variationID);
+        // do the security check on the assay accession
+        assaySecureService.findByAccession(assayAccession);
+
+        // if we did not run into a security issue we can continue retrieving the results
+        // (an exception should have been thrown at this point instead)
+        Spectrum result = viewerControllerImpl.getSpectrumData(variationID);
+        if (result == null) {
+            throw new NotFoundException ("No Spectrum record found for variation with id: " + variationID);
+        }
+        System.out.println("Returning spectrum with Id= " + result.getId());
+        return result;
+    }
 
     // Controller local exception handling to overwrite the default behaviour of the archive web
     // (return a RestError with appropriate error code instead of redirecting to the login page)
