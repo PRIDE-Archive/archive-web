@@ -23,7 +23,8 @@
     </appender>
 
     <logger name="uk.ac.ebi.pride.archive" level="WARN"/>
-    <logger name="uk.ac.ebi.pride.psmindex" level="DEBUG"/>
+    <logger name="uk.ac.ebi.pride.archive.web.service" level="WARN"/>
+    <logger name="uk.ac.ebi.pride.psmindex" level="WARN"/>
     <logger name="uk.ac.ebi.pride.proteinindex" level="WARN"/>
     <logger name="uk.ac.ebi.pride.archive.web" level="WARN"/>
     <logger name="org.springframework.data.solr" level="ERROR"/>
