@@ -95,6 +95,21 @@ public class ViewerServiceController {
         return result;
     }
 
+    @RequestMapping(value = "/spectrum/{variationID}/annotations", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK) // 200
+    public
+    @ResponseBody
+    Spectrum getSpectrumAnnotations(@PathVariable("variationID") String variationID) throws InvalidDataException, NotFoundException {
+        System.out.println("Spectrum annotations request for variation with ID: " + variationID);
+        // retrieve the assay accession in order to perform a security check
+        String assayAccession = ViewerControllerImpl.getAssayAccessionFromVariationID(variationID);
+        // do the security check on the assay accession
+        assaySecureService.findByAccession(assayAccession);
+
+
+        return null;
+    }
+
     // Controller local exception handling to overwrite the default behaviour of the archive web
     // (return a RestError with appropriate error code instead of redirecting to the login page)
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
