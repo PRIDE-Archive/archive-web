@@ -13,9 +13,12 @@ import uk.ac.ebi.pride.archive.web.service.controller.viewer.ViewerControllerImp
 import uk.ac.ebi.pride.archive.web.service.model.viewer.PeptideList;
 import uk.ac.ebi.pride.archive.web.service.model.viewer.Protein;
 import uk.ac.ebi.pride.archive.web.service.model.viewer.Spectrum;
+import uk.ac.ebi.pride.archive.web.service.model.viewer.SpectrumPeakAnnotation;
 import uk.ac.ebi.pride.web.util.exception.RestError;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Florian Reisinger
@@ -93,21 +96,35 @@ public class ViewerServiceController {
         }
         System.out.println("Returning spectrum with Id= " + result.getId());
         return result;
+
     }
 
     @RequestMapping(value = "/spectrum/{variationID}/annotations", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
-    Spectrum getSpectrumAnnotations(@PathVariable("variationID") String variationID) throws InvalidDataException, NotFoundException {
+    String getSpectrumAnnotations(@PathVariable("variationID") String variationID) throws InvalidDataException, NotFoundException {
         System.out.println("Spectrum annotations request for variation with ID: " + variationID);
         // retrieve the assay accession in order to perform a security check
         String assayAccession = ViewerControllerImpl.getAssayAccessionFromVariationID(variationID);
         // do the security check on the assay accession
         assaySecureService.findByAccession(assayAccession);
 
+        List<SpectrumPeakAnnotation> annotations = new ArrayList<SpectrumPeakAnnotation>();
 
-        return null;
+        SpectrumPeakAnnotation newPeakAnnotation = new SpectrumPeakAnnotation();
+        newPeakAnnotation.setGroup("Fragments");
+        newPeakAnnotation.setMz(209.062);
+        newPeakAnnotation.setIonType("***");
+        annotations.add(newPeakAnnotation);
+
+        System.out.println("Returning annotations with Mz= " + newPeakAnnotation.getMz());
+
+//        return annotations;
+        return "[\n" +
+                "[\"b-ion\",461.185,\"b+\"],\n" +
+                "[\"y-ion\",209.062,\"y+\"]\n" +
+                "]";
     }
 
     // Controller local exception handling to overwrite the default behaviour of the archive web
