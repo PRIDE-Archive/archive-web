@@ -52,11 +52,12 @@
         </h3>
     </div>
 
-    <%-- change contact details --%>
-    <div class="grid_24">
+    <%-- project table --%>
+    <div class="grid_23">
+        <p>
         <c:choose>
             <c:when test="${not empty projects}">
-                <table class="summary-table">
+                <table class="summary-table ">
                     <thead>
                     <tr>
                         <th>

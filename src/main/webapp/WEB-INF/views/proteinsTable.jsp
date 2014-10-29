@@ -52,11 +52,12 @@
             <fieldset>
                 <input type='hidden' name='size' value='${page.size}'/>
                 <%--We show the first page--%>
-                <input type='hidden' name='page' value='${0}'/>
+                <input type='hidden' name='page' value='0'/>
                 <c:forEach var="sortOrder" items="${fn:split(page.sort,',')}">
                     <input type='hidden' name="sort" value="${sortOrder}"/>
                 </c:forEach>
-                <%--active filters: used to keep a list of active filters and give it back to the server--%>
+
+                <%--active filters: used to keep a list of active filters and send them back to the server--%>
                 <priderElement:inputHiddenList items="${ptmsFilters}" name="ptmsFilters"/>
                 <label>
                     <input id="psm-searchbox" type="text" name="q" autocomplete="true" value="${q}"/>
@@ -70,10 +71,12 @@
             <fieldset>
                 <input type='hidden' name='q' value='${q}'/>
                 <input type='hidden' name='size' value='${page.size}'/>
+                <%--we show the first page--%>
                 <input type='hidden' name='page' value='0'/>
                 <c:forEach var="sortOrder" items="${fn:split(page.sort,',')}">
                     <input type='hidden' name="sort" value="${sortOrder}"/>
                 </c:forEach>
+
                 <%--active filters: used to keep a list of active filters and give it back to the server--%>
                 <priderElement:inputHiddenList items="${ptmsFilters}" name="ptmsFilters"/>
 
@@ -121,7 +124,7 @@
 
             <%--PTMs filters--%>
             <c:if test="${not empty ptmsFilters}">
-                <h5>Modifications </h5>
+                <h5><fmt:message key="modifications"/></h5>
                 <c:forEach var="thePtmsFilter" items="${ptmsFilters}">
                     <form id="psms-remove-ptm-filter" action="${searchUrl}" method="get">
                         <fieldset>
@@ -157,243 +160,225 @@
 
     <%--paginator--%>
     <table:paginator page="${page}" q="${q}" ptmsFilters="${ptmsFilters}"/>
-
-        <%--Table--%>
         <table id="proteinTable" class="summary-table footable table toggle-arrow-small">
-                <thead>
-                <tr>     
-                    <%-- Count column--%>
-                    <th>
-                        <strong>#</strong>
-                    </th>
+            <thead>
+            <tr>
+            <%-- Count column--%>
+            <th><strong>#</strong></th>
+            <%-- Submitted protein accession column--%>
+            <th>
+                <span>
+                    <table:proteinSortUrl page="${page}" q="${q}" ptmsFilters="${ptmsFilters}"  urlType="submittedProteinAccSortURL"/>
+                    <strong><fmt:message key="submitted.acc"/></strong>
+                </span>
+            </th>
+            <%-- Optional assay accession column --%>
+            <c:if test="${empty assayAccession}">
+                <th>
+                    <span>
+                        <table:proteinSortUrl page="${page}" q="${q}" ptmsFilters="${ptmsFilters}" urlType="assayAccSortURL"/>
+                        <strong><fmt:message key="assay"/></strong>
+                    </span>
+                </th>
+            </c:if>
+            <%-- Clean protein accession column--%>
+            <th>
+                <span>
+                    <table:proteinSortUrl page="${page}" q="${q}" ptmsFilters="${ptmsFilters}" urlType="proteinAccSortURL"/>
+                    <strong><fmt:message key="cleaned.acc"/></strong>
+                </span>
+            </th>
+            <th><strong><fmt:message key="cross.ref"/></strong></th>
+            <%-- Description column--%>
+            <th><strong><fmt:message key="description"/></strong></th>
+            <%-- Modifications column--%>
+            <th><strong><fmt:message key="modifications"/></strong></th>
+            <%-- Ambiguity group column--%>
+            <th><strong><fmt:message key="ambiguity.members"/></strong></th>
+            <%-- Alternative mappings --%>
+            <th data-hide="all"><strong><fmt:message key="alternative.mappings"/></strong></th>
+            </tr>
+            </thead>
 
+            <%-- Table rows which contains proteins--%>
+            <tbody>
+            <c:set var="first" value="${page.size * page.number}"/>
+            <c:forEach items="${page.content}" var="protein" varStatus="status">
+                <tr>
+                    <td style="white-space: nowrap;">${first + status.count}</td>
                     <%-- Submitted protein accession column--%>
-                    <th>
-                        <span>
-                            <strong><fmt:message key="submitted.acc"/></strong>
-                            <table:proteinSortUrl page="${page}" q="${q}" ptmsFilters="${ptmsFilters}"  urlType="submittedProteinAccSortURL"/>
-                        </span>
-                    </th>
-
-                    <%-- Optional assay accession column --%>
-                    <c:if test="${empty assayAccession}">
-                        <th>
-                            <span>
-                                <strong><fmt:message key="assay"/></strong>
-                                <table:proteinSortUrl page="${page}" q="${q}" ptmsFilters="${ptmsFilters}" urlType="assayAccSortURL"/>
-                            </span>
-                        </th>
-                    </c:if>
-
-                    <%-- Clean protein accession column--%>
-                    <th>
-                        <span>
-                            <strong><fmt:message key="cleaned.acc"/></strong>
-                            <table:proteinSortUrl page="${page}" q="${q}" ptmsFilters="${ptmsFilters}" urlType="proteinAccSortURL"/>
-                        </span>
-                    </th>
-
-                    <th><strong><fmt:message key="cross.ref"/></strong></th>
-
-                    <%-- Description column--%>
-                    <th><strong><fmt:message key="description"/></strong></th>
-
-                    <%-- Modifications column--%>
-                    <th><strong><fmt:message key="modifications"/></strong></th>
-
-                    <%-- Ambiguity group column--%>
-                    <th><strong><fmt:message key="ambiguity.members"/></strong></th>
-
-                    <%-- Alternative mappings --%>
-                    <th data-hide="all"><strong><fmt:message key="alternative.mappings"/></strong></th>
-
-                </tr>
-                </thead>
-
-                <%-- Table rows which contains proteins--%>
-                <tbody>
-                <c:set var="first" value="${page.size * page.number}"/>
-                <c:forEach items="${page.content}" var="protein" varStatus="status">
-                    <%-- todo: add table row colour alternation --%>
-                    <tr>
-                        <td style="white-space: nowrap;">${first + status.count}</td>
-
-                        <%-- Submitted protein accession column--%>
-                        <td>
-                            <%-- hyperlink to psm table --%>
-                            <%--todo--%>
-                            <span style="white-space: nowrap">
-                                <spring:url var="psmTableUrl"
-                                            value="/projects/{projectAccession}/assays/{assayAccession}/psms?q={proteinAccession}">
-                                    <spring:param name="projectAccession" value="${projectAccession}"/>
-                                    <spring:param name="assayAccession" value="${protein.assayAccession}"/>
-                                    <spring:param name="proteinAccession" value="${protein.submittedAccession}"/>
-                                </spring:url>
-
-                                    <c:choose>
-                                        <c:when test="${fn:contains(highlights[protein], 'submitted_accession')}">
-                                            <c:forEach var="highlight" items="${highlights[protein]['submitted_accession']}">
-                                                <a href="${psmTableUrl}">${highlight}</a>
-                                            </c:forEach>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <a href="${psmTableUrl}">${protein.submittedAccession}</a>
-                                        </c:otherwise>
-                                    </c:choose>
-
-
-                                <%-- hyperlink to protein webapp view --%>
-                                <spring:url var="proteinViewerUrl"
-                                            value="/projects/{accession}/viewer/protein/{proteinID}">
-                                    <spring:param name="accession" value="${projectAccession}"/>
-                                    <spring:param name="proteinID" value="${protein.assayAccession}__${protein.submittedAccession}"/>
-                                </spring:url>
-                                <c:if test="${not empty protein.inferredSequence or not empty protein.submittedSequence}">
-                                    <a class="no_visual_link icon icon-functional" data-icon="1" href="${proteinViewerUrl}"></a>
-                                </c:if>
-                            </span>
-                        </td>
-
-                    <%-- Optional assay accession column --%>
-                        <c:if test="${empty assayAccession}">
-                            <spring:url var="proteinAssayUrl" value="/assays/{accession}">
-                                <spring:param name="accession" value="${protein.assayAccession}"/>
+                    <td>
+                        <span style="white-space: nowrap">
+                            <spring:url var="psmTableUrl"
+                                        value="/projects/{projectAccession}/assays/{assayAccession}/psms?q={proteinAccession}">
+                                <spring:param name="projectAccession" value="${projectAccession}"/>
+                                <spring:param name="assayAccession" value="${protein.assayAccession}"/>
+                                <spring:param name="proteinAccession" value="${protein.submittedAccession}"/>
                             </spring:url>
-                            <td>
-                                <a href="${proteinAssayUrl}">${protein.assayAccession}</a>
-                            </td>
-                        </c:if>
 
-                        <%-- Clean protein accession column--%>
-                        <td>
-                            <c:choose>
-                                <c:when test="${fn:contains(highlights[protein], 'accession')}">
-                                    <c:forEach var="highlight" items="${highlights[protein]['accession']}">
-                                        ${highlight}
-                                    </c:forEach>
-                                </c:when>
-                                <c:otherwise>
-                                    ${protein.accession}
-                                </c:otherwise>
-                            </c:choose>
-                        </td>
-
-                        <td>
-                            <%-- Uniprot protein accession --%>
-                            <spring:url var="uniprotUrl" value="http://www.uniprot.org/uniprot/{uniprotAcc}">
-                                <spring:param name="uniprotAcc" value="${protein.uniprotMapping}"/>
-                            </spring:url>
-                            <c:choose>
-                                <c:when test="${fn:contains(highlights[protein], 'uniprot_mapping')}">
-                                    <a class="no_visual_link" target="_blank" href="${uniprotUrl}"><img class=table_icon_hl title="${protein.uniprotMapping}"  id='uniprot_hl' src='${pageContext.request.contextPath}/resources/img/uniprot.ico'></a>
-                                    <%--<c:forEach var="highlight" items="${highlights[protein]['uniprot_mapping']}">--%>
-                                        <%--<a href="${uniprotUrl}">${highlight}</a>--%>
-                                    <%--</c:forEach>--%>
-                                </c:when>
-                                <c:otherwise>
-                                    <c:if test="${not empty protein.uniprotMapping}">
-                                        <a class="no_visual_link"  target="_blank" href="${uniprotUrl}"><img class=table_icon id='uniprot' title="${protein.uniprotMapping}" src='${pageContext.request.contextPath}/resources/img/uniprot.ico'></a>
-                                    </c:if>
-                                    <%--${protein.uniprotMapping}--%>
-                                </c:otherwise>
-                            </c:choose>
-                            <%-- Ensembl protein accession --%>
-                            <spring:url var="ensemblUrl" value="http://www.ensembl.org/id/{ensemblAcc}">
-                                <spring:param name="ensemblAcc" value="${protein.ensemblMapping}"/>
-                            </spring:url>
-                            <c:choose>
-                                <c:when test="${fn:contains(highlights[protein], 'ensembl_mapping')}">
-                                    <a class="no_visual_link"  target="_blank" href="${ensemblUrl}"><img class=table_icon_hl id='ensembl_hl' title="${protein.ensemblMapping}" src='${pageContext.request.contextPath}/resources/img/ensembl.png'></a>
-                                    <%--<c:forEach var="highlight" items="${highlights[protein]['ensembl_mapping']}">--%>
-                                        <%--<a href="${ensemblUrl}">${highlight}</a>--%>
-                                    <%--</c:forEach>--%>
-                                </c:when>
-                                <c:otherwise>
-                                    <c:if test="${not empty protein.ensemblMapping}">
-                                        <a class="no_visual_link" target="_blank" href="${ensemblUrl}"><img class=table_icon id='ensembl' title="${protein.ensemblMapping}" src='${pageContext.request.contextPath}/resources/img/ensembl.png'></a>
-                                    </c:if>
-                                    <%--${protein.ensemblMapping}--%>
-                                </c:otherwise>
-                            </c:choose>
-                        </td>
-
-                        <%-- Description column--%>
-                        <td><span class="longtext">${protein.name}</span></td>
-
-                        <%-- Modifications column--%>
-                        <%-- At modification level we display only the modification name --%>
-                        <td>
-                            <ul>
                                 <c:choose>
-                                    <c:when test="${not empty protein.modificationAccessionName}">
-                                        <c:forEach var="modification" items="${protein.modificationAccessionName}">
-                                            <spring:url var="olsUrl" value="http://www.ebi.ac.uk/ontology-lookup/?termId={accession}">
-                                                <spring:param name="accession" value="${modification.value}"/>
-                                            </spring:url>
-                                            <li>
-                                                <a href="${olsUrl}">${modification.key}</a>
-                                            </li>
+                                    <c:when test="${fn:contains(highlights[protein], 'submitted_accession')}">
+                                        <c:forEach var="highlight" items="${highlights[protein]['submitted_accession']}">
+                                            <a href="${psmTableUrl}">${highlight}</a>
                                         </c:forEach>
                                     </c:when>
                                     <c:otherwise>
-                                        <c:forEach var="modification" items="${protein.modificationNames}">
-                                            <li>
-                                               ${modification}
-                                            </li>
-                                        </c:forEach>
+                                        <a href="${psmTableUrl}">${protein.submittedAccession}</a>
                                     </c:otherwise>
                                 </c:choose>
-                            </ul>
-                        </td>
-                        <%-- Ambiguity group column--%>
+
+
+                            <%-- hyperlink to protein webapp view --%>
+                            <spring:url var="proteinViewerUrl"
+                                        value="/projects/{accession}/viewer/protein/{proteinID}">
+                                <spring:param name="accession" value="${projectAccession}"/>
+                                <spring:param name="proteinID" value="${protein.assayAccession}__${protein.submittedAccession}"/>
+                            </spring:url>
+                            <c:if test="${not empty protein.inferredSequence or not empty protein.submittedSequence}">
+                                <a class="no_visual_link icon icon-functional" data-icon="1" href="${proteinViewerUrl}"></a>
+                            </c:if>
+                        </span>
+                    </td>
+                        <%-- Optional assay accession column --%>
+                    <c:if test="${empty assayAccession}">
+                        <spring:url var="proteinAssayUrl" value="/assays/{accession}">
+                            <spring:param name="accession" value="${protein.assayAccession}"/>
+                        </spring:url>
                         <td>
-                            <ul>
-                                <c:forEach var="submittedAccession" items="${protein.ambiguityGroupSubmittedAccessions}">
-                                    <c:choose>
-                                        <c:when test="${fn:contains(highlights[protein], 'ambiguity_group')}">
-                                            <c:forEach var="highlight" items="${highlights[protein]['ambiguity_group']}">
-                                                <c:choose>
-                                                    <c:when test="${fn:contains(highlight, submittedAccession)}">
-                                                        <li style="white-space: nowrap">${highlight}</li>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <li style="white-space: nowrap">${submittedAccession}</li>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </c:forEach>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <li style="white-space: nowrap">${submittedAccession}</li>
-                                        </c:otherwise>
-                                    </c:choose>
+                            <a href="${proteinAssayUrl}">${protein.assayAccession}</a>
+                        </td>
+                    </c:if>
+
+                        <%-- Clean protein accession column--%>
+                    <td>
+                        <c:choose>
+                            <c:when test="${fn:contains(highlights[protein], 'accession')}">
+                                <c:forEach var="highlight" items="${highlights[protein]['accession']}">
+                                    ${highlight}
                                 </c:forEach>
-                            </ul>
-                        </td>
-                        <%-- Alternative mappings --%>
-                        <td>
-                            <c:forEach var="alternativeMapping" items="${protein.otherMappings}">
+                            </c:when>
+                            <c:otherwise>
+                                ${protein.accession}
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+
+                    <td>
+                            <%-- Uniprot protein accession --%>
+                        <spring:url var="uniprotUrl" value="http://www.uniprot.org/uniprot/{uniprotAcc}">
+                            <spring:param name="uniprotAcc" value="${protein.uniprotMapping}"/>
+                        </spring:url>
+                        <c:choose>
+                            <c:when test="${fn:contains(highlights[protein], 'uniprot_mapping')}">
+                                <a class="no_visual_link" target="_blank" href="${uniprotUrl}"><img class=table_icon_hl title="${protein.uniprotMapping}"  id='uniprot_hl' src='${pageContext.request.contextPath}/resources/img/uniprot.ico'></a>
+                                <%--<c:forEach var="highlight" items="${highlights[protein]['uniprot_mapping']}">--%>
+                                <%--<a href="${uniprotUrl}">${highlight}</a>--%>
+                                <%--</c:forEach>--%>
+                            </c:when>
+                            <c:otherwise>
+                                <c:if test="${not empty protein.uniprotMapping}">
+                                    <a class="no_visual_link"  target="_blank" href="${uniprotUrl}"><img class=table_icon id='uniprot' title="${protein.uniprotMapping}" src='${pageContext.request.contextPath}/resources/img/uniprot.ico'></a>
+                                </c:if>
+                                <%--${protein.uniprotMapping}--%>
+                            </c:otherwise>
+                        </c:choose>
+                            <%-- Ensembl protein accession --%>
+                        <spring:url var="ensemblUrl" value="http://www.ensembl.org/id/{ensemblAcc}">
+                            <spring:param name="ensemblAcc" value="${protein.ensemblMapping}"/>
+                        </spring:url>
+                        <c:choose>
+                            <c:when test="${fn:contains(highlights[protein], 'ensembl_mapping')}">
+                                <a class="no_visual_link"  target="_blank" href="${ensemblUrl}"><img class=table_icon_hl id='ensembl_hl' title="${protein.ensemblMapping}" src='${pageContext.request.contextPath}/resources/img/ensembl.png'></a>
+                                <%--<c:forEach var="highlight" items="${highlights[protein]['ensembl_mapping']}">--%>
+                                <%--<a href="${ensemblUrl}">${highlight}</a>--%>
+                                <%--</c:forEach>--%>
+                            </c:when>
+                            <c:otherwise>
+                                <c:if test="${not empty protein.ensemblMapping}">
+                                    <a class="no_visual_link" target="_blank" href="${ensemblUrl}"><img class=table_icon id='ensembl' title="${protein.ensemblMapping}" src='${pageContext.request.contextPath}/resources/img/ensembl.png'></a>
+                                </c:if>
+                                <%--${protein.ensemblMapping}--%>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+
+                        <%-- Description column--%>
+                    <td><span class="longtext">${protein.name}</span></td>
+
+                        <%-- Modifications column--%>
+                        <%-- At modification level we display only the modification name --%>
+                    <td>
+                        <ul>
+                            <c:choose>
+                                <c:when test="${not empty protein.modificationAccessionName}">
+                                    <c:forEach var="modification" items="${protein.modificationAccessionName}">
+                                        <spring:url var="olsUrl" value="http://www.ebi.ac.uk/ontology-lookup/?termId={accession}">
+                                            <spring:param name="accession" value="${modification.value}"/>
+                                        </spring:url>
+                                        <li>
+                                            <a href="${olsUrl}">${modification.key}</a>
+                                        </li>
+                                    </c:forEach>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:forEach var="modification" items="${protein.modificationNames}">
+                                        <li>
+                                                ${modification}
+                                        </li>
+                                    </c:forEach>
+                                </c:otherwise>
+                            </c:choose>
+                        </ul>
+                    </td>
+                        <%-- Ambiguity group column--%>
+                    <td>
+                        <ul>
+                            <c:forEach var="submittedAccession" items="${protein.ambiguityGroupSubmittedAccessions}">
                                 <c:choose>
-                                    <c:when test="${fn:contains(highlights[protein], 'other_mappings')}">
-                                        <c:forEach var="highlight" items="${highlights[protein]['other_mappings']}">
+                                    <c:when test="${fn:contains(highlights[protein], 'ambiguity_group')}">
+                                        <c:forEach var="highlight" items="${highlights[protein]['ambiguity_group']}">
                                             <c:choose>
-                                                <c:when test="${fn:contains(highlight, alternativeMapping)}">
-                                                    ${highlight}
+                                                <c:when test="${fn:contains(highlight, submittedAccession)}">
+                                                    <li style="white-space: nowrap">${highlight}</li>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    ${alternativeMapping}
+                                                    <li style="white-space: nowrap">${submittedAccession}</li>
                                                 </c:otherwise>
                                             </c:choose>
                                         </c:forEach>
                                     </c:when>
                                     <c:otherwise>
-                                        ${alternativeMapping}
+                                        <li style="white-space: nowrap">${submittedAccession}</li>
                                     </c:otherwise>
                                 </c:choose>
                             </c:forEach>
-                        </td>
-                    </tr>
-                </c:forEach>
-                </tbody>
+                        </ul>
+                    </td>
+                        <%-- Alternative mappings --%>
+                    <td>
+                        <c:forEach var="alternativeMapping" items="${protein.otherMappings}">
+                            <c:choose>
+                                <c:when test="${fn:contains(highlights[protein], 'other_mappings')}">
+                                    <c:forEach var="highlight" items="${highlights[protein]['other_mappings']}">
+                                        <c:choose>
+                                            <c:when test="${fn:contains(highlight, alternativeMapping)}">
+                                                ${highlight}
+                                            </c:when>
+                                            <c:otherwise>
+                                                ${alternativeMapping}
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                </c:when>
+                                <c:otherwise>
+                                    ${alternativeMapping}
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+                    </td>
+                </tr>
+            </c:forEach>
+            </tbody>
         </table>
         <%--paginator--%>
         <table:paginator page="${page}" q="${q}" ptmsFilters="${ptmsFilters}"/>
@@ -404,14 +389,6 @@
 <script src="${readMoreJavascriptUrl}"></script>
 <%--responsive table style and read more--%>
 <script type="text/javascript">
-    $(function () {
-        $('#proteinTable').footable({
-            breakpoints: {
-                phone: 750,
-                tablet: 960
-            }
-        });
-    });
     $(document).ready(function () {
         $(".longtext").readmore({
             maxHeight: 38,

@@ -60,12 +60,12 @@ public class PageMaker {
         return modelAndView;
     }
 
-    public ModelAndView createProjectSummaryPage(ProjectSummary projectSummary, Collection<AssaySummary> assaySummaries) {
+    public ModelAndView createProjectSummaryPage(ProjectSummaryAdapter projectSummary, Page<AssaySummary> page) {
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.addObject("projectSummary", projectSummary);
-        if (assaySummaries != null) {
-            modelAndView.addObject("assaySummaries", assaySummaries);
+        if (page != null && page.getContent() != null) {
+            modelAndView.addObject("page", page);
         }
 
         modelAndView.setViewName("projectSummary");

@@ -87,6 +87,7 @@
                     </select>
 
                     <li>Contains</li>
+
                     <!-- select fitlers -->
                     <priderElement:selectFilter id="ptm-filter" items="${availablePtmList}" name="newPtmsFilter"/>
 
@@ -122,7 +123,7 @@
 
             <%--PTMs filters--%>
             <c:if test="${not empty ptmsFilters}">
-                <h5><fmt:message key="modifications"/> </h5>
+                <h5><fmt:message key="modifications"/></h5>
                 <c:forEach var="thePtmsFilter" items="${ptmsFilters}">
                     <form id="psms-remove-ptm-filter" action="${searchUrl}" method="get">
                         <fieldset>
@@ -158,69 +159,58 @@
 
     <%--paginator--%>
     <table:paginator page="${page}" q="${q}" ptmsFilters="${ptmsFilters}"/>
-
-         <%--Table--%>
         <table id="psmTable" class="summary-table footable table toggle-arrow-small">
             <thead>
-                <tr>     
-                    <%-- todo: add width distribution --%>
-                    <%-- Count column--%>
-                    <th><strong>#</strong></th>
-
-                    <%-- Peptide Sequence Column--%>
-                    <th>
+            <tr>
+            <%-- Count column--%>
+            <th><strong>#</strong></th>
+            <%-- Peptide Sequence Column--%>
+            <th>
+                <span>
+                    <table:psmSortUrl page="${page}" q="${q}" ptmsFilters="${ptmsFilters}" urlType="peptideSequenceSortURL"/>
+                    <strong><fmt:message key="peptide.sequence"/></strong>
+                </span>
+            </th>
+            <%-- Protein accession column--%>
+            <th>
+                <span>
+                    <table:psmSortUrl page="${page}" q="${q}" ptmsFilters="${ptmsFilters}" urlType="proteinAccSortURL"/>
+                    <strong><fmt:message key="submitted.acc"/></strong>
+                </span>
+            </th>
+            <%-- Optional assay accession column --%>
+            <c:if test="${empty assayAccession}">
+                <th>
+                    <span>
+                        <table:psmSortUrl page="${page}" q="${q}" ptmsFilters="${ptmsFilters}" urlType="assayAccSortURL"/>
+                        <strong><fmt:message key="assay"/></strong>
+                    </span>
+                </th>
+            </c:if>
+            <%-- Search engine score column--%>
+            <th><strong><fmt:message key="search.engine.score"/></strong></th>
+            <%-- Experimental m/z column--%>
+            <th data-hide="phone">
+                <span>
+                    <table:psmSortUrl page="${page}" q="${q}" ptmsFilters="${ptmsFilters}" urlType="expMzSortURL"/>
+                    <strong><fmt:message key="experimental.m.z"/></strong>
+                </span>
+            </th>
+            <%-- Charge state column --%>
+            <th data-hide="phone">
                         <span>
-                            <strong><fmt:message key="peptide.sequence"/></strong>
-                            <table:psmSortUrl page="${page}" q="${q}" ptmsFilters="${ptmsFilters}" urlType="peptideSequenceSortURL"/>
-                        </span>
-                    </th>
-
-                    <%-- Protein accession column--%>
-                    <th>
-                        <span>
-                            <strong><fmt:message key="submitted.acc"/></strong>
-                            <table:psmSortUrl page="${page}" q="${q}" ptmsFilters="${ptmsFilters}" urlType="proteinAccSortURL"/>
-                        </span>
-                    </th>
-
-                    <%-- Optional assay accession column --%>
-                    <c:if test="${empty assayAccession}">
-                        <th>
-                            <span>
-                                <strong><fmt:message key="assay"/></strong>
-                                <table:psmSortUrl page="${page}" q="${q}" ptmsFilters="${ptmsFilters}" urlType="assayAccSortURL"/>
-                            </span>
-                        </th>
-                    </c:if>
-
-                    <%-- Modifications column--%>
-                    <th><strong><fmt:message key="modifications"/></strong></th>
-
-                    <%-- Search engine score column--%>
-                    <th><strong><fmt:message key="search.engine.score"/></strong></th>
-
-                    <%-- Experimental m/z column--%>
-                    <th data-hide="phone">
-                        <span>
-                            <strong><fmt:message key="experimental.m.z"/></strong>
-                            <table:psmSortUrl page="${page}" q="${q}" ptmsFilters="${ptmsFilters}" urlType="expMzSortURL"/>
-                        </span>
-                    </th>
-
-                    <%-- Charge state column --%>
-                    <th data-hide="phone">
-                        <span>
-                            <strong><fmt:message key="charge"/></strong>
                             <table:psmSortUrl page="${page}" q="${q}" ptmsFilters="${ptmsFilters}" urlType="chargeSortURL"/>
+                            <strong><fmt:message key="charge"/></strong>
                         </span>
-                    </th>
-
-                    <th data-hide="all"><strong><fmt:message key="start"/></strong></th>
-                    <th data-hide="all"><strong><fmt:message key="stop"/></strong></th>
-                    <th data-hide="all"><strong><fmt:message key="pre"/></strong></th>
-                    <th data-hide="all"><strong><fmt:message key="post"/></strong></th>
-                    <th data-hide="all"><strong><fmt:message key="reported.id"/></strong></th>
-                </tr>
+            </th>
+            <th data-hide="all"><strong><fmt:message key="start"/></strong></th>
+            <th data-hide="all"><strong><fmt:message key="stop"/></strong></th>
+            <th data-hide="all"><strong><fmt:message key="pre"/></strong></th>
+            <th data-hide="all"><strong><fmt:message key="post"/></strong></th>
+            <th data-hide="all"><strong><fmt:message key="reported.id"/></strong></th>
+            <%-- Modifications column--%>
+            <th data-hide="all"><strong><fmt:message key="modifications"/></strong></th>
+            </tr>
             </thead>
 
             <%-- Table rows which contains all the psms--%>
@@ -244,14 +234,14 @@
                         </c:choose>
                         </span>
                             <%-- hyperlink to psm webapp view --%>
-                        <spring:url var="psmViewerUrl" value="/projects/{accession}/viewer/protein/{proteinID}&peptide={peptideID}&variance={peptiformID}">
-                            <spring:param name="accession" value="${psm.projectAccession}"/>
-                            <spring:param name="proteinID" value="${psm.assayAccession}__${psm.proteinAccession}"/>
-                            <spring:param name="peptideID" value="${psm.assayAccession}__${psm.proteinAccession}__${psm.peptideSequence}"/>
-                            <spring:param name="peptiformID" value="${psm.assayAccession}__${psm.proteinAccession}__${psm.peptideSequence}__${psm.reportedId}"/>
-                        </spring:url>
+                        <%--<spring:url var="psmViewerUrl" value="/projects/{accession}/viewer/protein/{proteinID}&peptide={peptideID}&variance={peptiformID}">--%>
+                            <%--<spring:param name="accession" value="${psm.projectAccession}"/>--%>
+                            <%--<spring:param name="proteinID" value="${psm.assayAccession}__${psm.proteinAccession}"/>--%>
+                            <%--<spring:param name="peptideID" value="${psm.assayAccession}__${psm.proteinAccession}__${psm.peptideSequence}"/>--%>
+                            <%--<spring:param name="peptiformID" value="${psm.assayAccession}__${psm.proteinAccession}__${psm.peptideSequence}__${psm.reportedId}"/>--%>
+                        <%--</spring:url>--%>
                             <%--todo checking to disable the link--%>
-                        <a class="no_visual_link icon icon-functional" data-icon="1" href="${psmViewerUrl}"></a>
+                        <%--<a class="no_visual_link icon icon-functional" data-icon="1" href="${psmViewerUrl}"></a>--%>
                     </td>
                     <%-- protein  --%>
                     <td>
@@ -276,16 +266,16 @@
                                 </c:choose>
 
                             <%-- hyperlink to protein webapp view --%>
-                            <spring:url var="proteinViewerUrl" value="/projects/{accession}/viewer/protein/{proteinID}">
-                                <spring:param name="accession" value="${psm.projectAccession}"/>
-                                <spring:param name="proteinID" value="${psm.assayAccession}__${psm.proteinAccession}"/>
-                            </spring:url>
+                            <%--<spring:url var="proteinViewerUrl" value="/projects/{accession}/viewer/protein/{proteinID}">--%>
+                                <%--<spring:param name="accession" value="${psm.projectAccession}"/>--%>
+                                <%--<spring:param name="proteinID" value="${psm.assayAccession}__${psm.proteinAccession}"/>--%>
+                            <%--</spring:url>--%>
                             <%--todo checking to disable the link--%>
-                            <a class="no_visual_link icon icon-functional" data-icon="1" href="${proteinViewerUrl}"></a>
+                            <%--<a class="no_visual_link icon icon-functional" data-icon="1" href="${proteinViewerUrl}"></a>--%>
                         </span>
                     </td>
 
-                    <%-- assay  --%>
+                        <%-- assay  --%>
                     <c:if test="${empty assayAccession}">
                         <spring:url var="psmAssayUrl" value="/assays/{accession}">
                             <spring:param name="accession" value="${psm.assayAccession}"/>
@@ -294,6 +284,24 @@
                             <a href="${psmAssayUrl}">${psm.assayAccession}</a>
                         </td>
                     </c:if>
+                    <%-- search engine score  --%>
+                    <td>
+                        <ul>
+                            <c:forEach var="searchEngineScore" items="${psm.searchEngineScores}">
+                                <spring:url var="olsUrl" value="http://www.ebi.ac.uk/ontology-lookup/?termId={accession}">
+                                    <spring:param name="accession" value="${searchEngineScore.accession}"/>
+                                </spring:url>
+                                <li><a href="${olsUrl}">${searchEngineScore.name}</a> ${searchEngineScore.value}</li>
+                            </c:forEach>
+                        </ul>
+                    </td>
+                    <td>${psm.expMassToCharge}</td>
+                    <td>${psm.charge}</td>
+                    <td>${psm.startPosition}</td>
+                    <td>${psm.endPosition}</td>
+                    <td>${psm.preAminoAcid}</td>
+                    <td>${psm.postAminoAcid}</td>
+                    <td>${psm.reportedId}</td>
                     <%-- modification  --%>
                     <td>
                         <ul id="modification_${status.index}">
@@ -313,7 +321,7 @@
                                     <c:when test="${not empty modification.neutralLoss}">
                                         <li>
                                             <c:if test="${not empty modification.mainPosition}">
-                                                <span class="pos">${modification.mainPosition}</span> -
+                                                <span>${modification.mainPosition}</span> -
                                             </c:if>
                                             ${modification.neutralLoss.name} (${modification.neutralLoss.value})
                                         </li>
@@ -330,24 +338,6 @@
                             </c:forEach>
                         </ul>
                     </td>
-                    <%-- search engine score  --%>
-                    <td>
-                        <ul>
-                            <c:forEach var="searchEngineScore" items="${psm.searchEngineScores}">
-                                <spring:url var="olsUrl" value="http://www.ebi.ac.uk/ontology-lookup/?termId={accession}">
-                                    <spring:param name="accession" value="${searchEngineScore.accession}"/>
-                                </spring:url>
-                                <li><a href="${olsUrl}">${searchEngineScore.name}</a> ${searchEngineScore.value}</li>
-                            </c:forEach>
-                        </ul>
-                    </td>
-                    <td>${psm.expMassToCharge}</td>
-                    <td>${psm.charge}</td>
-                    <td>${psm.startPosition}</td>
-                    <td>${psm.endPosition}</td>
-                    <td>${psm.preAminoAcid}</td>
-                    <td>${psm.postAminoAcid}</td>
-                    <td>${psm.reportedId}</td>
                 </tr>
             </c:forEach>
             </tbody>
@@ -359,16 +349,6 @@
 
 <%--responsive table style--%>
 <script type="text/javascript">
-    $(function () {
-        $('#psmTable').footable({
-            breakpoints: {
-                phone: 750,
-                tablet: 960
-            }
-        });
-    });
-
-
     $(function () {
         var x = document.getElementById("psmTable").rows.length;
 
@@ -394,7 +374,7 @@
                 var name = modifications.getElementsByTagName('a');
 
                 if (pos.length == name.length) {
-//                    console.log(j + "->" + sequence + ": " + pos);
+                    console.log(j + "->" + sequence + ": " + pos);
 
                     for (var k = 0; k < pos.length; k++) {
                         mod_pos[k] = pos.item(k).textContent;
@@ -408,12 +388,12 @@
 
     function highlightAminoAcids(sequence, mod_pos, mod_names) {
 
-//        console.log(sequence);
-//
-//        for (var k = 0; k < mod_pos.length; k++) {
-//            console.log("position:" + mod_pos[k]);
-//            console.log("name:" + mod_names[k]);
-//        }
+        console.log(sequence);
+
+        for (var k = 0; k < mod_pos.length; k++) {
+            console.log("position:" + mod_pos[k]);
+            console.log("name:" + mod_names[k]);
+        }
 
         var pepSeq = $.trim(sequence);
         //add terminals to the peptide

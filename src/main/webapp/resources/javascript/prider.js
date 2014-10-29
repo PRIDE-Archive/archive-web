@@ -172,4 +172,25 @@ $(document).ready(function() {
 
 });
 
-$( document ).tooltip()
+//responsive table style
+$(function () {
+    $('table').footable({
+        breakpoints: {
+            phone: 750,
+            tablet: 960
+        }
+    });
+});
+
+$(document).tooltip();
+
+$(function () {
+    $('#show-password').click(function() {
+        if ($(this).is(':checked')) {
+            $("#j_password").attr("type", "text");
+        } else {
+            $("#j_password").attr("type", "password");
+        }
+    })
+});
+

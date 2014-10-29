@@ -76,24 +76,71 @@
 }
 
 .search-header {
-    background-color: #E8E8E8;
+    background-color: #b7dddd;
     list-style-type: none;
     margin-bottom: 5px;
-    padding: 0;
+    padding: 3px;
+    color: #4b4a4a;
+    text-shadow: #ddf 1px 1px 0;
+    font-weight: bold;
+
     /*border-bottom: 1px solid #c0c0c0;*/
 }
-
 .search-header li {
     display: inline;
-}
-
-.search-header a {
-    width: 20px;
-}
-
-a.selected {
+    color: #4b4a4a;
+    text-shadow: #ddf 1px 1px 0;
     font-weight: bold;
-    text-decoration: none;
+}
+
+.search-header a:hover,
+.search-header a:focus,
+.search-header a:active {
+    padding: 2px 3px;
+    margin: 0 2px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-bottom: 0 none;
+    background-color: #4b4e6b;
+    color: #FFF;
+}
+
+
+.search-header  a.selected.desc {
+    padding: 2px 3px 2px 15px;
+    margin: 0 2px;
+    border-radius: 3px;
+    background: #e0f4ec url('../img/sortDesc.png') no-repeat 2px 10px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    color: #4b4a4a;
+    text-shadow: #ddf 1px 1px 0;
+    font-weight: bold;
+}
+
+.search-header a.selected.asc {
+    padding: 2px 3px 2px 15px;
+    margin: 0 2px;
+    border-radius: 3px;
+    background: #e0f4ec url('../img/sortAsc.png') no-repeat 2px 10px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    color: #4b4a4a;
+    text-shadow: #ddf 1px 1px 0;
+    font-weight: bold;
+}
+
+.search-header a.selected {
+    padding: 2px 3px;
+    margin: 0 2px;
+    border-radius: 3px;
+    background: #e0f4ec;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    color: #4b4a4a;
+    text-shadow: #ddf 1px 1px 0;
+    font-weight: bold;
 }
 
 .project-widget {
@@ -223,15 +270,28 @@ html>body tbody.scrollContent {
     width: 100%;
 }
 
+th, td {
+    border: 0;
+    margin: 0;
+}
+
 .summary-table {
     clear:both;
-    border: 1px solid #9DD98E;
+    border: none;
 }
 
 .summary-table th {
-    font-weight: 300;
-    background: #9DD98E;
+    border-bottom: 2px solid #6f7277;
+    padding:3px 5px;
+    text-align: left;
+    color: #4b4a4a;
+    text-shadow: #ddf 1px 1px 0;
+    overflow: hidden;
     white-space: nowrap
+}
+
+.summary-table td {
+    padding:3px 5px;
 }
 
 .error {
@@ -411,100 +471,6 @@ html>body tbody.scrollContent {
 
 }
 
-/* tags */
-
-a.biomedical {
-    font-style: italic;
-    font-size: 0.9em;
-    padding: 2px 8px 2px 17px;
-    background: #d3ceee url('../img/tag.png') no-repeat 2px 2px;
-    -moz-border-radius: 5px;
-    -khtml-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    display: inline;
-}
-
-a.technical {
-    font-style: italic;
-    font-size: 0.9em;
-    padding: 2px 8px 2px 17px;
-    background: #add0fa url('../img/tag.png') no-repeat 2px 2px;
-    -moz-border-radius: 5px;
-    -khtml-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    display: inline;
-}
-
-a.biological {
-    font-style: italic;
-    font-size: 0.9em;
-    padding: 2px 8px 2px 17px;
-    background: #b7eeba url('../img/tag.png') no-repeat 2px 2px;
-    -moz-border-radius: 5px;
-    -khtml-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    display: inline;
-}
-
-a.cardiovascular {
-    font-style: italic;
-    font-size: 0.9em;
-    padding: 2px 8px 2px 17px;
-    background: #e6a29f url('../img/tag.png') no-repeat 2px 2px;
-    -moz-border-radius: 5px;
-    -khtml-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    display: inline;
-}
-
-a.metaproteomics {
-    font-style: italic;
-    font-size: 0.9em;
-    padding: 2px 8px 2px 17px;
-    background: #f4ddb7 url('../img/tag.png') no-repeat 2px 2px;
-    /*background-image:*/
-    /*linear-gradient(*/
-            /*to right,*/
-            /*#e6c9be,*/
-            /*#ffe4c2,*/
-            /*#faffcb,*/
-            /*#caeec0);*/
-    -moz-border-radius: 5px;
-    -khtml-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    display: inline;
-}
-
-
-a.other {
-    font-style: italic;
-    font-size: 0.9em;
-    padding: 2px 8px 2px 17px;
-    background: #EEE url('../img/tag.png') no-repeat 2px 2px;
-    -moz-border-radius: 5px;
-    -khtml-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    display: inline;
-}
-
-a.highlighted {
-    font-style: italic;
-    font-size: 0.9em;
-    padding: 2px 8px 2px 17px;
-    background: #f2f2c5 url('../img/tag.png') no-repeat 2px 2px;
-    -moz-border-radius: 5px;
-    -khtml-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    display: inline;
-}
-
 
 /* pagination */
 .prevPageButton {
@@ -568,25 +534,29 @@ a.sortLink {
 .sortButton {
     background: url('../img/sort.png') no-repeat;
     vertical-align: middle;
-    width: 10px;
-    height: 16px;
+    width: 11px;
+    height: 15px;
     display: inline-block;
 }
 
 .sortDescButton {
     background: url('../img/sortDesc.png') no-repeat;
-    vertical-align: middle;
-    width: 10px;
-    height: 16px;
+    vertical-align: text-bottom;
+    width: 11px;
+    height: 7px;
     display: inline-block;
+    color: #4b4a4a;
+    text-shadow: #ddf 1px 1px 0;
 }
 
 .sortAscButton {
     background: url('../img/sortAsc.png') no-repeat;
-    vertical-align: middle;
-    width: 10px;
-    height: 16px;
+    vertical-align: text-bottom;
+    width: 11px;
+    height: 7px;
     display: inline-block;
+    color: #4b4a4a;
+    text-shadow: #ddf 1px 1px 0;
 }
 
 .reactome-analyse {
@@ -617,14 +587,6 @@ a.sortLink {
     color: red;
 }
 
-.float_r {
-    float: right;
-}
-
-.float_l {
-    float: left;
-}
-
 img.table_icon  {
     height: 16px;
     border: 3px solid lightgrey;
@@ -651,3 +613,185 @@ td a.no_visual_link {
     color: #ff5d5f;
 }
 
+
+table.floating-header th.col_pager {
+    /* border-top: 1px solid #CCCCCC; */
+}
+
+.col_pager {
+    font-weight: normal;
+    vertical-align: bottom;
+    white-space: nowrap;
+    /*background-color: #EEEEEE;*/
+    background-color: #b7dddd;
+    font-size: 100%;
+    padding: 3px;
+    margin-bottom: 1px;
+
+}
+
+ .col_pager div {
+     /*color: #487676;*/
+     /*color: white;*/
+     color: #4b4a4a;
+     text-shadow: #ddf 1px 1px 0;
+     font-weight: bold;
+ }
+
+.col_pager a {
+    padding: 2px 3px 0 3px;
+    margin: 0 2px;
+    /*color: #487676;*/
+    /*color: white;*/
+    /*color: #4b4a4a;*/
+    /*text-shadow: #ddf 1px 1px 0;*/
+    /*font-weight: bold;*/
+
+}
+
+
+.col_pager a:link,
+.col_pager a:visited {
+}
+
+.col_pager a:hover,
+.col_pager a:focus,
+.col_pager a:active {
+    padding: 2px 3px;
+    margin: 0 2px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-bottom: 0 none;
+    background-color: #4b4e6b;
+    color: #FFF;
+}
+
+.col_pager span {
+    padding: 2px 3px;
+    margin: 0 2px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    background-color: #e0f4ec;
+    color: #4b4a4a;
+    text-shadow: #ddf 1px 1px 0;
+    font-weight: bold;
+}
+
+
+.pr-stats {
+    position: relative;
+    text-align: center;
+    pointer-events: none;
+    margin: 0
+}
+
+.pr-pager {
+    float: left;
+    text-align: left
+}
+
+.pr-page-size {
+    float: right;
+    text-align: right
+}
+
+.pr-pager,
+.pr-page-size {
+    width: 33%
+}
+
+/* tags */
+
+a.biomedical {
+    font-style: italic;
+    font-size: 0.9em;
+    padding: 2px 8px 2px 17px;
+    background: #d3ceee url('../img/tag.png') no-repeat 2px 2px;
+    -moz-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    display: inline;
+}
+
+a.technical {
+    font-style: italic;
+    font-size: 0.9em;
+    padding: 2px 8px 2px 17px;
+    background: #add0fa url('../img/tag.png') no-repeat 2px 2px;
+    -moz-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    display: inline;
+}
+
+a.biological {
+    font-style: italic;
+    font-size: 0.9em;
+    padding: 2px 8px 2px 17px;
+    background: #b7eeba url('../img/tag.png') no-repeat 2px 2px;
+    -moz-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    display: inline;
+}
+
+a.cardiovascular {
+    font-style: italic;
+    font-size: 0.9em;
+    padding: 2px 8px 2px 17px;
+    background: #e6a29f url('../img/tag.png') no-repeat 2px 2px;
+    -moz-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    display: inline;
+}
+
+a.metaproteomics {
+    font-style: italic;
+    font-size: 0.9em;
+    padding: 2px 8px 2px 17px;
+    background: #f4ddb7 url('../img/tag.png') no-repeat 2px 2px;
+    /*background-image:*/
+    /*linear-gradient(*/
+    /*to right,*/
+    /*#e6c9be,*/
+    /*#ffe4c2,*/
+    /*#faffcb,*/
+    /*#caeec0);*/
+    -moz-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    display: inline;
+}
+
+
+a.other {
+    font-style: italic;
+    font-size: 0.9em;
+    padding: 2px 8px 2px 17px;
+    background: #EEE url('../img/tag.png') no-repeat 2px 2px;
+    -moz-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    display: inline;
+}
+
+a.highlighted {
+    font-style: italic;
+    font-size: 0.9em;
+    padding: 2px 8px 2px 17px;
+    background: #f2f2c5 url('../img/tag.png') no-repeat 2px 2px;
+    -moz-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    display: inline;
+}
