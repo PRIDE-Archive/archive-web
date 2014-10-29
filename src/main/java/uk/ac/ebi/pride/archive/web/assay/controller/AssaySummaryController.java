@@ -54,7 +54,6 @@ public class AssaySummaryController {
     private PsmSecureSearchService psmSecureSearchService;
 
     // ToDo: add sensible mapping for /assays
-    // ToDo: add sensible mapping for /projects/{projectAccession}/assays
 
     @RequestMapping(value = "/assays/{assayAccession}", method = RequestMethod.GET)
     public ModelAndView getAssaySummary(@PathVariable String assayAccession) {
@@ -63,6 +62,10 @@ public class AssaySummaryController {
         return new ModelAndView("redirect:/projects/" + projectAccession + "/assays/" + assayAccession);
     }
 
+    @RequestMapping(value = "/projects/{projectAccession}/assays", method = RequestMethod.GET)
+    public ModelAndView getProjectAssayRedirect(@PathVariable String projectAccession) {
+        return new ModelAndView("redirect:/projects/" + projectAccession);
+    }
     @RequestMapping(value = "/projects/{projectAccession}/assays/{assayAccession}", method = RequestMethod.GET)
     public ModelAndView getProjectAssaySummary(@PathVariable String assayAccession, @PathVariable String projectAccession) {
 
