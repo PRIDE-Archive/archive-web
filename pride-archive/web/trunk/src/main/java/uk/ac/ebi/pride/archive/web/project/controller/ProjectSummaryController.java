@@ -80,7 +80,7 @@ public class ProjectSummaryController {
 
     @RequestMapping(value = "projects", method = RequestMethod.GET)
     public ModelAndView getProjects() {
-        return new ModelAndView("redirect:/simpleSearch?q=&submit=Search");
+        return new ModelAndView("redirect:/simpleSearch");
     }
 
     @RequestMapping(value = "projects/{accession}", method = RequestMethod.GET)

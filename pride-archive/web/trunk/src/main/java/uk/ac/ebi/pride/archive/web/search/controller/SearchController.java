@@ -53,41 +53,41 @@ public class SearchController {
     private PsmSearchService psmSearchService;
 
     @RequestMapping(value = "simpleSearch", method = RequestMethod.GET)
-    public String simpleSearchProjects(@RequestParam("q") String term,
-                                       @RequestParam(value = "show", defaultValue = "10") int showResults,
-                                       @RequestParam(value = "page", defaultValue = "0") int page,
-                                       @RequestParam(value = "sort", defaultValue = "") String sortBy,
-                                       @RequestParam(value = "order", defaultValue = DESCENDING_ORDER) String order,
+    public String simpleSearchProjects(@RequestParam(value="q", defaultValue = "", required = false) String term,
+                                       @RequestParam(value = "show", defaultValue = "10", required = false) int showResults,
+                                       @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                       @RequestParam(value = "sort", defaultValue = "", required = false) String sortBy,
+                                       @RequestParam(value = "order", defaultValue = DESCENDING_ORDER,required = false) String order,
 
-                                       @RequestParam(value = "newPtmsFilter", defaultValue = "") String newPtmsFilter,
-                                       @RequestParam(value = "ptmsFilters", defaultValue = "") String[] ptmsFilters,
+                                       @RequestParam(value = "newPtmsFilter", defaultValue = "", required = false) String newPtmsFilter,
+                                       @RequestParam(value = "ptmsFilters", defaultValue = "", required = false) String[] ptmsFilters,
 
-                                       @RequestParam(value = "newSpeciesFilter", defaultValue = "") String newSpeciesFilter,
-                                       @RequestParam(value = "speciesFilters", defaultValue = "") String[] speciesFilters,
+                                       @RequestParam(value = "newSpeciesFilter", defaultValue = "", required = false) String newSpeciesFilter,
+                                       @RequestParam(value = "speciesFilters", defaultValue = "", required = false) String[] speciesFilters,
 
-                                       @RequestParam(value = "newTissueFilter", defaultValue = "") String newTissueFilter,
-                                       @RequestParam(value = "tissueFilters", defaultValue = "") String[] tissueFilters,
+                                       @RequestParam(value = "newTissueFilter", defaultValue = "", required = false) String newTissueFilter,
+                                       @RequestParam(value = "tissueFilters", defaultValue = "", required = false) String[] tissueFilters,
 
-                                       @RequestParam(value = "newDiseaseFilter", defaultValue = "") String newDiseaseFilter,
-                                       @RequestParam(value = "diseaseFilters", defaultValue = "") String[] diseaseFilters,
+                                       @RequestParam(value = "newDiseaseFilter", defaultValue = "", required = false) String newDiseaseFilter,
+                                       @RequestParam(value = "diseaseFilters", defaultValue = "", required = false) String[] diseaseFilters,
 
-                                       @RequestParam(value = "newTitleFilter", defaultValue = "") String newTitleFilter,
-                                       @RequestParam(value = "titleFilters", defaultValue = "") String[] titleFilters,
+                                       @RequestParam(value = "newTitleFilter", defaultValue = "", required = false) String newTitleFilter,
+                                       @RequestParam(value = "titleFilters", defaultValue = "", required = false) String[] titleFilters,
 
-                                       @RequestParam(value = "newInstrumentFilter", defaultValue = "") String newInstrumentFilter,
-                                       @RequestParam(value = "instrumentFilters", defaultValue = "") String[] instrumentFilters,
+                                       @RequestParam(value = "newInstrumentFilter", defaultValue = "", required = false) String newInstrumentFilter,
+                                       @RequestParam(value = "instrumentFilters", defaultValue = "", required = false) String[] instrumentFilters,
 
-                                       @RequestParam(value = "newQuantificationFilter", defaultValue = "") String newQuantificationFilter,
-                                       @RequestParam(value = "quantificationFilters", defaultValue = "") String[] quantificationFilters,
+                                       @RequestParam(value = "newQuantificationFilter", defaultValue = "", required = false) String newQuantificationFilter,
+                                       @RequestParam(value = "quantificationFilters", defaultValue = "", required = false) String[] quantificationFilters,
 
-                                       @RequestParam(value = "newExperimentTypeFilter", defaultValue = "") String newExperimentTypeFilter,
-                                       @RequestParam(value = "experimentTypeFilters", defaultValue = "") String[] experimentTypeFilters,
+                                       @RequestParam(value = "newExperimentTypeFilter", defaultValue = "", required = false) String newExperimentTypeFilter,
+                                       @RequestParam(value = "experimentTypeFilters", defaultValue = "", required = false) String[] experimentTypeFilters,
 
-                                       @RequestParam(value = "newProjectTagFilter", defaultValue = "") String newProjectTagFilter,
-                                       @RequestParam(value = "projectTagFilters", defaultValue = "") String[] projectTagFilters,
+                                       @RequestParam(value = "newProjectTagFilter", defaultValue = "", required = false) String newProjectTagFilter,
+                                       @RequestParam(value = "projectTagFilters", defaultValue = "", required = false) String[] projectTagFilters,
 
-                                       @RequestParam(value = "newSubmissionTypeFilter", defaultValue = "") String newSubmissionTypeFilter,
-                                       @RequestParam(value = "submissionTypeFilters", defaultValue = "") String[] submissionTypeFilters,
+                                       @RequestParam(value = "newSubmissionTypeFilter", defaultValue = "", required = false) String newSubmissionTypeFilter,
+                                       @RequestParam(value = "submissionTypeFilters", defaultValue = "", required = false) String[] submissionTypeFilters,
                                        Model model) throws org.apache.solr.common.SolrException {
 
         // foall: if no search term is provided, and therefore score is not very relevant, date has to be the sorting

@@ -56,7 +56,7 @@
                 "selected": false,
                 "title": "Browse data",
                 "id": "browse-menu",
-                "href": "${deploy.url}simpleSearch?q=&submit=Search",
+                "href": "${deploy.url}simpleSearch",
                 "tooltip": "Browse data in PRIDE Archive"
             },
             {

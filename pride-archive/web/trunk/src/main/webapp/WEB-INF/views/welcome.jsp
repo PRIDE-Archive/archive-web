@@ -71,7 +71,7 @@
         </h3>
 
         <p class="justify-body-text">
-            <spring:url var="browseUrl" value="/simpleSearch?q=&submit=Search"/>
+            <spring:url var="browseUrl" value="/simpleSearch"/>
             <a href="${browseUrl}"><fmt:message key="welcome.access.browse.caption"/></a>:
             <fmt:message key="welcome.access.browse.summary"/>
         </p>
