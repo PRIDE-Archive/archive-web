@@ -235,7 +235,8 @@
                                 <spring:param name="proteinID" value="${protein.assayAccession}__${protein.submittedAccession}"/>
                             </spring:url>
                             <c:if test="${not empty protein.inferredSequence or not empty protein.submittedSequence}">
-                                <a class="no_visual_link icon icon-functional" data-icon="1" href="${proteinViewerUrl}"></a>
+                                <%--<a class="no_visual_link icon icon-functional" data-icon="1" href="${proteinViewerUrl}"></a>--%>
+                                <a class="no_visual_link" target="_blank" href="${proteinViewerUrl}"><img class=table_icon title="Protein Viewer"  id='protein_viewer' src='${pageContext.request.contextPath}/resources/img/proteinViewer.png'></a>
                             </c:if>
                         </span>
                     </td>
