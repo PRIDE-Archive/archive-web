@@ -123,7 +123,7 @@ public class ViewerServiceController {
 //        return annotations;
         return "[\n" +
                 "[\"b-ion\",461.185,\"b+\"],\n" +
-                "[\"y-ion\",209.062,\"y+\"]\n" +
+                "[\"b-ion\",209.062,\"y+\"]\n" +
                 "]";
     }
 
