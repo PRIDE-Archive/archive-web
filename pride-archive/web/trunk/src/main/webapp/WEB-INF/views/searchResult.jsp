@@ -1,9 +1,12 @@
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="priderElement" tagdir="/WEB-INF/tags/elements" %>
+<%@ taglib prefix="search" tagdir="/WEB-INF/tags/search" %>
+
 
 <%-- bread crumb--%>
 <div class="grid_24 clearfix">
@@ -491,185 +494,25 @@
         <c:if test="${not empty projectList}">
             <div id="search-results" class="grid_18 right-column">
 
-                <!-- paging buttons -->
-                <div class="grid_24">
-                    <c:if test="${numPages>1}">
-                        <div id="paging-buttons" class="grid_12 alpha">
-                            <ul class="search-menu">
-                                <%-- First --%>
-                                <li><priderElement:hrefSearch
-                                        label="1"
-                                        q="${q}"
-                                        show="${show}"
-                                        page="0"
-                                        sort="${sort}"
-                                        order="${order}"
-                                        titleFilters="${titleFilters}"
-                                        speciesFilters="${speciesFilters}"
-                                        tissueFilters="${tissueFilters}"
-                                        diseaseFilters="${diseaseFilters}"
-                                        ptmsFilters="${ptmsFilters}"
-                                        instrumentFilters="${instrumentFilters}"
-                                        quantificationFilters="${quantificationFilters}"
-                                        experimentTypeFilters="${experimentTypeFilters}"
-                                        projectTagFilters="${projectTagFilters}"
-                                        submissionTypeFilters="${submissionTypeFilters}"
-                                        hrefClass="${0==page?'selected':''}"
-                                        />
-                                </li>
-                                <c:if test="${page>3}"><li>...</li></c:if>
-
-                                <%-- In between pages --%>
-                                <%--<c:forEach var="nPage" begin="${(page<5) ? 2 : (page-2)}" end="${(page>(numPages-4)) ? numPages-1 : (page+2)}">--%>
-                                <c:forEach var="nPage" begin="${(page<4) ? 2 : (page-1)}" end="${(page>(numPages-3)) ? numPages-1 : (page+3)}">
-                                    <li><priderElement:hrefSearch
-                                            label="${nPage}"
-                                            q="${q}"
-                                            show="${show}"
-                                            page="${nPage-1}"
-                                            sort="${sort}"
-                                            order="${order}"
-                                            titleFilters="${titleFilters}"
-                                            speciesFilters="${speciesFilters}"
-                                            tissueFilters="${tissueFilters}"
-                                            diseaseFilters="${diseaseFilters}"
-                                            ptmsFilters="${ptmsFilters}"
-                                            instrumentFilters="${instrumentFilters}"
-                                            quantificationFilters="${quantificationFilters}"
-                                            experimentTypeFilters="${experimentTypeFilters}"
-                                            projectTagFilters="${projectTagFilters}"
-                                            submissionTypeFilters="${submissionTypeFilters}"
-                                            hrefClass="${nPage-1==page?'selected':''}"
-                                            />
-                                    </li>
-                                </c:forEach>
-                                <%-- Last --%>
-                                <c:if test="${page<(numPages-3)}"><li>...</li></c:if>
-                                <li><priderElement:hrefSearch
-                                        label="${numPages}"
-                                        q="${q}"
-                                        show="${show}"
-                                        page="${numPages-1}"
-                                        sort="${sort}"
-                                        order="${order}"
-                                        titleFilters="${titleFilters}"
-                                        speciesFilters="${speciesFilters}"
-                                        tissueFilters="${tissueFilters}"
-                                        diseaseFilters="${diseaseFilters}"
-                                        ptmsFilters="${ptmsFilters}"
-                                        instrumentFilters="${instrumentFilters}"
-                                        quantificationFilters="${quantificationFilters}"
-                                        experimentTypeFilters="${experimentTypeFilters}"
-                                        projectTagFilters="${projectTagFilters}"
-                                        submissionTypeFilters="${submissionTypeFilters}"
-                                        hrefClass="${numPages-1==page?'selected':''}"
-                                        />
-                                </li>
-
-                            </ul>
-                        </div>
-                    </c:if>
-
-                    <!-- Show entries controls -->
-                    <c:choose>
-                        <c:when test="${numPages>1}">
-                            <c:set var="show_entries_style" value="grid_12 omega"/>
-                        </c:when>
-                        <c:otherwise>
-                            <c:set var="show_entries_style" value="grid_23 omega"/>
-                        </c:otherwise>
-                    </c:choose>
-                    <div id="show-entries" class="${show_entries_style}">
-                        <ul class="search-menu-right-align">
-                            <c:if test="${numResults>10}">
-                                <li><fmt:message key="search.show.entries"/></li>
-                                <li><priderElement:hrefSearch
-                                        label="10"
-                                        q="${q}"
-                                        show="10"
-                                        page="${page}"
-                                        sort="${sort}"
-                                        order="${order}"
-                                        titleFilters="${titleFilters}"
-                                        speciesFilters="${speciesFilters}"
-                                        tissueFilters="${tissueFilters}"
-                                        diseaseFilters="${diseaseFilters}"
-                                        ptmsFilters="${ptmsFilters}"
-                                        instrumentFilters="${instrumentFilters}"
-                                        quantificationFilters="${quantificationFilters}"
-                                        experimentTypeFilters="${experimentTypeFilters}"
-                                        projectTagFilters="${projectTagFilters}"
-                                        submissionTypeFilters="${submissionTypeFilters}"
-                                        hrefClass="${show==10?'selected':''}"
-                                        /></li>
-
-                                <li><priderElement:hrefSearch
-                                        label="20"
-                                        q="${q}"
-                                        show="20"
-                                        page="${page}"
-                                        sort="${sort}"
-                                        order="${order}"
-                                        titleFilters="${titleFilters}"
-                                        speciesFilters="${speciesFilters}"
-                                        tissueFilters="${tissueFilters}"
-                                        diseaseFilters="${diseaseFilters}"
-                                        ptmsFilters="${ptmsFilters}"
-                                        instrumentFilters="${instrumentFilters}"
-                                        quantificationFilters="${quantificationFilters}"
-                                        experimentTypeFilters="${experimentTypeFilters}"
-                                        projectTagFilters="${projectTagFilters}"
-                                        submissionTypeFilters="${submissionTypeFilters}"
-                                        hrefClass="${show==20?'selected':''}"
-                                        /></li>
-
-                                <c:if test="${numResults>20}">
-                                    <li><priderElement:hrefSearch
-                                            label="50"
-                                            q="${q}"
-                                            show="50"
-                                            page="${page}"
-                                            sort="${sort}"
-                                            order="${order}"
-                                            titleFilters="${titleFilters}"
-                                            speciesFilters="${speciesFilters}"
-                                            tissueFilters="${tissueFilters}"
-                                            diseaseFilters="${diseaseFilters}"
-                                            ptmsFilters="${ptmsFilters}"
-                                            instrumentFilters="${instrumentFilters}"
-                                            quantificationFilters="${quantificationFilters}"
-                                            experimentTypeFilters="${experimentTypeFilters}"
-                                            projectTagFilters="${projectTagFilters}"
-                                            submissionTypeFilters="${submissionTypeFilters}"
-                                            hrefClass="${show==50?'selected':''}"
-                                            /></li>
-
-                                    <c:if test="${numResults>50}">
-                                        <li><priderElement:hrefSearch
-                                                label="100"
-                                                q="${q}"
-                                                show="100"
-                                                page="${page}"
-                                                sort="${sort}"
-                                                order="${order}"
-                                                titleFilters="${titleFilters}"
-                                                speciesFilters="${speciesFilters}"
-                                                tissueFilters="${tissueFilters}"
-                                                diseaseFilters="${diseaseFilters}"
-                                                ptmsFilters="${ptmsFilters}"
-                                                instrumentFilters="${instrumentFilters}"
-                                                quantificationFilters="${quantificationFilters}"
-                                                experimentTypeFilters="${experimentTypeFilters}"
-                                                projectTagFilters="${projectTagFilters}"
-                                                submissionTypeFilters="${submissionTypeFilters}"
-                                                hrefClass="${show==100?'selected':''}"
-                                                /></li>
-                                    </c:if> <!--50-->
-                                </c:if> <!--20-->
-                            </c:if> <!--10-->
-                        </ul>
-                    </div>
-                </div>
+            <!-- paging buttons -->
+            <search:paginator q="${q}"
+                              show="${show}"
+                              page="${page}"
+                              sort="${sort}"
+                              order="${order}"
+                              numPages="${numPages}"
+                              numResults="${numResults}"
+                              numElements="${fn:length(projectList)}"
+                              titleFilters="${titleFilters}"
+                              speciesFilters="${speciesFilters}"
+                              tissueFilters="${tissueFilters}"
+                              diseaseFilters="${diseaseFilters}"
+                              ptmsFilters="${ptmsFilters}"
+                              instrumentFilters="${instrumentFilters}"
+                              quantificationFilters="${quantificationFilters}"
+                              experimentTypeFilters="${experimentTypeFilters}"
+                              projectTagFilters="${projectTagFilters}"
+                              submissionTypeFilters="${submissionTypeFilters}"/>
 
                 <%--Sort by controls--%>
                 <div class="grid_24">
@@ -695,7 +538,7 @@
                                     experimentTypeFilters="${experimentTypeFilters}"
                                     projectTagFilters="${projectTagFilters}"
                                     submissionTypeFilters="${submissionTypeFilters}"
-                                    hrefClass="${sort=='id'?'selected':''}"
+                                    hrefClass="${(sort == 'id') ? ((order=='asc')?'selected asc':'selected desc') : ''}"
                                     /></li>
                                 <%--Sort by Title--%>
                             <li><priderElement:hrefSearch
@@ -715,7 +558,7 @@
                                     experimentTypeFilters="${experimentTypeFilters}"
                                     projectTagFilters="${projectTagFilters}"
                                     submissionTypeFilters="${submissionTypeFilters}"
-                                    hrefClass="${sort=='project_title'?'selected':''}"
+                                    hrefClass="${(sort == 'project_title') ? ((order=='asc')?'selected asc':'selected desc') : ''}"
                                     /></li>
                                 <%--Sort by Relevance--%>
                             <li><priderElement:hrefSearch
@@ -735,7 +578,7 @@
                                     experimentTypeFilters="${experimentTypeFilters}"
                                     projectTagFilters="${projectTagFilters}"
                                     submissionTypeFilters="${submissionTypeFilters}"
-                                    hrefClass="${sort=='score'?'selected':''}"
+                                    hrefClass="${(sort == 'score') ? ((order=='asc')?'selected asc':'selected desc') : order}"
                                     /></li>
                                 <%--Sort by Publication Date--%>
                             <li><priderElement:hrefSearch
@@ -755,16 +598,8 @@
                                     experimentTypeFilters="${experimentTypeFilters}"
                                     projectTagFilters="${projectTagFilters}"
                                     submissionTypeFilters="${submissionTypeFilters}"
-                                    hrefClass="${sort=='publication_date'?'selected':''}"
+                                    hrefClass="${(sort == 'publication_date') ? ((order=='asc')?'selected asc':'selected desc') : order}"
                                     /></li>
-                                <%--display order--%>
-                            <c:if test="${order=='asc'}">
-                                <li>(Ascending)</li>
-                            </c:if>
-                            <c:if test="${order=='desc'}">
-                                <li>(Descending)</li>
-                            </c:if>
-
                         </ul>
                     </div>
                 </div>
@@ -787,187 +622,24 @@
                         <br>
                     </div>
                 </div>
-
-                <!-- paging buttons -->
-                <div class="grid_24">
-                    <!-- paging buttons -->
-                    <c:if test="${numPages>1}">
-                        <div id="paging-buttons" class="grid_12 alpha">
-                            <ul class="search-menu">
-                                    <%-- First --%>
-                                <li><priderElement:hrefSearch
-                                        label="1"
-                                        q="${q}"
-                                        show="${show}"
-                                        page="0"
-                                        sort="${sort}"
-                                        order="${order}"
-                                        titleFilters="${titleFilters}"
-                                        speciesFilters="${speciesFilters}"
-                                        tissueFilters="${tissueFilters}"
-                                        diseaseFilters="${diseaseFilters}"
-                                        ptmsFilters="${ptmsFilters}"
-                                        instrumentFilters="${instrumentFilters}"
-                                        quantificationFilters="${quantificationFilters}"
-                                        experimentTypeFilters="${experimentTypeFilters}"
-                                        projectTagFilters="${projectTagFilters}"
-                                        submissionTypeFilters="${submissionTypeFilters}"
-                                        hrefClass="${0==page?'selected':''}"
-                                        />
-                                </li>
-                                <c:if test="${page>3}"><li>...</li></c:if>
-
-                                    <%-- In between pages --%>
-                                    <%--<c:forEach var="nPage" begin="${(page<5) ? 2 : (page-2)}" end="${(page>(numPages-4)) ? numPages-1 : (page+2)}">--%>
-                                <c:forEach var="nPage" begin="${(page<4) ? 2 : (page-1)}" end="${(page>(numPages-3)) ? numPages-1 : (page+3)}">
-                                    <li><priderElement:hrefSearch
-                                            label="${nPage}"
-                                            q="${q}"
-                                            show="${show}"
-                                            page="${nPage-1}"
-                                            sort="${sort}"
-                                            order="${order}"
-                                            titleFilters="${titleFilters}"
-                                            speciesFilters="${speciesFilters}"
-                                            tissueFilters="${tissueFilters}"
-                                            diseaseFilters="${diseaseFilters}"
-                                            ptmsFilters="${ptmsFilters}"
-                                            instrumentFilters="${instrumentFilters}"
-                                            quantificationFilters="${quantificationFilters}"
-                                            experimentTypeFilters="${experimentTypeFilters}"
-                                            projectTagFilters="${projectTagFilters}"
-                                            submissionTypeFilters="${submissionTypeFilters}"
-                                            hrefClass="${nPage-1==page?'selected':''}"
-                                            />
-                                    </li>
-                                </c:forEach>
-                                    <%-- Last --%>
-                                <c:if test="${page<(numPages-3)}"><li>...</li></c:if>
-                                <li><priderElement:hrefSearch
-                                        label="${numPages}"
-                                        q="${q}"
-                                        show="${show}"
-                                        page="${numPages-1}"
-                                        sort="${sort}"
-                                        order="${order}"
-                                        titleFilters="${titleFilters}"
-                                        speciesFilters="${speciesFilters}"
-                                        tissueFilters="${tissueFilters}"
-                                        diseaseFilters="${diseaseFilters}"
-                                        ptmsFilters="${ptmsFilters}"
-                                        instrumentFilters="${instrumentFilters}"
-                                        quantificationFilters="${quantificationFilters}"
-                                        experimentTypeFilters="${experimentTypeFilters}"
-                                        projectTagFilters="${projectTagFilters}"
-                                        submissionTypeFilters="${submissionTypeFilters}"
-                                        hrefClass="${numPages-1==page?'selected':''}"
-                                        />
-                                </li>
-
-                            </ul>
-                        </div>
-                    </c:if>
-
-                    <!-- Show entries controls -->
-                    <c:choose>
-                        <c:when test="${numPages>1}">
-                            <c:set var="show_entries_style" value="grid_12 omega"/>
-                        </c:when>
-                        <c:otherwise>
-                            <c:set var="show_entries_style" value="grid_23 omega"/>
-                        </c:otherwise>
-                    </c:choose>
-                    <div id="show-entries" class="${show_entries_style}">
-                        <ul class="search-menu-right-align">
-                            <c:if test="${numResults>10}">
-                                <li><fmt:message key="search.show.entries"/></li>
-                                <li><priderElement:hrefSearch
-                                        label="10"
-                                        q="${q}"
-                                        show="10"
-                                        page="${page}"
-                                        sort="${sort}"
-                                        order="${order}"
-                                        titleFilters="${titleFilters}"
-                                        speciesFilters="${speciesFilters}"
-                                        tissueFilters="${tissueFilters}"
-                                        diseaseFilters="${diseaseFilters}"
-                                        ptmsFilters="${ptmsFilters}"
-                                        instrumentFilters="${instrumentFilters}"
-                                        quantificationFilters="${quantificationFilters}"
-                                        experimentTypeFilters="${experimentTypeFilters}"
-                                        projectTagFilters="${projectTagFilters}"
-                                        submissionTypeFilters="${submissionTypeFilters}"
-                                        hrefClass="${show==10?'selected':''}"
-                                        /></li>
-
-                                <li><priderElement:hrefSearch
-                                        label="20"
-                                        q="${q}"
-                                        show="20"
-                                        page="${page}"
-                                        sort="${sort}"
-                                        order="${order}"
-                                        titleFilters="${titleFilters}"
-                                        speciesFilters="${speciesFilters}"
-                                        tissueFilters="${tissueFilters}"
-                                        diseaseFilters="${diseaseFilters}"
-                                        ptmsFilters="${ptmsFilters}"
-                                        instrumentFilters="${instrumentFilters}"
-                                        quantificationFilters="${quantificationFilters}"
-                                        experimentTypeFilters="${experimentTypeFilters}"
-                                        projectTagFilters="${projectTagFilters}"
-                                        submissionTypeFilters="${submissionTypeFilters}"
-                                        hrefClass="${show==20?'selected':''}"
-                                        /></li>
-
-                                <c:if test="${numResults>20}">
-                                    <li><priderElement:hrefSearch
-                                            label="50"
-                                            q="${q}"
-                                            show="50"
-                                            page="${page}"
-                                            sort="${sort}"
-                                            order="${order}"
-                                            titleFilters="${titleFilters}"
-                                            speciesFilters="${speciesFilters}"
-                                            tissueFilters="${tissueFilters}"
-                                            diseaseFilters="${diseaseFilters}"
-                                            ptmsFilters="${ptmsFilters}"
-                                            instrumentFilters="${instrumentFilters}"
-                                            quantificationFilters="${quantificationFilters}"
-                                            experimentTypeFilters="${experimentTypeFilters}"
-                                            projectTagFilters="${projectTagFilters}"
-                                            submissionTypeFilters="${submissionTypeFilters}"
-                                            hrefClass="${show==50?'selected':''}"
-                                            /></li>
-
-                                    <c:if test="${numResults>50}">
-                                        <li><priderElement:hrefSearch
-                                                label="100"
-                                                q="${q}"
-                                                show="100"
-                                                page="${page}"
-                                                sort="${sort}"
-                                                order="${order}"
-                                                titleFilters="${titleFilters}"
-                                                speciesFilters="${speciesFilters}"
-                                                tissueFilters="${tissueFilters}"
-                                                diseaseFilters="${diseaseFilters}"
-                                                ptmsFilters="${ptmsFilters}"
-                                                instrumentFilters="${instrumentFilters}"
-                                                quantificationFilters="${quantificationFilters}"
-                                                experimentTypeFilters="${experimentTypeFilters}"
-                                                projectTagFilters="${projectTagFilters}"
-                                                submissionTypeFilters="${submissionTypeFilters}"
-                                                hrefClass="${show==100?'selected':''}"
-                                                /></li>
-                                    </c:if> <!--50-->
-                                </c:if> <!--20-->
-                            </c:if> <!--10-->
-                        </ul>
-                    </div>
-                </div> <!-- paging buttons -->
+                <search:paginator  q="${q}"
+                                   show="${show}"
+                                   page="${page}"
+                                   sort="${sort}"
+                                   order="${order}"
+                                   numPages="${numPages}"
+                                   numResults="${numResults}"
+                                   numElements="${fn:length(projectList)}"
+                                   titleFilters="${titleFilters}"
+                                   speciesFilters="${speciesFilters}"
+                                   tissueFilters="${tissueFilters}"
+                                   diseaseFilters="${diseaseFilters}"
+                                   ptmsFilters="${ptmsFilters}"
+                                   instrumentFilters="${instrumentFilters}"
+                                   quantificationFilters="${quantificationFilters}"
+                                   experimentTypeFilters="${experimentTypeFilters}"
+                                   projectTagFilters="${projectTagFilters}"
+                                   submissionTypeFilters="${submissionTypeFilters}"/>
             </div> <!-- search results-->
         </c:if> <!-- no empty search -->
      </div>

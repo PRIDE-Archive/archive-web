@@ -59,7 +59,16 @@
                             <fmt:message key="login.password"/>
                         </label>
 
-                        <input class="input-box" type='password' id='j_password' name='j_password'/>
+                        <input class="input-box" type='password' id='j_password' name='j_password'
+                               placeholder="Password"
+                               required="true"
+                               />
+
+                        <div>
+                            <label>
+                                <input type="checkbox" id="show-password"> Show Password
+                            </label>
+                        </div>
                     </div>
 
                     <div>
@@ -88,3 +97,4 @@
         </div>
     </div>
 </div>
+

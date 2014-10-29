@@ -20,8 +20,12 @@ public class LegacyReviewerAwareUserDetailsSecurityServiceImpl extends UserDetai
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if (username != null && username.toLowerCase().startsWith(REVIEWER) && !username.contains(EMAIL_SIGN)) {
-            username += EMAIL_SIGN + EBI_EMAIL_DOMAIN;
+        if(username != null){
+            username = username.trim();
+
+            if (username.toLowerCase().startsWith(REVIEWER) && !username.contains(EMAIL_SIGN)) {
+                username += EMAIL_SIGN + EBI_EMAIL_DOMAIN;
+            }
         }
 
         return super.loadUserByUsername(username);

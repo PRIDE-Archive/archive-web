@@ -5,6 +5,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="inspector" tagdir="/WEB-INF/tags/inspector" %>
+<%@ taglib prefix="table" tagdir="/WEB-INF/tags/table" %>
 
 <%-- Breadcrumb for navigation --%>
 <%-- PRIDE > PRIDE Archive > Accession--%>
@@ -474,11 +475,11 @@
     </div>
 
     <div class="grid_12">
-        <c:if test="${not empty assaySummaries}">
+        <c:if test="${not empty page.content}">
             <h5><fmt:message key="assay.number"/></h5>
 
             <p>
-                <a href="#assays">${fn:length(assaySummaries)}</a>
+                <a href="#assays">${page.totalElements}</a>
             </p>
         </c:if>
     </div>
@@ -514,54 +515,58 @@
 </div>
 
 <%-- assay summaries --%>
-<c:if test="${not empty assaySummaries}">
+<c:if test="${not empty page.content}">
     <div id="assays" class="grid_23 clearfix assay">
         <h4><fmt:message key="assay.list.title"/></h4>
 
-        <p>
-        <table class="summary-table" width="1080px">
-            <thead class="fixedHeader">
+
+        <table:paginator page="${page}"/>
+        <table id="assayTable" class="summary-table footable table">
+            <thead>
             <tr>
-                <th width="80px">
+                <th><strong>#</strong></th>
+                <th>
                     <fmt:message key="assay.accession"/>
                 </th>
-                <th width="500px">
+                <th>
                     <fmt:message key="assay.title"/>
                 </th>
-                <th width="80px">
+                <th>
                     <fmt:message key="assay.protein.count"/>
                 </th>
-                <th width="80px">
+                <th>
                     <fmt:message key="assay.peptide.count"/>
                 </th>
-                <th width="100px">
+                <th>
                     <fmt:message key="assay.unique.peptide.count"/>
                 </th>
-                <th width="80px">
+                <th>
                     <fmt:message key="assay.spectrum.count"/>
                 </th>
-                <th width="120px">
+                <th>
                     <fmt:message key="assay.identified.spectrum.count"/>
                 </th>
-                <th width="100px">
+                <th>
                     <fmt:message key="assay.reactome.link"/>
                 </th>
             </tr>
             </thead>
-            <tbody class="scrollContent">
-            <c:forEach var="assay" items="${assaySummaries}">
+            <tbody>
+            <c:set var="first" value="${page.size * page.number}"/>
+            <c:forEach var="assay" items="${page.content}" varStatus="status">
                 <tr>
-                    <td width="80px">
+                    <td style="white-space: nowrap;">${first + status.count}</td>
+                    <td>
                         <spring:url var="showUrl" value="/projects/{projectAccession}/assays/{assayAccession}">
                             <spring:param name="projectAccession" value="${projectSummary.accession}"/>
                             <spring:param name="assayAccession" value="${assay.accession}"/>
                         </spring:url>
                         <a href="${showUrl}" class="icon icon-functional" data-icon="4">${assay.accession}</a>
                     </td>
-                    <td width="500px">
-                            ${assay.title}
+                    <td>
+                        ${assay.title}
                     </td>
-                    <td width="80px">
+                    <td>
                         <%--<c:choose>--%>
                             <%--<c:when test="${assay.proteinCount > 0  and assay.indexProteinCount gt 0}">--%>
                                 <%--<spring:url var="proteinPageUrl" value="/projects/{projectAccession}/assays/{assayAccession}/proteins">--%>
@@ -575,7 +580,7 @@
                             <%--</c:otherwise>--%>
                         <%--</c:choose>--%>
                     </td>
-                    <td width="80px">
+                    <td>
                         <%--<c:choose>--%>
                             <%--<c:when test="${assay.peptideCount > 0 and assay.indexPsmCount gt 0}">--%>
                                 <%--<spring:url var="psmPageUrl" value="/projects/{projectAccession}/assays/{assayAccession}/psms">--%>
@@ -589,16 +594,16 @@
                             <%--</c:otherwise>--%>
                         <%--</c:choose>--%>
                     </td>
-                    <td width="100px">
+                    <td>
                             ${assay.uniquePeptideCount}
                     </td>
-                    <td width="80px">
+                    <td>
                             ${assay.totalSpectrumCount}
                     </td>
-                    <td width="120px">
+                    <td>
                             ${assay.identifiedSpectrumCount}
                     </td>
-                    <td width="100px" style="text-align: center">
+                    <td>
                         <button onclick="reactomeAnalysis(this, ${assay.accession}, false)" class="reactome-analyse">
                             Analyse
                         </button>

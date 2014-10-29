@@ -4,6 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -81,7 +84,9 @@ public class ProjectSummaryController {
     }
 
     @RequestMapping(value = "projects/{accession}", method = RequestMethod.GET)
-    public ModelAndView getProjectSummary(@PathVariable String accession) {
+    public ModelAndView getProjectSummary(@PathVariable String accession,
+                                          @PageableDefault(page = 0, value = 10) Pageable page
+                                          ) {
 
 //        try {
         // get the project metadata
@@ -92,7 +97,7 @@ public class ProjectSummaryController {
         summary = filteredProjectSummaries.iterator().next();
 
         // get the assay list
-        Collection<AssaySummary> assaySummaries = assaySecureService.findAllByProjectAccession(accession);
+        Page<AssaySummary> assaySummaries = assaySecureService.findAllByProjectAccession(accession, page);
 
 
         Long indexProteinCount = proteinIdentificationSearchService.countByProjectAccession(accession);

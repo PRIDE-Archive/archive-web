@@ -512,7 +512,7 @@
             <c:forEach var="additional" items="${additionals}">
                 <tr>
                     <td>
-                            ${additional.name}
+                        <span style="white-space: nowrap">${additional.name}</span>
                     </td>
                     <td>
                         <c:choose>
