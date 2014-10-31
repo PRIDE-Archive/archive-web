@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:context="http://www.springframework.org/schema/context"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                             http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config />
+
+    <global-method-security pre-post-annotations="enabled">
+        <expression-handler ref="expressionHandler"/>
+    </global-method-security>
+
+    <!--<http pattern="/login*" security="none"/>-->
+    <http pattern="/resources/**" security="none"/>
+    <http pattern="/submissionCharts/**" security="none"/>
+
+    <http use-expressions="true" auto-config='true'>
+        <intercept-url pattern="/" access="permitAll" />
+        <intercept-url pattern="/feedback**" access="permitAll"/>
+        <intercept-url pattern="/register*" access="permitAll" />
+        <intercept-url pattern="/registration*" access="permitAll" />
+        <intercept-url pattern="/login*" access="permitAll" />
+        <intercept-url pattern="/error*" access="permitAll" />
+        <intercept-url pattern="/home/**" access="permitAll" />
+        <intercept-url pattern="/browse" access="permitAll" />
+        <intercept-url pattern="/users/forgotPassword*" access="permitAll" />
+        <intercept-url pattern="/passwordReset*" access="permitAll" />
+        <intercept-url pattern="/submission/**" access="permitAll" />
+        <intercept-url pattern="/documentation/**" access="permitAll" />
+        <intercept-url pattern="/about/**" access="permitAll" />
+        <intercept-url pattern="/searchForm" access="permitAll" />
+        <intercept-url pattern="/simpleSearch" access="permitAll" />
+        <intercept-url pattern="/searchResult" access="permitAll" />
+        <intercept-url pattern="/search**" access="permitAll" />
+        <intercept-url pattern="/projects/**" access="permitAll" />
+        <intercept-url pattern="/assays/**" access="permitAll" />
+        <intercept-url pattern="/files/**" access="permitAll" />
+        <intercept-url pattern="/proteins/**" access="permitAll" />
+        <intercept-url pattern="/psms/**" access="permitAll" />
+        <intercept-url pattern="/check" access="permitAll" />
+        <!--<intercept-url pattern="/viewer/service/**" access="permitAll" />-->
+        <intercept-url pattern="/viewer/**" access="permitAll" />
+        <intercept-url pattern="/webapp/**" access="permitAll" />
+        <intercept-url pattern="/resources/**" access="permitAll" />
+        <intercept-url pattern="/ebisearch/**" access="permitAll" /> <!-- use for local testing of EBI global search -->
+        <intercept-url pattern="/users/**" access="hasAnyRole('SUBMITTER', 'ADMINISTRATOR', 'REVIEWER')" />
+        <intercept-url pattern="/**" access="hasAnyRole('SUBMITTER', 'ADMINISTRATOR', 'REVIEWER')" />
+        <form-login login-page='/login' default-target-url='/users/profile' always-use-default-target='true' authentication-failure-url="/login?error=true"/>
+        <logout logout-url="/logout" logout-success-url="/" invalidate-session="true" />
+    </http>
+
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider user-service-ref="userDetailService">
+            <password-encoder ref="passwordEncoder"/>
+        </authentication-provider>
+    </authentication-manager>
+
+    <beans:bean id="userDetailService" class="uk.ac.ebi.pride.archive.web.user.preauth.LegacyReviewerAwareUserDetailsSecurityServiceImpl">
+        <beans:constructor-arg ref="userRepository"/>
+    </beans:bean>
+
+    <beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
+    <beans:bean id="expressionHandler" class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">
+        <beans:property name="permissionEvaluator" ref="permissionEvaluator"/>
+    </beans:bean>
+
+    <beans:bean id="permissionEvaluator" class="uk.ac.ebi.pride.archive.security.framework.UserServicePermissionEvaluator">
+        <beans:constructor-arg name="permissionNameToPermissionMap">
+            <beans:map key-type="java.lang.String" value-type="uk.ac.ebi.pride.archive.security.framework.permission.Permission">
+                <beans:entry key="isAccessibleProject" value-ref="projectPermission"/>
+                <beans:entry key="isAccessibleProjectAccession" value-ref="projectAccessionPermission"/>
+                <beans:entry key="isAccessibleAssay" value-ref="assayPermission"/>
+                <beans:entry key="isAccessibleAssayAccession" value-ref="assayAccessionPermission"/>
+                <beans:entry key="isAccessibleFile" value-ref="filePermission"/>
+                <beans:entry key="isAccessibleProjectId" value-ref="projectIdPermission"/>
+                <beans:entry key="isAccessibleAssayId" value-ref="assayIdPermission"/>
+            </beans:map>
+        </beans:constructor-arg>
+    </beans:bean>
+
+    <beans:bean id="projectPermission" class="uk.ac.ebi.pride.archive.security.framework.permission.ProjectPermission"/>
+
+    <beans:bean id="projectAccessionPermission" class="uk.ac.ebi.pride.archive.security.framework.permission.ProjectAccessionPermission">
+        <beans:constructor-arg name="projectRepository" ref="projectRepository"/>
+    </beans:bean>
+
+    <beans:bean id="assayPermission" class="uk.ac.ebi.pride.archive.security.framework.permission.AssayPermission">
+        <beans:constructor-arg name="projectRepository" ref="projectRepository"/>
+    </beans:bean>
+
+    <beans:bean id="assayAccessionPermission" class="uk.ac.ebi.pride.archive.security.framework.permission.AssayAccessionPermission">
+        <beans:constructor-arg name="assayRepository" ref="assayRepository"/>
+        <beans:constructor-arg name="projectRepository" ref="projectRepository"/>
+    </beans:bean>
+
+    <beans:bean id="filePermission" class="uk.ac.ebi.pride.archive.security.framework.permission.FilePermission">
+        <beans:constructor-arg name="projectRepository" ref="projectRepository"/>
+    </beans:bean>
+
+    <beans:bean id="projectIdPermission" class="uk.ac.ebi.pride.archive.security.framework.permission.ProjectIdPermission">
+        <beans:constructor-arg name="projectRepository" ref="projectRepository"/>
+    </beans:bean>
+
+    <beans:bean id="assayIdPermission" class="uk.ac.ebi.pride.archive.security.framework.permission.AssayIdPermission">
+        <beans:constructor-arg name="assayRepository" ref="assayRepository"/>
+        <beans:constructor-arg name="projectRepository" ref="projectRepository"/>
+    </beans:bean>
+
+</beans:beans>

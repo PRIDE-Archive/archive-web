@@ -1,0 +1,169 @@
+{
+    "localMasthead": {
+        "style": "logo-title",
+        "title": "PRIDE Archive",
+        "homepageUrl": "${deploy.url}",
+        "logo": {
+            "src": "//www.ebi.ac.uk/pride/resources/logos/pride_logo.jpg",
+            "alt": "logo",
+            "width": "64",
+            "height": "64"
+        },
+        "search": {
+            "btnText": "Search",
+            "action": "${deploy.url}simpleSearch",
+            "method": "get",
+            "inputName": "q",
+            "examples": [
+                {
+                    "title": "stress",
+                    "href": "${deploy.url}simpleSearch?q=stress"
+                },
+                {
+                    "title": "human",
+                    "href": "${deploy.url}simpleSearch?q=human"
+                },
+                {
+                    "title": "blood",
+                    "href": "${deploy.url}simpleSearch?q=blood"
+                },
+                {
+                    "title": "P02768",
+                    "href": "${deploy.url}simpleSearch?q=P02768"
+                },
+                {
+                    "title": "MDPNTIIEALR*",
+                    "href": "${deploy.url}simpleSearch?q=MDPNTIIEALR*"
+                }
+            ]
+        },
+        "navigationTabs": [
+            {
+                "selected": false,
+                "title": "Home",
+                "id": "home-menu",
+                "href": "${deploy.url}",
+                "tooltip": "Home page"
+            },
+            {
+                "selected": false,
+                "title": "Submit data",
+                "id": "submit-menu",
+                "href": "//www.ebi.ac.uk/pride/help/archive/submission",
+                "tooltip": "Submit data to PRIDE Archive"
+            },
+            {
+                "selected": false,
+                "title": "Browse data",
+                "id": "browse-menu",
+                "href": "${deploy.url}simpleSearch?q=&submit=Search",
+                "tooltip": "Browse data in PRIDE Archive"
+            },
+            {
+                "selected": false,
+                "title": "Help",
+                "id": "help-menu",
+                "href": "//www.ebi.ac.uk/pride/help/archive",
+                "tooltip": "PRIDE Archive help"
+            },
+            {
+                "selected": false,
+                "title": "About PRIDE Archive",
+                "id": "about-prider-menu",
+                "href": "//www.ebi.ac.uk/pride/help/archive/about",
+                "tooltip": "About PRIDE Archive"
+            }
+        ],
+        "functionalTabs": [
+            {
+                "title": "Feedback",
+                "href": "//www.ebi.ac.uk/support/index.php?query=pride",
+                "iconFontSet": "icon-static",
+                "dataIcon": "\\"
+            },
+            {
+                "selected": false,
+                "title": "Login",
+                "id": "login-menu",
+                "href": "${deploy.url}login",
+                "tooltip": "Login to PRIDE Archive",
+                "iconFontSet": "icon-functional",
+                "dataIcon": "l"
+            },
+            {
+                "selected": false,
+                "title": "Register",
+                "id": "register-menu",
+                "href": "${deploy.url}register",
+                "tooltip": "Register",
+                "iconFontSet": "icon-functional",
+                "dataIcon": "5"
+            }
+        ]
+    },
+    "globalFooter": true,
+    "globalTemplate": {
+        "title": "PRIDE Archive",
+        "cssList": [
+            {
+                "url": "${deploy.url}resources/css/prider.css"
+            },
+            {
+                "url": "//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"
+            },
+            {
+                "url": "${deploy.url}resources/css/footable/footable.core.css"
+            }
+        ],
+        "javascriptList": [
+            {
+                "url": "//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"
+            },
+            {
+                "url": "//code.jquery.com/ui/1.10.3/jquery-ui.js"
+            },
+            {
+                "url": "//www.google.com/jsapi"
+            },
+            {
+                "url": "//canvg.googlecode.com/svn/trunk/rgbcolor.js"
+            },
+            {
+                "url": "//canvg.googlecode.com/svn/trunk/StackBlur.js"
+            },
+            {
+                "url": "//canvg.googlecode.com/svn/trunk/canvg.js"
+            },
+            {
+                "url": "${deploy.url}resources/javascript/priderStats.js"
+            },
+            {
+                "url": "${deploy.url}resources/javascript/prider.js"
+            },
+            {
+                "url": "${deploy.url}resources/javascript/aspera-utils.js"
+            },
+            {
+                "url": "${deploy.url}resources/javascript/google-analytics.js"
+            },
+            {
+                "url": "${deploy.url}resources/javascript/footable/footable.js"
+            },
+            {
+                "url": "${deploy.url}resources/javascript/footable/footable.striping.js"
+            },
+            {
+                "url": "${deploy.url}resources/javascript/reactome-analysis.js"
+            }
+        ],
+        "bottomJavascriptList": [
+            {
+                "url": "http://www.ebi.ac.uk/web_guidelines/js/ebi-global-search-run.js"
+            },
+            {
+                "url": "http://www.ebi.ac.uk/web_guidelines/js/ebi-global-search.js"
+            }
+        ]
+
+    }
+}

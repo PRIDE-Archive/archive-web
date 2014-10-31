@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>uk.ac.ebi.pride.maven</groupId>
+        <artifactId>pride-base-master</artifactId>
+        <version>1.0.3</version>
+    </parent>
+
+    <groupId>uk.ac.ebi.pride.archive</groupId>
+    <artifactId>archive-web</artifactId>
+    <packaging>war</packaging>
+    <version>2.0.2</version>
+    <name>PRIDE Archive Web</name>
+    <url>http://www.ebi.ac.uk/pride/archive</url>
+
+    <!--
+         To build the project several settings are required which are provided via maven profiles
+         (using JNDI for DB connection)
+         These are:
+                pride-archive-user-service       -> Configure the urls property for the web service
+                pride-archive-solr-cores         -> Configure the solr cores
+                pride-archive-web-local          -> Configure the <deploy.url> property in the profile and the solr URL
+                pride-twitter
+                wgc-template-service-prod
+
+         If not using JNDI the DB connections will have to be configured
+                db-pride-repo-pridearch-ro-user  (only needed if not using JNDI)
+                db-pride-repo-pridepro           (only needed if not using JNDI)
+
+     -->
+
+    <licenses>
+        <license>
+            <name>The Apache Software License 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <properties>
+        <pride.web.utils.version>1.3.9</pride.web.utils.version>
+        <archive.security.version>0.1.2</archive.security.version>
+        <archive.search.version>1.0.2</archive.search.version>
+        <!--provided by archive-security-->
+        <!--<archive.repo.version>0.1.19</archive.repo.version>-->
+        <!--<archive.data.provider.api.version>2.0.6</archive.data.provider.api.version>-->
+        <!--<protein.identification.search.version>0.1.1</protein.identification.search.version>-->
+        <!--<psm.search.version>0.1.5-SNAPSHOT</psm.search.version>-->
+        <spectrum.search.version>0.1.1</spectrum.search.version>
+        <archive.utils.version>0.1.11</archive.utils.version>
+        <webapp.service.impl.version>0.1.3</webapp.service.impl.version>
+        <commons.digester.version>1.8</commons.digester.version>
+        <google.charts4j.version>1.3</google.charts4j.version>
+        <solrj.version>4.2.0</solrj.version>
+        <!--SolrJ version should be move to the master-->
+    </properties>
+
+    <build>
+
+        <resources>
+            <!-- regular resources -->
+            <!-- Maven should filter properties files -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/props/*.properties</include>
+                    <include>**/webconfig/*.json</include>  <!-- currently needs to be filtered to provide the deployment path of the webapp -->
+                </includes>
+            </resource>
+            <!-- Maven should not filter other files -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/props/*.properties</exclude>
+                    <exclude>**/webconfig/*.json</exclude>
+                </excludes>
+            </resource>
+
+            <!-- webapp resources -->
+            <!--<resource>-->
+                <!--<directory>src/main/webapp/WEB-INF</directory>-->
+                <!--<filtering>false</filtering>-->
+            <!--</resource>-->
+        </resources>
+
+        <plugins>
+            <!-- maven-jetty-plugin -->
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>maven-jetty-plugin</artifactId>
+                <configuration>
+                    <webAppConfig>
+                        <contextPath>/pride/archive</contextPath>
+                    </webAppConfig>
+                    <connectors>
+                        <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+                            <port>9090</port>
+                        </connector>
+                    </connectors>
+                    <jettyConfig>${basedir}/jetty.xml</jettyConfig>
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.oracle</groupId>
+                        <artifactId>oracle-thin</artifactId>
+                        <version>11.2.0.1.0</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>commons-dbcp</groupId>
+                        <artifactId>commons-dbcp</artifactId>
+                        <version>1.2.2</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <!-- ##### ##### PRIDE internal dependencies ##### ##### ##### ##### ##### -->
+
+        <!--archive-repo-->
+        <!-- provided by archive security -->
+
+        <!-- archive-data-provider-api -->
+        <!-- provided by archive security -->
+
+        <!--protein-identification-search-->
+        <!-- provided by archive security -->
+
+        <!--psm-search-->
+        <!-- provided by archive security -->
+
+        <!--archive-search-->
+        <dependency>
+            <groupId>uk.ac.ebi.pride.archive</groupId>
+            <artifactId>archive-search</artifactId>
+            <version>${archive.search.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>uk.ac.ebi.pride</groupId>
+                    <artifactId>jmztab</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>uk.ac.ebi.pride</groupId>
+                    <artifactId>jmztab-modular-converters</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.solr</groupId>
+                    <artifactId>solr-test-framework</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!--psm-search-->
+        <dependency>
+            <groupId>uk.ac.ebi.pride</groupId>
+            <artifactId>spectrum-index-search</artifactId>
+            <version>${spectrum.search.version}</version>
+        </dependency>
+
+
+        <!-- pride archive utils -->
+        <dependency>
+            <groupId>uk.ac.ebi.pride.archive</groupId>
+            <artifactId>archive-utils</artifactId>
+            <version>${archive.utils.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>org.eclipse.jetty.orbit</artifactId>
+                    <groupId>javax.servlet</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- archive-security -->
+        <dependency>
+            <groupId>uk.ac.ebi.pride.archive</groupId>
+            <artifactId>archive-security</artifactId>
+            <version>${archive.security.version}</version>
+        </dependency>
+
+        <!-- archive webapp-service-impl -->
+        <dependency>
+            <groupId>uk.ac.ebi.pride.archive</groupId>
+            <artifactId>webapp-service-impl</artifactId>
+            <version>${webapp.service.impl.version}</version>
+        </dependency>
+
+        <!-- PRIDE web utilities-->
+        <dependency>
+            <groupId>uk.ac.ebi.pride.web</groupId>
+            <artifactId>pride-web-utils</artifactId>
+            <version>${pride.web.utils.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-codec</groupId>
+                    <artifactId>commons-codec</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- ##### ##### 3rd party dependencies ##### ##### ##### ##### ##### -->
+        <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+
+        <!-- Spring social -->
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-twitter</artifactId>
+        </dependency>
+
+        <!-- Spring test-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+        </dependency>
+
+        <!-- Spring security-->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+        </dependency>
+
+        <!--SolrJ-->
+        <dependency>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-solrj</artifactId>
+            <version>${solrj.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-core</artifactId>
+            <version>${solrj.version}</version>
+        </dependency>
+
+        <!-- json -->
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- AspectJ -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
+
+        <!-- Servlet -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+
+        <!-- apache tiles -->
+        <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-jsp</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-digester</groupId>
+                    <artifactId>commons-digester</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- Note: tiles 2.2 uses commons-digester 2.0 which is buggy with sax
+        (http request will fail the first time) using version 1.8 solves the issue -->
+        <dependency>
+            <groupId>commons-digester</groupId>
+            <artifactId>commons-digester</artifactId>
+            <version>${commons.digester.version}</version>
+        </dependency>
+
+        <!-- Google chart -->
+        <dependency>
+            <groupId>com.googlecode.charts4j</groupId>
+            <artifactId>charts4j</artifactId>
+            <version>${google.charts4j.version}</version>
+        </dependency>
+
+        <!-- java mail-->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>${java.mail.version}</version>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <!-- EBI repo to retrieve the master pom -->
+        <repository>
+            <id>nexus-ebi-repo</id>
+            <name>The EBI internal repository</name>
+            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo/</url>
+            <releases>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <scm>
+        <connection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-archive/web/tags/archive-web-2.0.2</connection>
+        <developerConnection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-archive/web/tags/archive-web-2.0.2</developerConnection>
+        <url>https://svn.ebi.ac.uk/pride-repo/pride-archive/web/tags/archive-web-2.0.2</url>
+    </scm>
+</project>
