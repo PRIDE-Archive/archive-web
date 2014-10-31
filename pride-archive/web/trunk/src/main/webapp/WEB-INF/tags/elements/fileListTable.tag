@@ -36,8 +36,7 @@
             <fmt:message key="file.units.mb"/>
         </td>
         <td width="10%">
-            <a href="<c:url value='/files/${file.id}'/>" class="icon icon-functional" data-icon="="><fmt:message
-                    key="file.download"></fmt:message></a>
+            <a href="<c:url value='/files/${file.id}'/>" class="icon icon-functional" data-icon="="><fmt:message key="file.download"/></a>
         </td>
             <%-- Extra table column for Aspera download links, if Aspera plugin is installed --%>
         <c:if test="${not empty projectSummary.publicationDate }">
@@ -47,7 +46,7 @@
                     <c:set var="newExtension" value=".gz"/>
                 </c:if>
                 <a href="#" class="icon icon-functional" data-icon="=" onClick="asperaDownload('fasp://prd_ascp@fasp.ebi.ac.uk/pride/data/archive/${projectPublicationYear}/${projectPublicationMonth}/${projectSummary.accession}/${file.fileName}${newExtension}?auth=no&bwcap=300000&targetrate=100p&policy=fair&enc=none')">
-                    <fmt:message key="file.download"></fmt:message>
+                    <fmt:message key="file.download"/>
                 </a>
             </td>
         </c:if>
