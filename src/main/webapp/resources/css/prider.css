@@ -565,6 +565,13 @@ a.sortLink {
     color: blue;
     border-radius: 5px;
 }
+.reactome-analyse-disabled {
+    background-color: lightgrey;
+    border-color: black;
+    color: slategrey;
+    border-radius: 5px;
+}
+
 
 .reactome-loading {
     background: url('../img/spinner.gif') no-repeat;
