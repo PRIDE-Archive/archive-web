@@ -19,7 +19,7 @@
 
 <%-- Notice if the Aspera browser plugin is not installed --%>
 <h5 class="aspera-plugin-link aspera-content-hidden">
-    <a href="http://downloads.asperasoft.com/download_connect/" class="icon icon-functional" data-icon="=">
+    <a href="http://www.asperasoft.com/connect/" class="icon icon-functional" data-icon="=">
         <fmt:message key="fast.download.support"/> (<a href="http://asperasoft.com/">Aspera</a>)
     </a>
 </h5>
