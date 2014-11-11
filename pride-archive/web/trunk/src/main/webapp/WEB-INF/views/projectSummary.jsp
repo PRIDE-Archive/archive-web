@@ -91,7 +91,7 @@
                 <fmt:message key="project.file.download.title"/>
             </a>
         </h5>
-        <c:if test="${fn:toLowerCase(projectSummary.submissionType) != 'partial' and projectSummary.indexProteinCount > 0}">
+        <c:if test="${projectSummary.indexProteinCount gt 0}">
             <spring:url var="projectProteinsUrl" value="/projects/{accession}/proteins">
                 <spring:param name="accession" value="${projectSummary.accession}"/>
             </spring:url>
@@ -102,7 +102,7 @@
             </h5>
         </c:if>
 
-        <c:if test="${fn:toLowerCase(projectSummary.submissionType) != 'partial' and projectSummary.indexPsmCount gt 0 }">
+        <c:if test="${projectSummary.indexPsmCount gt 0 }">
             <spring:url var="projectPsmsUrl" value="/projects/{accession}/psms">
                 <spring:param name="accession" value="${projectSummary.accession}"/>
             </spring:url>
@@ -567,47 +567,36 @@
                         ${assay.title}
                     </td>
                     <td>
-                        <%--<c:choose>--%>
-                            <%--<c:when test="${assay.proteinCount > 0  and assay.indexProteinCount gt 0}">--%>
-                                <%--<spring:url var="proteinPageUrl" value="/projects/{projectAccession}/assays/{assayAccession}/proteins">--%>
-                                    <%--<spring:param name="projectAccession" value="${projectSummary.accession}"/>--%>
-                                    <%--<spring:param name="assayAccession" value="${assay.accession}"/>--%>
-                                <%--</spring:url>--%>
-                                <%--<a href="${proteinPageUrl}">${assay.proteinCount}</a>--%>
-                            <%--</c:when>--%>
-                            <%--<c:otherwise>--%>
-                                ${assay.proteinCount}
-                            <%--</c:otherwise>--%>
-                        <%--</c:choose>--%>
+                        ${assay.proteinCount}
                     </td>
                     <td>
-                        <%--<c:choose>--%>
-                            <%--<c:when test="${assay.peptideCount > 0 and assay.indexPsmCount gt 0}">--%>
-                                <%--<spring:url var="psmPageUrl" value="/projects/{projectAccession}/assays/{assayAccession}/psms">--%>
-                                    <%--<spring:param name="projectAccession" value="${projectSummary.accession}"/>--%>
-                                    <%--<spring:param name="assayAccession" value="${assay.accession}"/>--%>
-                                <%--</spring:url>--%>
-                                <%--<a href="${psmPageUrl}">${assay.peptideCount}</a>--%>
-                            <%--</c:when>--%>
-                            <%--<c:otherwise>--%>
-                                ${assay.peptideCount}
-                            <%--</c:otherwise>--%>
-                        <%--</c:choose>--%>
+                        ${assay.peptideCount}
                     </td>
                     <td>
-                            ${assay.uniquePeptideCount}
+                        ${assay.uniquePeptideCount}
                     </td>
                     <td>
-                            ${assay.totalSpectrumCount}
+                        ${assay.totalSpectrumCount}
                     </td>
                     <td>
-                            ${assay.identifiedSpectrumCount}
+                        ${assay.identifiedSpectrumCount}
                     </td>
                     <td>
-                        <button onclick="reactomeAnalysis(this, ${assay.accession}, false)" class="reactome-analyse">
-                            Analyse
-                        </button>
-                        <%--<reactome-analysis-url value="http://wwwdev.ebi.ac.uk/pride/ws/archive/protein/list/assay/${assay.accession}.acc" project="false" size="12"></reactome-analysis-url>--%>
+                        <div>
+                            <c:choose>
+                                <c:when test="${projectSummary.indexPsmCount gt 0 }">
+                                    <button title="Analyse the protein set in Reactome" onclick="reactomeAnalysis(this, ${assay.accession}, false)" class="reactome-analyse">
+                                        Analyse
+                                    </button>
+                                </c:when>
+                                <c:otherwise>
+                                    <button title="Protein set currently not available for analysis" class="reactome-analyse-disabled">
+                                        Analyse
+                                    </button>
+                                </c:otherwise>
+                            </c:choose>
+                            <%--<reactome-analysis-url value="http://wwwdev.ebi.ac.uk/pride/ws/archive/protein/list/assay/${assay.accession}.acc" project="false" size="12"></reactome-analysis-url>--%>
+                        </div>
                     </td>
                 </tr>
             </c:forEach>
