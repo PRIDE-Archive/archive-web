@@ -12,6 +12,8 @@
 <div class="grid_24">
     <div class="col_pager">
     <div class="pr-pager">
+        <%--one base page number same as screen--%>
+        <c:set var="myPage" value="${page.number + 1}"/>
         <c:if test="${page.numberOfElements gt 0}">
             <spring:url value="" var="first">
                 <spring:param name="page" value="${0}"/>
@@ -37,33 +39,53 @@
                     </c:otherwise>
                 </c:choose>
             </c:if>
-            <c:if test="${page.number gt 3}">...</c:if>
+            <c:if test="${myPage gt 4 and page.totalPages gt 5 }">...</c:if>
 
-            <c:forEach var="nPage" begin="${(page.number lt 4) ? 2 : (page.number-1)}" end="${(page.number gt (page.totalPages-3)) ? page.totalPages-1 : (page.number+3)}">
-                <spring:url value="" var="middle">
-                    <spring:param name="page" value="${nPage-1}"/>
-                    <spring:param name="size" value="${page.size}"/>
-                    <spring:param name="q" value="${q}"/>
+            <c:if test="${myPage le 5 and page.totalPages le 5}">
+                <c:set var="start" value="2" />
+                <c:set var="stop" value="${page.totalPages-1}" />
+            </c:if>
 
-                    <c:forEach var="sortOrder" items="${fn:split(page.sort,',')}">
-                        <spring:param name="sort" value="${sortOrder}"/>
-                    </c:forEach>
+            <c:if test="${myPage le 4 and page.totalPages gt 5}">
+                <c:set var="start" value="2" />
+                <c:set var="stop" value="5" />
+            </c:if>
 
-                    <c:forEach var="theFilter" items="${ptmsFilters}">
-                        <spring:param name="ptmsFilters" value="${theFilter}"/>
-                    </c:forEach>
-                </spring:url>
-                <c:choose>
-                    <c:when test="${nPage-1 eq page.number}">
-                        <span>${nPage}</span>
-                    </c:when>
-                    <c:otherwise>
-                        <a href="${middle}">${nPage}</a>
-                    </c:otherwise>
-                </c:choose>
-            </c:forEach>
+            <c:if test="${myPage gt 4 and page.totalPages gt 5}">
+                <c:set var="start" value="${myPage+2 gt page.totalPages-2 ? page.totalPages-4 : myPage-2}" />
+                <c:set var="stop" value="${myPage+2 gt page.totalPages-2 ? page.totalPages-1 : myPage+2}" />
+            </c:if>
 
-            <c:if test="${page.number lt (page.totalPages-3)}">...</c:if>
+            <c:if test="${page.totalPages gt 2}">
+                <c:forEach var="nPage"
+                           begin="${start}"
+                           end="${stop}">
+
+                    <spring:url value="" var="middle">
+                        <spring:param name="page" value="${nPage-1}"/>
+                        <spring:param name="size" value="${page.size}"/>
+                        <spring:param name="q" value="${q}"/>
+
+                        <c:forEach var="sortOrder" items="${fn:split(page.sort,',')}">
+                            <spring:param name="sort" value="${sortOrder}"/>
+                        </c:forEach>
+
+                        <c:forEach var="theFilter" items="${ptmsFilters}">
+                            <spring:param name="ptmsFilters" value="${theFilter}"/>
+                        </c:forEach>
+                    </spring:url>
+                    <c:choose>
+                        <c:when test="${nPage-1 eq page.number}">
+                            <span>${nPage}</span>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="${middle}">${nPage}</a>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+            </c:if>
+
+            <c:if test="${page.totalPages gt 5 and myPage le page.totalPages-4}">...</c:if>
 
             <c:if test="${page.totalPages gt 1}">
                 <spring:url value="" var="last">

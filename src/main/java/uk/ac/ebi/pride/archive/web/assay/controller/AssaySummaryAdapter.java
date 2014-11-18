@@ -20,11 +20,13 @@ public class AssaySummaryAdapter implements AssaySummaryDetails {
     private final AssaySummary assaySummary;
     private final Long indexProteinCount;
     private final Long indexPsmCount;
+    private final boolean publicAssay;
 
-    public AssaySummaryAdapter(AssaySummary assaySummary, Long indexProteinCount, Long indexPsmCount) {
+    public AssaySummaryAdapter(AssaySummary assaySummary, Long indexProteinCount, Long indexPsmCount, boolean publicAssay) {
         this.assaySummary = assaySummary;
         this.indexProteinCount = indexProteinCount;
         this.indexPsmCount = indexPsmCount;
+        this.publicAssay = publicAssay;
     }
 
     @Override
@@ -150,6 +152,11 @@ public class AssaySummaryAdapter implements AssaySummaryDetails {
     @Override
     public Collection<CvParamSummary> getGoTerms() {
         return assaySummary.getGoTerms();
+    }
+
+    @Override
+    public boolean isPublicAssay() {
+        return publicAssay;
     }
 
     @Override

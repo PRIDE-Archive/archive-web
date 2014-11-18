@@ -299,23 +299,27 @@ public class SearchController {
                     for (ProjectSearchSummary projectSearchSummary : projects) {
 
                         for (String termToken : termTokens) {
-                            //We need escape every token to avoid syntax problems
-                            termToken = SearchUtils.escapeQueryCharsExceptStartQuestionMarkWhitespace(termToken);
-                            // get protein identifications for this project and possibly the search term
-                            List<ProteinIdentification> proteinIdentifications =
-                                    proteinIdentificationSearchService.findByProjectAccessionAndAnyMapping(
-                                            projectSearchSummary.getProjectAccession(), termToken);
+                            //We remove the solr reserved words
+                            termToken = cleanTerm(termToken);
+                            if(termToken!= null && !termToken.isEmpty()) {
+                                //We need escape every token to avoid syntax problems
+                                termToken = SearchUtils.escapeQueryCharsExceptStartQuestionMarkWhitespace(termToken);
+                                // get protein identifications for this project and possibly the search term
+                                List<ProteinIdentification> proteinIdentifications =
+                                        proteinIdentificationSearchService.findByProjectAccessionAndAnyMapping(
+                                                projectSearchSummary.getProjectAccession(), termToken);
 
-                            if(proteinIdentifications!= null && proteinIdentifications.size() > 0) {
-                                int count = proteinIdentifications.size();
+                                if (proteinIdentifications != null && proteinIdentifications.size() > 0) {
+                                    int count = proteinIdentifications.size();
 
-                                // initialize the highlights for the field if needed (most likely)
-                                if (projectSearchSummary.getHighlights().get(PROTEIN_IDENTIFICATIONS.getIndexName()) == null) {
-                                    projectSearchSummary.getHighlights().put(PROTEIN_IDENTIFICATIONS.getIndexName(), new LinkedList<String>());
+                                    // initialize the highlights for the field if needed (most likely)
+                                    if (projectSearchSummary.getHighlights().get(PROTEIN_IDENTIFICATIONS.getIndexName()) == null) {
+                                        projectSearchSummary.getHighlights().put(PROTEIN_IDENTIFICATIONS.getIndexName(), new LinkedList<String>());
+                                    }
+                                    projectSearchSummary.getHighlights().get(PROTEIN_IDENTIFICATIONS.getIndexName()).add(
+                                            HIGHLIGHT_PRE_FRAGMENT + termToken + " (" + count + ")" + HIGHLIGHT_POST_FRAGMENT
+                                    );
                                 }
-                                projectSearchSummary.getHighlights().get(PROTEIN_IDENTIFICATIONS.getIndexName()).add(
-                                        HIGHLIGHT_PRE_FRAGMENT + termToken + " (" + count + ")" + HIGHLIGHT_POST_FRAGMENT
-                                );
                             }
                         }
                     }
@@ -332,54 +336,59 @@ public class SearchController {
 
                 if (termTokens.length > 0) { // if we get any patterns from the search terms...
                     // go through projects to find highlights
+
                     for (ProjectSearchSummary projectSearchSummary : projects) {
                         for (String termToken : termTokens) {
+                            //We remove the solr reserved words
+                            termToken = cleanTerm(termToken);
+                            if(termToken!= null && !termToken.isEmpty()) {
 
-                            //We need escape every token to avoid syntax problems
-                            termToken = SearchUtils.escapeQueryCharsExceptStartQuestionMarkWhitespace(termToken);
+                                //We need escape every token to avoid syntax problems
+                                termToken = SearchUtils.escapeQueryCharsExceptStartQuestionMarkWhitespace(termToken);
 
-                            // We avoid queries with less than 4 amino acids and more that 100 and with letters that
-                            // don't represent amino acids except the star.
-                            if (termToken.matches(PEPTIDE_REGEX)) {
+                                // We avoid queries with less than 4 amino acids and more that 100 and with letters that
+                                // don't represent amino acids except the star.
+                                if (termToken.matches(PEPTIDE_REGEX)) {
 
-                                // get protein identifications for this project and possibly the search term
-                                List<Psm> psms =
-                                        psmSearchService.findByPeptideSequenceAndProjectAccession(
-                                                termToken, projectSearchSummary.getProjectAccession()
-                                        );
+                                    // get protein identifications for this project and possibly the search term
+                                    List<Psm> psms =
+                                            psmSearchService.findByPeptideSequenceAndProjectAccession(
+                                                    termToken, projectSearchSummary.getProjectAccession()
+                                            );
 
-                                if (psms != null) {
+                                    if (psms != null) {
 
-                                    Set<String> peptideSequences = new TreeSet<String>();
+                                        Set<String> peptideSequences = new TreeSet<String>();
 
-                                    //We group only the sequences to count properly the results (we have several psm with the same sequence),
-                                    //maybe un the future we will need the modifications too
-                                    for (Psm psm : psms) {
-                                        peptideSequences.add(psm.getPeptideSequence());
-                                    }
-
-                                    int numHighlightsAdded = 0;
-                                    Iterator<String> it = peptideSequences.iterator();
-
-                                    while (it.hasNext() && numHighlightsAdded < MAX_PEPTIDE_SEQUENCE_HIGHLIGHTS) {
-                                        String sequence = it.next();
-                                        // initialize the highlights for the field if needed (most likely)
-                                        if (projectSearchSummary.getHighlights().get(PEPTIDE_SEQUENCES.getIndexName()) == null) {
-                                            projectSearchSummary.getHighlights().put(PEPTIDE_SEQUENCES.getIndexName(), new LinkedList<String>());
+                                        //We group only the sequences to count properly the results (we have several psm with the same sequence),
+                                        //maybe un the future we will need the modifications too
+                                        for (Psm psm : psms) {
+                                            peptideSequences.add(psm.getPeptideSequence());
                                         }
 
-                                        String pepHighlight = HIGHLIGHT_PRE_FRAGMENT + sequence + HIGHLIGHT_POST_FRAGMENT;
-                                        //the peptide sequences is not added before becasue we remove the repetitions before
-                                        projectSearchSummary.getHighlights().get(PEPTIDE_SEQUENCES.getIndexName()).add(pepHighlight);
-                                        numHighlightsAdded++;
+                                        int numHighlightsAdded = 0;
+                                        Iterator<String> it = peptideSequences.iterator();
 
-                                    }
+                                        while (it.hasNext() && numHighlightsAdded < MAX_PEPTIDE_SEQUENCE_HIGHLIGHTS) {
+                                            String sequence = it.next();
+                                            // initialize the highlights for the field if needed (most likely)
+                                            if (projectSearchSummary.getHighlights().get(PEPTIDE_SEQUENCES.getIndexName()) == null) {
+                                                projectSearchSummary.getHighlights().put(PEPTIDE_SEQUENCES.getIndexName(), new LinkedList<String>());
+                                            }
 
-                                    if (numHighlightsAdded > 0 && numHighlightsAdded < peptideSequences.size()) {
-                                        // add the (More) bit
-                                        projectSearchSummary.getHighlights().get(PEPTIDE_SEQUENCES.getIndexName()).add(
-                                                String.format(MORE_WITH_NUMBER_TEXT, peptideSequences.size() - MAX_PEPTIDE_SEQUENCE_HIGHLIGHTS)
-                                        );
+                                            String pepHighlight = HIGHLIGHT_PRE_FRAGMENT + sequence + HIGHLIGHT_POST_FRAGMENT;
+                                            //the peptide sequences is not added before becasue we remove the repetitions before
+                                            projectSearchSummary.getHighlights().get(PEPTIDE_SEQUENCES.getIndexName()).add(pepHighlight);
+                                            numHighlightsAdded++;
+
+                                        }
+
+                                        if (numHighlightsAdded > 0 && numHighlightsAdded < peptideSequences.size()) {
+                                            // add the (More) bit
+                                            projectSearchSummary.getHighlights().get(PEPTIDE_SEQUENCES.getIndexName()).add(
+                                                    String.format(MORE_WITH_NUMBER_TEXT, peptideSequences.size() - MAX_PEPTIDE_SEQUENCE_HIGHLIGHTS)
+                                            );
+                                        }
                                     }
                                 }
                             }
@@ -431,7 +440,8 @@ public class SearchController {
     private String cleanTerm(String term) {
 
         if (term != null && !term.equals("")) {
-            term = term.replaceAll("AND", "").replaceAll("OR", "").replaceAll("NOT", "");
+            //Solr reserved words
+            term = term.replaceAll("^AND$", "").replaceAll("^OR$", "").replaceAll("^NOT$", "");
             term = term.trim().replaceAll(" {2,}", " ");
 
             if(term.equals(" ") || term.equals("*")){

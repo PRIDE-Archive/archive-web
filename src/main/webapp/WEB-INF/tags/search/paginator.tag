@@ -28,11 +28,13 @@
     <%-- Pagination Bar--%>
     <div class="col_pager">
         <div class="pr-pager">
+            <%--one base page number same as screen--%>
+            <c:set var="myPage" value="${page + 1}"/>
             <c:if test="${numResults gt 0}">
                 <c:if test="${numPages gt 1}">
                     <fmt:message key="search.page"/>
                     <c:choose>
-                        <c:when test="${0 eq page}">
+                        <c:when test="${page eq 0}">
                             <span>1</span>
                         </c:when>
                         <c:otherwise>
@@ -56,39 +58,59 @@
                         </c:otherwise>
                     </c:choose>
                 </c:if>
-                <c:if test="${page gt 3}">...</c:if>
+                <c:if test="${myPage gt 4 and numPages gt 5 }">...</c:if>
+
                 <%-- In between pages --%>
-                <%--<c:forEach var="nPage" begin="${(page<5) ? 2 : (page-2)}" end="${(page>(numPages-4)) ? numPages-1 : (page+2)}">--%>
-                <c:forEach var="nPage" begin="${(page lt 4) ? 2 : (page-1)}" end="${(page gt (numPages-3)) ? numPages-1 : (page+3)}">
-                    <c:if test="${numPages gt 1}">
-                        <c:choose>
-                            <c:when test="${nPage-1 eq page}">
-                                <span>${nPage}</span>
-                            </c:when>
-                            <c:otherwise>
-                                <priderElement:hrefSearch
-                                        label="${nPage}"
-                                        q="${q}"
-                                        show="${show}"
-                                        page="${nPage-1}"
-                                        sort="${sort}"
-                                        order="${order}"
-                                        titleFilters="${titleFilters}"
-                                        speciesFilters="${speciesFilters}"
-                                        tissueFilters="${tissueFilters}"
-                                        diseaseFilters="${diseaseFilters}"
-                                        ptmsFilters="${ptmsFilters}"
-                                        instrumentFilters="${instrumentFilters}"
-                                        quantificationFilters="${quantificationFilters}"
-                                        experimentTypeFilters="${experimentTypeFilters}"
-                                        projectTagFilters="${projectTagFilters}"
-                                        submissionTypeFilters="${submissionTypeFilters}"/>
-                            </c:otherwise>
-                        </c:choose>
-                    </c:if>
-                </c:forEach>
+                <c:if test="${myPage le 5 and numPages le 5}">
+                    <c:set var="start" value="2" />
+                    <c:set var="stop" value="${numPages-1}" />
+                </c:if>
+
+                <c:if test="${myPage le 4 and numPages gt 5}">
+                    <c:set var="start" value="2" />
+                    <c:set var="stop" value="5" />
+                </c:if>
+
+                <c:if test="${myPage gt 4 and numPages gt 5}">
+                    <c:set var="start" value="${myPage+2 gt numPages-2 ? numPages-4 : myPage-2}" />
+                    <c:set var="stop" value="${myPage+2 gt numPages-2 ? numPages-1 : myPage+2}" />
+                </c:if>
+
+                <c:if test="${numPages gt 2}">
+                    <c:forEach var="nPage"
+                               begin="${start}"
+                               end="${stop}">
+                        <c:if test="${numPages gt 1}">
+                            <c:choose>
+                                <c:when test="${nPage-1 eq page}">
+                                    <span>${nPage}</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <priderElement:hrefSearch
+                                            label="${nPage}"
+                                            q="${q}"
+                                            show="${show}"
+                                            page="${nPage-1}"
+                                            sort="${sort}"
+                                            order="${order}"
+                                            titleFilters="${titleFilters}"
+                                            speciesFilters="${speciesFilters}"
+                                            tissueFilters="${tissueFilters}"
+                                            diseaseFilters="${diseaseFilters}"
+                                            ptmsFilters="${ptmsFilters}"
+                                            instrumentFilters="${instrumentFilters}"
+                                            quantificationFilters="${quantificationFilters}"
+                                            experimentTypeFilters="${experimentTypeFilters}"
+                                            projectTagFilters="${projectTagFilters}"
+                                            submissionTypeFilters="${submissionTypeFilters}"/>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:if>
+                    </c:forEach>
+                </c:if>
+
                 <%-- Last --%>
-                <c:if test="${page lt (numPages-3)}">...</c:if>
+                <c:if test="${numPages gt 5 and myPage le numPages-4 }">...</c:if>
                 <c:if test="${numPages gt 1}">
                     <c:choose>
                         <c:when test="${numPages-1 eq page}">

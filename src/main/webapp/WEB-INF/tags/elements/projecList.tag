@@ -25,6 +25,13 @@
                 <spring:param name="projectAccession" value="${project.projectAccession}"/>
             </spring:url>
             <a href="${showUrl}">${project.projectAccession}</a>
+            <c:if test="${fn:containsIgnoreCase(project.submissionType, 'COMPLETE')}">
+                <spring:url var="searchCompleteSubmissionUrl"
+                            value="/simpleSearch?q=&submissionTypeFilters={submissionTypeFilter}">
+                    <spring:param name="submissionTypeFilter" value="COMPLETE"/>
+                </spring:url>
+                <a title="Complete Submission" class="icon icon-functional no_visual_link" data-icon="/" href="${searchCompleteSubmissionUrl}"></a>
+            </c:if>
 
         </div>
             <%--Project title--%>
@@ -435,7 +442,6 @@
 
                     <spring:url var="searchTagUrl"
                                 value="/simpleSearch?q=&projectTagFilters={projectTagFilter}">
-                        <spring:param name="tag" value="${tag}"/>
                         <spring:param name="projectTagFilter" value="${tag}"/>
                     </spring:url>
 
