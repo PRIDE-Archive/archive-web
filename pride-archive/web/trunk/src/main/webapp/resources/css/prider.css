@@ -621,10 +621,6 @@ td a.no_visual_link {
 }
 
 
-table.floating-header th.col_pager {
-    /* border-top: 1px solid #CCCCCC; */
-}
-
 .col_pager {
     font-weight: normal;
     vertical-align: bottom;
@@ -801,4 +797,13 @@ a.highlighted {
     -webkit-border-radius: 5px;
     border-radius: 5px;
     display: inline;
+}
+
+a.no_visual_link {
+    border-bottom-color: transparent;
+}
+
+.disable {
+    color: lightgrey;
+    cursor: pointer;
 }

@@ -70,6 +70,7 @@ public class AssaySummaryController {
     public ModelAndView getProjectAssaySummary(@PathVariable String assayAccession, @PathVariable String projectAccession) {
 
         AssaySummary summary = assayServiceImpl.findByAccession(assayAccession);
+
         // filter assay
         Collection<AssaySummary> filteredAssays = removeAssayDuplicateCvParamFilter.filter(Arrays.asList(summary));
 
@@ -77,7 +78,11 @@ public class AssaySummaryController {
         Long indexProteinCount = proteinIdentificationSearchService.countByAssayAccession(assayAccession);
         Long indexPsmCount = psmSecureSearchService.countByAssayAccession(assayAccession);
 
-        return pageMaker.createAssaySummary(new AssaySummaryAdapter(summary, indexProteinCount, indexPsmCount), projectAccession);
+        // in the client we need to know if the assay is part of a public project
+        ProjectSummary projectSummary  = projectServiceImpl.findById(summary.getProjectId());
+        boolean publicAssay = projectSummary.isPublicProject();
+
+        return pageMaker.createAssaySummary(new AssaySummaryAdapter(summary, indexProteinCount, indexPsmCount, publicAssay), projectAccession);
     }
 
     @RequestMapping(value = "/assays/{assayAccession}/files", method = RequestMethod.GET)

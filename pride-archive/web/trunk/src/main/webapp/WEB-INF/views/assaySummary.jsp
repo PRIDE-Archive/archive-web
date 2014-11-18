@@ -74,20 +74,38 @@
                 <fmt:message key="assay.file.download.title"/>
             </a>
         </h5>
-        <c:if test="${assaySummary.indexProteinCount > 0}">
-            <h5>
-                <a href="${assayProteinsUrl}" class="icon icon-functional" data-icon="4">
-                    <fmt:message key="assay.proteins.table"/>
-                </a>
-            </h5>
-        </c:if>
-        <c:if test="${assaySummary.indexPsmCount > 0 }">
-            <h5>
-                <a href="${assayPsmsUrl}" class="icon icon-functional" data-icon="4">
-                    <fmt:message key="assay.psms.table"/>
-                </a>
-            </h5>
-        </c:if>
+        <c:choose>
+            <c:when test="${assaySummary.indexProteinCount gt 0 and assaySummary.publicAssay}">
+                <h5>
+                    <a href="${assayProteinsUrl}" class="icon icon-functional" data-icon="4">
+                        <fmt:message key="assay.proteins.table"/>
+                    </a>
+                </h5>
+            </c:when>
+            <c:otherwise>
+                <h5>
+                    <span class="icon icon-functional disable" data-icon="4" title="Protein table currently not available">
+                        <fmt:message key="project.psms.table"/>
+                    </span>
+                </h5>
+            </c:otherwise>
+        </c:choose>
+        <c:choose>
+            <c:when test="${assaySummary.indexPsmCount gt 0 and assaySummary.publicAssay}">
+                <h5>
+                    <a href="${assayPsmsUrl}" class="icon icon-functional" data-icon="4">
+                        <fmt:message key="assay.psms.table"/>
+                    </a>
+                </h5>
+            </c:when>
+            <c:otherwise>
+                <h5>
+                    <span class="icon icon-functional disable" data-icon="4" title="PSM table currently not available">
+                        <fmt:message key="assay.psms.table"/>
+                    </span>
+                </h5>
+            </c:otherwise>
+        </c:choose>
     </div>
 </div>
 

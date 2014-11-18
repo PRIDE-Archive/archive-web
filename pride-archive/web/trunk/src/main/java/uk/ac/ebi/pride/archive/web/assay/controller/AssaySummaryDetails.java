@@ -17,6 +17,8 @@ public interface AssaySummaryDetails extends AssayProvider {
     public Collection<CvParamSummary> getDiseases();
     public Collection<CvParamSummary> getGoTerms();
 
+    public boolean isPublicAssay();
+
     public long getIndexProteinCount();
     public long getIndexPsmCount();
 }

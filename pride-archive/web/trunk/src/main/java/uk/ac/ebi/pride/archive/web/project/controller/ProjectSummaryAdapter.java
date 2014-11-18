@@ -164,7 +164,7 @@ public class ProjectSummaryAdapter implements ProjectSummaryDetails {
 
     @Override
     public boolean isPublicProject() {
-        return false;
+        return projectSummary.isPublicProject();
     }
 
     @Override

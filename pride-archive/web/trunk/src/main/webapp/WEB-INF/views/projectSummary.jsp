@@ -24,7 +24,15 @@
 <%-- Project header including accession and download options--%>
 <div class="grid_23 clearfix project-title">
     <div class="grid_18 alpha">
-        <h3><fmt:message key="project"/> : ${projectSummary.accession}</h3>
+        <h3><fmt:message key="project"/> ${projectSummary.accession}
+            <c:if test="${fn:containsIgnoreCase(projectSummary.submissionType, 'COMPLETE')}">
+                <spring:url var="searchCompleteSubmissionUrl"
+                            value="/simpleSearch?q=&submissionTypeFilters={submissionTypeFilter}">
+                    <spring:param name="submissionTypeFilter" value="COMPLETE"/>
+                </spring:url>
+                <a title="Complete Submission" style="font-size: smaller" class="icon icon-functional no_visual_link" data-icon="/" href="${searchCompleteSubmissionUrl}"></a>
+            </c:if>
+        </h3>
 
         <%-- pride internal tags--%>
         <c:if test="${not empty projectSummary.internalTags or projectSummary.highlighted == true}">
@@ -91,26 +99,45 @@
                 <fmt:message key="project.file.download.title"/>
             </a>
         </h5>
-        <c:if test="${projectSummary.indexProteinCount gt 0}">
-            <spring:url var="projectProteinsUrl" value="/projects/{accession}/proteins">
-                <spring:param name="accession" value="${projectSummary.accession}"/>
-            </spring:url>
-            <h5>
-                <a href="${projectProteinsUrl}" class="icon icon-functional" data-icon="4">
-                    <fmt:message key="project.proteins.table"/>
-                </a>
-            </h5>
-        </c:if>
-
-        <c:if test="${projectSummary.indexPsmCount gt 0 }">
-            <spring:url var="projectPsmsUrl" value="/projects/{accession}/psms">
-                <spring:param name="accession" value="${projectSummary.accession}"/>
-            </spring:url>
-            <h5>
-                <a href="${projectPsmsUrl}" class="icon icon-functional" data-icon="4">
-                    <fmt:message key="project.psms.table"/>
-                </a>
-            </h5>
+        <c:if test="${fn:toLowerCase(projectSummary.submissionType) != 'partial'}">
+            <c:choose>
+                <c:when test="${projectSummary.indexProteinCount gt 0 and projectSummary.publicProject}">
+                    <spring:url var="projectProteinsUrl" value="/projects/{accession}/proteins">
+                        <spring:param name="accession" value="${projectSummary.accession}"/>
+                    </spring:url>
+                    <h5>
+                        <a href="${projectProteinsUrl}" class="icon icon-functional" data-icon="4">
+                            <fmt:message key="project.proteins.table"/>
+                        </a>
+                    </h5>
+                </c:when>
+                <c:otherwise>
+                    <h5>
+                        <span class="icon icon-functional disable" data-icon="4" title="Protein table currently not available">
+                            <fmt:message key="project.proteins.table"/>
+                        </span>
+                    </h5>
+                </c:otherwise>
+            </c:choose>
+            <c:choose>
+                <c:when test="${projectSummary.indexPsmCount gt 0 and projectSummary.publicProject}">
+                    <spring:url var="projectPsmsUrl" value="/projects/{accession}/psms">
+                        <spring:param name="accession" value="${projectSummary.accession}"/>
+                    </spring:url>
+                    <h5>
+                        <a href="${projectPsmsUrl}" class="icon icon-functional" data-icon="4">
+                            <fmt:message key="project.psms.table"/>
+                        </a>
+                    </h5>
+                </c:when>
+                <c:otherwise>
+                    <h5>
+                        <span class="icon icon-functional disable" data-icon="4" title="PSM table currently not available">
+                            <fmt:message key="project.psms.table"/>
+                        </span>
+                    </h5>
+                </c:otherwise>
+            </c:choose>
         </c:if>
     </div>
 </div>
