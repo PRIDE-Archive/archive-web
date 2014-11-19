@@ -88,7 +88,6 @@ public class ProjectSummaryController {
                                           @PageableDefault(page = 0, value = 10) Pageable page
                                           ) {
 
-//        try {
         // get the project metadata
         ProjectSummary summary = projectSecureService.findByAccession(accession);
 
@@ -99,16 +98,21 @@ public class ProjectSummaryController {
         // get the assay list
         Page<AssaySummary> assaySummaries = assaySecureService.findAllByProjectAccession(accession, page);
 
-
-        Long indexProteinCount = proteinIdentificationSearchService.countByProjectAccession(accession);
-        Long indexPsmCount = psmSecureSearchService.countByProjectAccession(accession);
+        // use default values in case we can not retrieve real numbers from the Solr server
+        Long indexProteinCount = 0L;
+        Long indexPsmCount = 0L;
+        // we can still generate a project summary page, even if the protein/psm queries don't work,
+        // wo we wrap protein/psm queries in a try catch in case the Solr server is down
+        // the page will have to deal with the case that no protein/psm data is present
+        try {
+            indexProteinCount = proteinIdentificationSearchService.countByProjectAccession(accession);
+            indexPsmCount = psmSecureSearchService.countByProjectAccession(accession);
+        } catch (Exception e) {
+            logger.error("Exception executing Solr query: " + e.getMessage());
+            logger.debug("Solr exception details", e);
+        }
 
         return pageMaker.createProjectSummaryPage(new ProjectSummaryAdapter(summary, indexProteinCount, indexPsmCount), assaySummaries);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return null;
     }
 
     @RequestMapping(value = "projects/{accession}/files", method = RequestMethod.GET)

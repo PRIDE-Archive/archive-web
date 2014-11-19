@@ -75,8 +75,20 @@ public class AssaySummaryController {
         Collection<AssaySummary> filteredAssays = removeAssayDuplicateCvParamFilter.filter(Arrays.asList(summary));
 
         summary = filteredAssays.iterator().next();
-        Long indexProteinCount = proteinIdentificationSearchService.countByAssayAccession(assayAccession);
-        Long indexPsmCount = psmSecureSearchService.countByAssayAccession(assayAccession);
+
+        // use default values in case we can not retrieve real numbers from the Solr server
+        Long indexProteinCount = 0L;
+        Long indexPsmCount = 0L;
+        // we can still generate a project summary page, even if the protein/psm queries don't work,
+        // wo we wrap protein/psm queries in a try catch in case the Solr server is down
+        // the page will have to deal with the case that no protein/psm data is present
+        try {
+            indexProteinCount = proteinIdentificationSearchService.countByAssayAccession(assayAccession);
+            indexPsmCount = psmSecureSearchService.countByAssayAccession(assayAccession);
+        } catch (Exception e) {
+            logger.error("Exception executing Solr query: " + e.getMessage());
+            logger.debug("Solr exception details", e);
+        }
 
         // in the client we need to know if the assay is part of a public project
         ProjectSummary projectSummary  = projectServiceImpl.findById(summary.getProjectId());
