@@ -611,7 +611,7 @@
                     <td>
                         <div>
                             <c:choose>
-                                <c:when test="${projectSummary.indexPsmCount gt 0 }">
+                                <c:when test="${projectSummary.indexProteinCount gt 0 }">
                                     <button title="Analyse the protein set in Reactome" onclick="reactomeAnalysis(this, ${assay.accession}, false)" class="reactome-analyse">
                                         Analyse
                                     </button>
