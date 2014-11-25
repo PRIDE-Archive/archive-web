@@ -68,6 +68,13 @@
             },
             {
                 "selected": false,
+                "title": "Publications",
+                "id": "pub-menu",
+                "href": "//scholar.google.co.uk/citations?user=tzHv1ZcAAAAJ&hl=en",
+                "tooltip": "PRIDE Publications"
+            },
+            {
+                "selected": false,
                 "title": "About PRIDE Archive",
                 "id": "about-prider-menu",
                 "href": "//www.ebi.ac.uk/pride/help/archive/about",
