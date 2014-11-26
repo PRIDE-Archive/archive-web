@@ -3,9 +3,9 @@ var reactomeAnalysis = function(btn, acc, projection) {
     var reactomeCorsURI;
 
     if (projection) {
-        reactomeCorsURI = 'http://www.reactome.org/AnalysisService/identifiers/url/projection?pageSize=0&page=1';
+        reactomeCorsURI = 'http://www.reactome.org/AnalysisService/identifiers/url/projection?pageSize=1&page=1';
     } else {
-        reactomeCorsURI = 'http://www.reactome.org/AnalysisService/identifiers/url?pageSize=0&page=1';
+        reactomeCorsURI = 'http://www.reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1';
     }
 
     // ToDo: make this URI configurable to support local testing. perhaps pass in as argument
@@ -25,11 +25,8 @@ var reactomeAnalysis = function(btn, acc, projection) {
     })
     .done(function(data) {
             if (data.pathwaysFound > 0) {// results in Reactome
-                btn.innerHTML = "View";
-                btn.onclick = function(){
-                    window.open("http://www.reactome.org/PathwayBrowser/#DTAB=AN&TOOL=AT&ANALYSIS=" + data.summary.token, "_blank");
-                };
-//                window.open("http://www.reactome.org/PathwayBrowser/#DTAB=AN&TOOL=AT&ANALYSIS=" + data.summary.token, "_blank");
+                btn.innerHTML = "View (" + data.pathwaysFound.format(0,3) + ")";
+                linkBuilder(btn, data);
                 $(btn).removeClass().addClass("reactome-results");
                 parent.removeClass().empty().append(btn);
             } else {// no results in Reactome
@@ -50,4 +47,45 @@ var reactomeAnalysis = function(btn, acc, projection) {
         }
         parent.removeClass().addClass("reactome-error");
     });
+};
+
+var linkBuilder = function(btn, data){
+    token = data.summary.token;
+
+    if( data.resourceSummary.length > 2 ){
+        stId = data.pathways[0].stId;
+        btn.onclick = function(){
+            window.open("http://www.reactome.org/PathwayBrowser/#" + stId + "&DTAB=AN&ANALYSIS=" + token, "_blank");
+        };
+    } else {
+        resource = data.resourceSummary[1].resource;
+        $.ajax({
+            type: "GET",
+            contentType: "text/plain",
+            dataType: "json",
+            url: "http://www.reactome.org/AnalysisService/token/" + token + "?pageSize=1&page=1&resource=" + resource,
+            success: null //needs to be defined, but null is "something" xD
+        })
+        .done(function(data) {
+                console.info(data);
+            stId = data.pathways[0].stId;
+            btn.onclick = function(){
+                window.open("http://www.reactome.org/PathwayBrowser/#" + stId + "&DTAB=AN&ANALYSIS=" + token, "_blank");
+            };
+        })
+        .fail(function(response, status) {
+            //TODO
+        })
+    }
+};
+
+/**
+ * Number.prototype.format(n, x)
+ *
+ * @param integer n: length of decimal
+ * @param integer x: length of sections
+ */
+Number.prototype.format = function(n, x) {
+    var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
+    return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,');
 };
