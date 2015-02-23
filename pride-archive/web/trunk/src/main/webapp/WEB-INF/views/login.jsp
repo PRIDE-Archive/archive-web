@@ -45,7 +45,7 @@
                     </c:otherwise>
                 </c:choose>
 
-                <form action="<c:url value='/j_spring_security_check'/>" method="post">
+                <form id="loginForm" onsubmit="return cleanLoginPassword()" action="<c:url value='/j_spring_security_check'/>" method="post">
                     <div>
                         <label for="j_username" class="block-label">
                             <fmt:message key="email"/>

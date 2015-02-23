@@ -194,3 +194,16 @@ $(function () {
     })
 });
 
+
+
+function cleanLoginPassword(){
+    var elem = document.getElementById("j_password");
+    var password = elem.value;
+    //alert('before: "' + password + '"');
+    password = password.trim();
+    elem.value = password;
+    //alert('after: "' + password + '"');
+    password = 'foo'; // don't keep the password in memory
+    return true;
+}
+
