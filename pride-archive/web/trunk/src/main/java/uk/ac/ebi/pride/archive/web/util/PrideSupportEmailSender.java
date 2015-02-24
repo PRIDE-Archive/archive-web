@@ -47,7 +47,6 @@ public class PrideSupportEmailSender {
     public static final String PRIDE_ARCHIVE_SUBMISSION_URL_PLACE_HOLDER = "[PRIDE_ARCHIVE_SUBMISSION_URL]";
     public static final String PRIDE_ARCHIVE_LOGIN_URL_PLACE_HOLDER = "[PRIDE_ARCHIVE_LOGIN_URL]";
     public static final String PRIDE_SUPPORT_EMAIL_PLACE_HOLDER = "[PRIDE_SUPPORT]";
-    public static final String NEW_PASSWORD_PLACE_HOLDER = "[NEW_PASSWORD]";
     public static final String PROJECT_ACCESSION_PLACE_HOLDER = "[PROJECT_ACCESSION]";
     public static final String PUBMED_PLACE_HOLDER = "[PUBMED]";
     public static final String DOI_PLACE_HOLDER = "[DOI]";
@@ -153,7 +152,6 @@ public class PrideSupportEmailSender {
     public void sendPasswordChangeEmail(UserSummary user, String emailTemplate) {
         String emailBody = emailTemplate;
         emailBody = emailBody.replace(USER_NAME_PLACE_HOLDER, user.getFirstName() + " " + user.getLastName());
-        emailBody = emailBody.replace(NEW_PASSWORD_PLACE_HOLDER, user.getPassword());
 
         emailBody = formatCommonFields(emailBody);
 
