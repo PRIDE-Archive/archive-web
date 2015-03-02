@@ -96,7 +96,7 @@
         </h3>
 
         <p class="justify-body-text">
-            <spring:url var="prideInspectorUrl" value="http://code.google.com/p/pride-toolsuite/wiki/PRIDEInspector"/>
+            <spring:url var="prideInspectorUrl" value="https://github.com/PRIDE-Toolsuite/pride-inspector"/>
             <a href="${prideInspectorUrl}"><fmt:message key="welcome.pride.inspector.caption"/></a>:
             <fmt:message key="welcome.pride.inspector.summary"/>
         </p>

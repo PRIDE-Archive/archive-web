@@ -89,11 +89,12 @@
         <beans:property name="exceptions">
             <beans:list>
                 <beans:value>/viewer/service</beans:value>
+                <!-- jnlp needs to be added because it is map under /project or /assay in the url-mappings for the filter. See web.xml-->
+                <beans:value>jnlp</beans:value>
             </beans:list>
         </beans:property>
         <!--<beans:property name="exceptions">-->
             <!--<beans:list>-->
-                <!--<beans:value>jnlp</beans:value>-->
                 <!--<beans:value>searchService</beans:value>-->
                 <!--<beans:value>/files/</beans:value>-->
                 <!--<beans:value>/resources/css/prider.css</beans:value>-->
