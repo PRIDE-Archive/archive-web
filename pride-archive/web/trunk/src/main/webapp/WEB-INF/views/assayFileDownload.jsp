@@ -99,6 +99,16 @@
         <priderElement:fileListTable fileList="${fileSummariesOPTICAL_IMAGE}" projectSummary="${projectSummary}" />
     </c:if>
 
+    <c:if test="${not empty fileSummariesFASTA}">
+        <h5>${fn:length(fileSummariesFASTA)} <fmt:message key="file.fasta.files"/></h5>
+        <priderElement:fileListTable fileList="${fileSummariesFASTA}" projectSummary="${projectSummary}" />
+    </c:if>
+
+    <c:if test="${not empty fileSummariesSPECTRUM_LIBRARY}">
+        <h5>${fn:length(fileSummariesSPECTRUM_LIBRARY)} <fmt:message key="file.spectrum.library.files"/></h5>
+        <priderElement:fileListTable fileList="${fileSummariesSPECTRUM_LIBRARY}" projectSummary="${projectSummary}" />
+    </c:if>
+
     <c:if test="${not empty fileSummariesOTHER}">
         <h5>${fn:length(fileSummariesOTHER)} <fmt:message key="file.other.files"/></h5>
         <priderElement:fileListTable fileList="${fileSummariesOTHER}" projectSummary="${projectSummary}" />
