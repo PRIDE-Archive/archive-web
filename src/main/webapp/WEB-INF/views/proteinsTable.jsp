@@ -4,43 +4,74 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="priderElement" tagdir="/WEB-INF/tags/elements" %>
+<%@ taglib prefix="inspector" tagdir="/WEB-INF/tags/inspector" %>
 <%@ taglib prefix="table" tagdir="/WEB-INF/tags/table" %>
 
 <%-- bread crumb--%>
 <div class="grid_24 clearfix">
-    <nav id="breadcrumb">
-        <p>
-            <spring:url var="prideUrl" value="http://www.ebi.ac.uk/pride"/>
-            <spring:url var="priderUrl" value="/"/>
-            <spring:url var="projectUrl" value="/projects/{accession}">
-                <spring:param name="accession" value="${projectAccession}"/>
-            </spring:url>
-            <a href="${prideUrl}"><fmt:message key="pride"/></a> &gt; <a href="${priderUrl}"><fmt:message
-                key="prider"/></a>
-            &gt; <a href="${projectUrl}">${projectAccession}</a>
-            <c:if test="${not empty assayAccession}">
-                <spring:url var="assayUrl" value="/assays/{accession}">
-                    <spring:param name="accession" value="${assayAccession}"/>
+    <div class="grid_18 alpha">
+        <nav id="breadcrumb">
+            <p>
+                <spring:url var="prideUrl" value="http://www.ebi.ac.uk/pride"/>
+                <spring:url var="priderUrl" value="/"/>
+                <spring:url var="projectUrl" value="/projects/{accession}">
+                    <spring:param name="accession" value="${projectAccession}"/>
                 </spring:url>
-                &gt; <a href="${assayUrl}">${assayAccession}</a>
+                <a href="${prideUrl}"><fmt:message key="pride"/></a> &gt; <a href="${priderUrl}"><fmt:message
+                    key="prider"/></a>
+                &gt; <a href="${projectUrl}">${projectAccession}</a>
+                <c:if test="${not empty assayAccession}">
+                    <spring:url var="assayUrl" value="/assays/{accession}">
+                        <spring:param name="accession" value="${assayAccession}"/>
+                    </spring:url>
+                    &gt; <a href="${assayUrl}">${assayAccession}</a>
+                </c:if>
+                &gt; <span><fmt:message key="proteins"/></span>
+            </p>
+        </nav>
+        <h2>
+        <span>
+            <fmt:message key="proteins"/> in
+            <c:if test="${not empty assayAccession}">
+                ${assayAccession}
             </c:if>
-            &gt; <span><fmt:message key="proteins"/></span>
-        </p>
-    </nav>
+            <c:if test="${empty assayAccession}">
+                ${projectAccession}
+            </c:if>
+        </span>
+        </h2>
+    </div>
+    <div class="grid_6 omega">
+        <h4>
+            <span>
+                <img id="inspector-confirm" class="inspector_window"
+                     src="${pageContext.request.contextPath}/resources/img/inspectorIcon.png"/>
+                <a id="inspector-link" href="https://github.com/PRIDE-Toolsuite/pride-inspector"><fmt:message
+                        key="pride.inspector.title"/></a>
+            </span>
+        </h4>
+        <c:if test="${not empty assayAccession}">
+            <inspector:inspectorDialog accession="${assayAccession}"/>
+        </c:if>
+        <c:if test="${empty assayAccession}">
+            <inspector:inspectorDialog accession="${projectAccession}"/>
+        </c:if>
+    </div>
 </div>
 
 <div id="search-result" class="grid_24">
 
     <%--Title and count--%>
-    <h2>
+    <h3>
         <strong>${page.totalElements}</strong> <fmt:message key="search.result.title"/>
         <c:if test="${q!= null and q!=''}">
             <fmt:message key="search.result.forterm"/> <span class="searchterm" id="query">${q}</span>
         </c:if>
         <c:set var="numFilters" value="${fn:length(ptmsFilters)}" />
         <c:if test="${numFilters>0}">+ ${numFilters} filters</c:if>
-    </h2>
+    </h3>
 
+    <br>
     <%--Filters--%>
     <div class="grid_5 left-column search-filters">
 
@@ -235,12 +266,11 @@
                                 <spring:param name="proteinID" value="${protein.assayAccession}__${protein.submittedAccession}"/>
                             </spring:url>
                             <c:if test="${not empty protein.inferredSequence or not empty protein.submittedSequence}">
-                                <%--<a class="no_visual_link icon icon-functional" data-icon="1" href="${proteinViewerUrl}"></a>--%>
                                 <a class="no_visual_link" target="_blank" href="${proteinViewerUrl}"><img class=table_icon title="Protein Viewer"  id='protein_viewer' src='${pageContext.request.contextPath}/resources/img/proteinViewer.png'></a>
                             </c:if>
                         </span>
                     </td>
-                        <%-- Optional assay accession column --%>
+                    <%-- Optional assay accession column --%>
                     <c:if test="${empty assayAccession}">
                         <spring:url var="proteinAssayUrl" value="/assays/{accession}">
                             <spring:param name="accession" value="${protein.assayAccession}"/>
@@ -250,7 +280,7 @@
                         </td>
                     </c:if>
 
-                        <%-- Clean protein accession column--%>
+                    <%-- Clean protein accession column--%>
                     <td>
                         <c:choose>
                             <c:when test="${fn:contains(highlights[protein], 'accession')}">
@@ -265,7 +295,7 @@
                     </td>
 
                     <td>
-                            <%-- Uniprot protein accession --%>
+                        <%-- Uniprot protein accession --%>
                         <spring:url var="uniprotUrl" value="http://www.uniprot.org/uniprot/{uniprotAcc}">
                             <spring:param name="uniprotAcc" value="${protein.uniprotMapping}"/>
                         </spring:url>
@@ -283,7 +313,7 @@
                                 <%--${protein.uniprotMapping}--%>
                             </c:otherwise>
                         </c:choose>
-                            <%-- Ensembl protein accession --%>
+                        <%-- Ensembl protein accession --%>
                         <spring:url var="ensemblUrl" value="http://www.ensembl.org/id/{ensemblAcc}">
                             <spring:param name="ensemblAcc" value="${protein.ensemblMapping}"/>
                         </spring:url>
@@ -303,11 +333,11 @@
                         </c:choose>
                     </td>
 
-                        <%-- Description column--%>
+                    <%-- Description column--%>
                     <td><span class="longtext">${protein.name}</span></td>
 
-                        <%-- Modifications column--%>
-                        <%-- At modification level we display only the modification name --%>
+                    <%-- Modifications column--%>
+                    <%-- At modification level we display only the modification name --%>
                     <td>
                         <ul>
                             <c:choose>
@@ -324,14 +354,14 @@
                                 <c:otherwise>
                                     <c:forEach var="modification" items="${protein.modificationNames}">
                                         <li>
-                                                ${modification}
+                                            ${modification}
                                         </li>
                                     </c:forEach>
                                 </c:otherwise>
                             </c:choose>
                         </ul>
                     </td>
-                        <%-- Ambiguity group column--%>
+                    <%-- Ambiguity group column--%>
                     <td>
                         <ul>
                             <c:forEach var="submittedAccession" items="${protein.ambiguityGroupSubmittedAccessions}">
@@ -355,7 +385,7 @@
                             </c:forEach>
                         </ul>
                     </td>
-                        <%-- Alternative mappings --%>
+                    <%-- Alternative mappings --%>
                     <td>
                         <c:forEach var="alternativeMapping" items="${protein.otherMappings}">
                             <c:choose>

@@ -34,21 +34,25 @@
 
 <div class="grid_23 clearfix project-title">
     <div class="grid_18 alpha">
-        <h3><fmt:message key="assay"/> : ${assaySummary.accession}</h3>
+        <h2><fmt:message key="assay"/> ${assaySummary.accession}</h2>
+        <h4>
+            <span>
+                <img id="inspector-confirm" class="inspector_window" src="${pageContext.request.contextPath}/resources/img/inspectorIcon.png"/>
+                <a id="inspector-link" href="https://github.com/PRIDE-Toolsuite/pride-inspector"><fmt:message key="pride.inspector.title"/></a>
+            </span>
+        </h4>
     </div>
+    <inspector:inspectorDialog accession="${assaySummary.accession}"/>
 
-    <div class="grid_6 omega right-justify">
-        <h5>
-            <span class="icon icon-functional" data-icon="4" id="inspector-confirm"><fmt:message key="pride.inspector.title"/></span>
-        </h5>
-
+    <div class="grid_6 omega">
         <c:choose>
             <c:when test="${not empty projectAccession}">
                 <spring:url var="assayFileUrl" value="/projects/{projectAccession}/assays/{assayAccession}/files">
                     <spring:param name="projectAccession" value="${projectAccession}"/>
                     <spring:param name="assayAccession" value="${assaySummary.accession}"/>
                 </spring:url>
-                <spring:url var="assayProteinsUrl" value="/projects/{projectAccession}/assays/{assayAccession}/proteins">
+                <spring:url var="assayProteinsUrl"
+                            value="/projects/{projectAccession}/assays/{assayAccession}/proteins">
                     <spring:param name="projectAccession" value="${projectAccession}"/>
                     <spring:param name="assayAccession" value="${assaySummary.accession}"/>
                 </spring:url>
@@ -69,41 +73,41 @@
                 </spring:url>
             </c:otherwise>
         </c:choose>
-        <h5>
-            <a href="${assayFileUrl}" class="icon icon-functional" data-icon="=">
+        <h4>
+            <a href="${assayFileUrl}" title="" class="icon icon-functional" data-icon="=">
                 <fmt:message key="assay.file.download.title"/>
             </a>
-        </h5>
+        </h4>
         <c:choose>
             <c:when test="${assaySummary.indexProteinCount gt 0 and assaySummary.publicAssay}">
-                <h5>
+                <h4>
                     <a href="${assayProteinsUrl}" class="icon icon-functional" data-icon="4">
                         <fmt:message key="assay.proteins.table"/>
                     </a>
-                </h5>
+                </h4>
             </c:when>
             <c:otherwise>
-                <h5>
+                <h4>
                     <span class="icon icon-functional disable" data-icon="4" title="Protein table currently not available">
                         <fmt:message key="project.psms.table"/>
                     </span>
-                </h5>
+                </h4>
             </c:otherwise>
         </c:choose>
         <c:choose>
             <c:when test="${assaySummary.indexPsmCount gt 0 and assaySummary.publicAssay}">
-                <h5>
+                <h4>
                     <a href="${assayPsmsUrl}" class="icon icon-functional" data-icon="4">
                         <fmt:message key="assay.psms.table"/>
                     </a>
-                </h5>
+                </h4>
             </c:when>
             <c:otherwise>
-                <h5>
+                <h4>
                     <span class="icon icon-functional disable" data-icon="4" title="PSM table currently not available">
                         <fmt:message key="assay.psms.table"/>
                     </span>
-                </h5>
+                </h4>
             </c:otherwise>
         </c:choose>
     </div>
@@ -262,7 +266,6 @@
                 </p>
             </div>
         </div>
-
 
         <div class="grid_24">
             <c:set var="cellTypes" value="${assaySummary.cellTypes}"/>
@@ -550,11 +553,6 @@
     </div>
 </c:if>
 
-<spring:url var="prideInspectorUrl" value="/assays/{accession}/jnlp">
-    <spring:param name="accession" value="${assaySummary.accession}"/>
-</spring:url>
-
-<inspector:webstartDialog prideInspectorUrl="${prideInspectorUrl}" />
 
 
 

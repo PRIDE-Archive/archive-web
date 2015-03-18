@@ -471,52 +471,6 @@ th, td {
 
 }
 
-
-/* pagination */
-.prevPageButton {
-    background: url('../img/previous.png') no-repeat;
-    vertical-align: middle;
-    width: 14px;
-    height: 14px;
-    display: inline-block;
-}
-
-.prevPageGreyButton {
-    background: url('../img/previous_grey.png') no-repeat;
-    vertical-align: middle;
-    width: 14px;
-    height: 14px;
-    display: inline-block;
-}
-
-a.prevPageLink {
-    color: transparent;
-    text-decoration: none;
-    border-bottom: none;
-}
-
-.nextPageButton {
-    background: url('../img/next.png') no-repeat;
-    vertical-align: middle;
-    width: 14px;
-    height: 14px;
-    display: inline-block;
-}
-
-.nextPageGreyButton {
-    background: url('../img/next_grey.png') no-repeat;
-    vertical-align: middle;
-    width: 14px;
-    height: 14px;
-    display: inline-block;
-}
-
-a.nextPageLink {
-    color: transparent;
-    text-decoration: none;
-    border-bottom: none;
-}
-
 .showLimit {
     margin-left: 10px;
     margin-right: 10px;
@@ -805,5 +759,10 @@ a.no_visual_link {
 
 .disable {
     color: lightgrey;
+    cursor: pointer;
+}
+
+.inspector_window {
+    width: 60px;
     cursor: pointer;
 }

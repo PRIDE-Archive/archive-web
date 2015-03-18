@@ -14,12 +14,12 @@
     <spring:param name="projectAccession" value="${projectAccession}"/>
 </spring:url>
 
-<h5><a href="${ftpFolderUrl}" class="icon icon-functional" data-icon="="><fmt:message
-        key="file.download.ftp"/> </a></h5>
+<h4><a href="${ftpFolderUrl}" class="icon icon-functional" data-icon="="><fmt:message
+        key="file.download.ftp"/> </a></h4>
 
 <%-- Notice if the Aspera browser plugin is not installed --%>
-<h5 class="aspera-plugin-link aspera-content-hidden">
+<h4 class="aspera-plugin-link aspera-content-hidden">
     <a href="http://www.asperasoft.com/connect/" class="icon icon-functional" data-icon="=">
         <fmt:message key="fast.download.support"/> (<a href="http://asperasoft.com/">Aspera</a>)
     </a>
-</h5>
+</h4>

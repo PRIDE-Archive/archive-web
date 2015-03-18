@@ -11,6 +11,7 @@
 
 
 <div class="grid_23 clearfix">
+    <nav id="breadcrumb">
     <p>
         <spring:url var="prideUrl" value="http://www.ebi.ac.uk/pride"/>
         <spring:url var="priderUrl" value="/"/>
@@ -23,10 +24,10 @@
                     <spring:param name="accession" value="${projectAccession}"/>
                 </spring:url>
                 <a href="${prideUrl}"><fmt:message key="pride"/></a> &gt; <a href="${priderUrl}"><fmt:message key="prider"/></a> &gt; <a href="${projectUrl}">${projectAccession}</a> &gt; <a
-                    href="${assayUrl}">${assayAccession}</a> > <span>Download files</span>
+                    href="${assayUrl}">${assayAccession}</a> > <span><fmt:message key="download.files"/></span>
             </c:when>
             <c:otherwise>
-                <a href="${prideUrl}"><fmt:message key="pride"/></a> &gt; <a href="${priderUrl}"><fmt:message key="prider"/></a> &gt; <a href="${assayUrl}">${assayAccession}</a> &gt; <span>Download files</span>
+                <a href="${prideUrl}"><fmt:message key="pride"/></a> &gt; <a href="${priderUrl}"><fmt:message key="prider"/></a> &gt; <a href="${assayUrl}">${assayAccession}</a> &gt; <span><fmt:message key="download.files"/></span>
             </c:otherwise>
         </c:choose>
     </p>
@@ -34,13 +35,17 @@
 
 <div class="grid_23 clearfix project-title">
     <div class="grid_18 alpha">
-        <h3><fmt:message key="assay"/> : ${assayAccession}</h3>
+        <h2><fmt:message key="download.files"/> per <fmt:message key="assay"/> ${assayAccession}</h2>
+        <h4>
+            <span>
+                <img id="inspector-confirm" class="inspector_window" src="${pageContext.request.contextPath}/resources/img/inspectorIcon.png" />
+                <a id="inspector-link" href="https://github.com/PRIDE-Toolsuite/pride-inspector"><fmt:message key="pride.inspector.title"/></a>
+            </span>
+        </h4>
+        <inspector:inspectorDialog accession="${assayAccession}" />
     </div>
 
     <div class="grid_6 omega">
-        <h5>
-            <span class="icon icon-functional" data-icon="4" id="inspector-confirm"><fmt:message key="pride.inspector.title"/></span>
-        </h5>
 
         <%-- go to ftp folder & show aspera download --%>
         <c:if test="${not empty projectPublicationDate}">
@@ -164,10 +169,3 @@
         <%--<priderElement:fileListTable fileList="${fileGeneratedSummariesOTHER}" projectSummary="${projectSummary}" />--%>
     <%--</c:if>--%>
 <%--</div>--%>
-
-<spring:url var="prideInspectorUrl" value="/assays/{accession}/jnlp">
-    <spring:param name="accession" value="${assayAccession}"/>
-</spring:url>
-
-<inspector:webstartDialog prideInspectorUrl="${prideInspectorUrl}" />
-

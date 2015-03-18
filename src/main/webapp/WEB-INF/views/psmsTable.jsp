@@ -4,42 +4,74 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="priderElement" tagdir="/WEB-INF/tags/elements" %>
+<%@ taglib prefix="inspector" tagdir="/WEB-INF/tags/inspector" %>
 <%@ taglib prefix="table" tagdir="/WEB-INF/tags/table" %>
 
 <%-- bread crumb--%>
 <div class="grid_24 clearfix">
-    <nav id="breadcrumb">
-        <p>
-            <spring:url var="prideUrl" value="http://www.ebi.ac.uk/pride"/>
-            <spring:url var="priderUrl" value="/"/>
-            <spring:url var="projectUrl" value="/projects/{accession}">
-                <spring:param name="accession" value="${projectAccession}"/>
-            </spring:url>
-            <a href="${prideUrl}"><fmt:message key="pride"/></a> &gt; <a href="${priderUrl}"><fmt:message key="prider"/></a>
-            &gt; <a href="${projectUrl}">${projectAccession}</a>
-            <c:if test="${not empty assayAccession}">
-                <spring:url var="assayUrl" value="/assays/{accession}">
-                    <spring:param name="accession" value="${assayAccession}"/>
+    <div class="grid_18 alpha">
+        <nav id="breadcrumb">
+            <p>
+                <spring:url var="prideUrl" value="http://www.ebi.ac.uk/pride"/>
+                <spring:url var="priderUrl" value="/"/>
+                <spring:url var="projectUrl" value="/projects/{accession}">
+                    <spring:param name="accession" value="${projectAccession}"/>
                 </spring:url>
-                &gt; <a href="${assayUrl}">${assayAccession}</a>
+                <a href="${prideUrl}"><fmt:message key="pride"/></a> &gt; <a href="${priderUrl}"><fmt:message
+                    key="prider"/></a>
+                &gt; <a href="${projectUrl}">${projectAccession}</a>
+                <c:if test="${not empty assayAccession}">
+                    <spring:url var="assayUrl" value="/assays/{accession}">
+                        <spring:param name="accession" value="${assayAccession}"/>
+                    </spring:url>
+                    &gt; <a href="${assayUrl}">${assayAccession}</a>
+                </c:if>
+                &gt; <span><fmt:message key="peptide.spectrum.match"/></span>
+            </p>
+        </nav>
+        <h2>
+        <span>
+            <fmt:message key="peptide.spectrum.match"/> in
+            <c:if test="${not empty assayAccession}">
+                ${assayAccession}
             </c:if>
-            &gt; <span><fmt:message key="peptide.spectrum.match"/></span>
-        </p>
-    </nav>
+            <c:if test="${empty assayAccession}">
+                ${projectAccession}
+            </c:if>
+        </span>
+        </h2>
+    </div>
+    <div class="grid_6 omega">
+        <h4>
+            <span>
+                <img id="inspector-confirm" class="inspector_window"
+                     src="${pageContext.request.contextPath}/resources/img/inspectorIcon.png"/>
+                <a id="inspector-link" href="https://github.com/PRIDE-Toolsuite/pride-inspector"><fmt:message
+                        key="pride.inspector.title"/></a>
+            </span>
+        </h4>
+        <c:if test="${not empty assayAccession}">
+            <inspector:inspectorDialog accession="${assayAccession}"/>
+        </c:if>
+        <c:if test="${empty assayAccession}">
+            <inspector:inspectorDialog accession="${projectAccession}"/>
+        </c:if>
+    </div>
 </div>
 
 <div id="search-result" class="grid_24">
 
     <%--Title and count--%>
-    <h2>
+    <h3>
         <strong>${page.totalElements}</strong> <fmt:message key="search.result.title"/>
         <c:if test="${q!= null and q!=''}">
             <fmt:message key="search.result.forterm"/> <span class="searchterm" id="query">${q}</span>
         </c:if>
         <c:set var="numFilters" value="${fn:length(ptmsFilters)}" />
         <c:if test="${numFilters>0}">+ ${numFilters} filters</c:if>
-    </h2>
+    </h3>
 
+    <br>
     <%--Filters--%>
     <div class="grid_5 left-column search-filters">
 
@@ -306,16 +338,39 @@
                     <td>
                         <ul id="modification_${status.index}">
                             <c:forEach var="modification" items="${psm.modifications}" varStatus="modStatus">
-                                <spring:url var="olsUrl" value="http://www.ebi.ac.uk/ontology-lookup/?termId={accession}">
-                                    <spring:param name="accession" value="${modification.accession}"/>
-                                </spring:url>
+                                <%--creates link to ols or unimod--%>
+                                <c:choose>
+                                    <c:when test="${fn:containsIgnoreCase(modification.accession, 'UNIMOD:')}">
+                                        <c:set var="accNum" value="${fn:replace(modification.accession,'UNIMOD:','')}"/>
+                                        <spring:url var="url" value="http://www.unimod.org/modifications_view.php?editid1={accession}">
+                                            <spring:param name="accession" value="${accNum}"/>
+                                        </spring:url>
+                                    </c:when>
+                                    <c:when test="${not fn:containsIgnoreCase(modification.accession, 'UNIMOD:') and
+                                                    not fn:containsIgnoreCase(modification.accession, 'CHEMMOD:')}">
+                                        <spring:url var="url" value="http://www.ebi.ac.uk/ontology-lookup/?termId={accession}">
+                                            <spring:param name="accession" value="${modification.accession}"/>
+                                        </spring:url>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:set var="url" value="" />
+                                    </c:otherwise>
+                                </c:choose>
+
                                 <c:choose>
                                     <c:when test="${not empty modification.name}">
                                         <li>
                                             <c:if test="${not empty modification.mainPosition}">
                                                 <span class="pos">${modification.mainPosition}</span> -
                                             </c:if>
-                                            <a href="${olsUrl}">${modification.name}</a>
+                                            <c:choose>
+                                                <c:when test="${not empty url}">
+                                                    <a href="${url}"><span class="name">${modification.name}</span></a>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="name">${modification.name}</span>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </li>
                                     </c:when>
                                     <c:when test="${not empty modification.neutralLoss}">
@@ -331,7 +386,14 @@
                                             <c:if test="${not empty modification.mainPosition}">
                                                 <span class="pos">${modification.mainPosition}</span> -
                                             </c:if>
-                                            <a href="${olsUrl}">${modification.accession}</a>
+                                            <c:choose>
+                                                <c:when test="${not empty url}">
+                                                    <a href="${url}"><span class="name">${modification.accession}</span></a>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="name">${modification.accession}</span>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </li>
                                     </c:otherwise>
                                 </c:choose>
@@ -371,10 +433,10 @@
 
             if (modifications != null) {
                 var pos = modifications.getElementsByClassName('pos');
-                var name = modifications.getElementsByTagName('a');
+                var name = modifications.getElementsByClassName('name');
 
                 if (pos.length == name.length) {
-                    console.log(j + "->" + sequence + ": " + pos);
+//                    console.log(j + "->" + sequence + ": " + pos);
 
                     for (var k = 0; k < pos.length; k++) {
                         mod_pos[k] = pos.item(k).textContent;
@@ -388,12 +450,12 @@
 
     function highlightAminoAcids(sequence, mod_pos, mod_names) {
 
-        console.log(sequence);
+//        console.log(sequence);
 
-        for (var k = 0; k < mod_pos.length; k++) {
-            console.log("position:" + mod_pos[k]);
-            console.log("name:" + mod_names[k]);
-        }
+//        for (var k = 0; k < mod_pos.length; k++) {
+//            console.log("position:" + mod_pos[k]);
+//            console.log("name:" + mod_names[k]);
+//        }
 
         var pepSeq = $.trim(sequence);
         //add terminals to the peptide
