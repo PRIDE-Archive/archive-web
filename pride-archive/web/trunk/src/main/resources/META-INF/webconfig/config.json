@@ -120,7 +120,12 @@
             },
             {
                 "url": "${deploy.url}resources/css/footable/footable.core.css"
+            },
+            {
+                "url": "${deploy.url}resources/css/slider/slider.css"
             }
+
+
         ],
         "javascriptList": [
             {
@@ -131,15 +136,6 @@
             },
             {
                 "url": "//www.google.com/jsapi"
-            },
-            {
-                "url": "//canvg.googlecode.com/svn/trunk/rgbcolor.js"
-            },
-            {
-                "url": "//canvg.googlecode.com/svn/trunk/StackBlur.js"
-            },
-            {
-                "url": "//canvg.googlecode.com/svn/trunk/canvg.js"
             },
             {
                 "url": "${deploy.url}resources/javascript/priderStats.js"
@@ -158,6 +154,9 @@
             },
             {
                 "url": "${deploy.url}resources/javascript/footable/footable.striping.js"
+            },
+            {
+                "url": "${deploy.url}resources/javascript/slider/jssor.slider.mini.js"
             },
             {
                 "url": "${deploy.url}resources/javascript/reactome-analysis.js"

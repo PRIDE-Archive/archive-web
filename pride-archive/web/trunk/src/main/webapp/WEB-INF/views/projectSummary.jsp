@@ -9,7 +9,7 @@
 
 <%-- Breadcrumb for navigation --%>
 <%-- PRIDE > PRIDE Archive > Accession--%>
-<div class="grid_24 clearfix">
+<div class="grid_23 clearfix">
     <nav id="breadcrumb">
         <p>
             <spring:url var="prideUrl" value="http://www.ebi.ac.uk/pride"/>
@@ -24,7 +24,7 @@
 <%-- Project header including accession and download options--%>
 <div class="grid_23 clearfix project-title">
     <div class="grid_18 alpha">
-        <h3><fmt:message key="project"/> ${projectSummary.accession}
+        <h2><fmt:message key="project"/> ${projectSummary.accession}
             <c:if test="${fn:containsIgnoreCase(projectSummary.submissionType, 'COMPLETE')}">
                 <spring:url var="searchCompleteSubmissionUrl"
                             value="/simpleSearch?q=&submissionTypeFilters={submissionTypeFilter}">
@@ -32,7 +32,7 @@
                 </spring:url>
                 <a title="Complete Submission" style="font-size: smaller" class="icon icon-functional no_visual_link" data-icon="/" href="${searchCompleteSubmissionUrl}"></a>
             </c:if>
-        </h3>
+        </h2>
 
         <%-- pride internal tags--%>
         <c:if test="${not empty projectSummary.internalTags or projectSummary.highlighted == true}">
@@ -78,45 +78,48 @@
                 </c:forEach>
             </div>
         </c:if>
+
+        <c:if test="${fn:toLowerCase(projectSummary.submissionType) != 'partial'}">
+            <%-- open pride inspector --%>
+            <h4>
+            <span>
+                <img id="inspector-confirm" class="inspector_window" src="${pageContext.request.contextPath}/resources/img/inspectorIcon.png"/>
+                <a id="inspector-link" href="https://github.com/PRIDE-Toolsuite/pride-inspector"><fmt:message key="pride.inspector.title"/></a>
+            </span>
+            </h4>
+            <inspector:inspectorDialog accession="${projectSummary.accession}"/>
+        </c:if>
     </div>
 
     <div class="grid_6 omega right-justify">
-        <c:if test="${fn:toLowerCase(projectSummary.submissionType) != 'partial'}">
-            <%-- launch pride inspector --%>
-            <h5>
-                <span class="icon icon-functional" data-icon="4" id="inspector-confirm">
-                    <fmt:message key="pride.inspector.title"/>
-                </span>
-            </h5>
-        </c:if>
 
         <%-- download project files--%>
         <spring:url var="projectFileUrl" value="/projects/{accession}/files">
             <spring:param name="accession" value="${projectSummary.accession}"/>
         </spring:url>
-        <h5>
+        <h4>
             <a href="${projectFileUrl}" class="icon icon-functional" data-icon="=">
                 <fmt:message key="project.file.download.title"/>
             </a>
-        </h5>
+        </h4>
         <c:if test="${fn:toLowerCase(projectSummary.submissionType) != 'partial'}">
             <c:choose>
                 <c:when test="${projectSummary.indexProteinCount gt 0 and projectSummary.publicProject}">
                     <spring:url var="projectProteinsUrl" value="/projects/{accession}/proteins">
                         <spring:param name="accession" value="${projectSummary.accession}"/>
                     </spring:url>
-                    <h5>
+                    <h4>
                         <a href="${projectProteinsUrl}" class="icon icon-functional" data-icon="4">
                             <fmt:message key="project.proteins.table"/>
                         </a>
-                    </h5>
+                    </h4>
                 </c:when>
                 <c:otherwise>
-                    <h5>
+                    <h4>
                         <span class="icon icon-functional disable" data-icon="4" title="Protein table currently not available">
                             <fmt:message key="project.proteins.table"/>
                         </span>
-                    </h5>
+                    </h4>
                 </c:otherwise>
             </c:choose>
             <c:choose>
@@ -124,18 +127,18 @@
                     <spring:url var="projectPsmsUrl" value="/projects/{accession}/psms">
                         <spring:param name="accession" value="${projectSummary.accession}"/>
                     </spring:url>
-                    <h5>
+                    <h4>
                         <a href="${projectPsmsUrl}" class="icon icon-functional" data-icon="4">
                             <fmt:message key="project.psms.table"/>
                         </a>
-                    </h5>
+                    </h4>
                 </c:when>
                 <c:otherwise>
-                    <h5>
+                    <h4>
                         <span class="icon icon-functional disable" data-icon="4" title="PSM table currently not available">
                             <fmt:message key="project.psms.table"/>
                         </span>
-                    </h5>
+                    </h4>
                 </c:otherwise>
             </c:choose>
         </c:if>
@@ -631,11 +634,6 @@
         </table>
     </div>
 </c:if>
-<spring:url var="prideInspectorUrl" value="/projects/{accession}/jnlp">
-    <spring:param name="accession" value="${projectSummary.accession}"/>
-</spring:url>
-
-<inspector:webstartDialog prideInspectorUrl="${prideInspectorUrl}" />
 
 <spring:url var="readMoreJavascriptUrl" value="/resources/javascript/readmore.min.js"/>
 <script src="${readMoreJavascriptUrl}"></script>

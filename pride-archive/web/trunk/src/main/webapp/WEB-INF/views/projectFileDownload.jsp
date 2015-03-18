@@ -10,7 +10,7 @@
 <%@ taglib prefix="file" tagdir="/WEB-INF/tags/file" %>
 
 
-<div class="grid_24 clearfix">
+<div class="grid_23 clearfix">
     <nav id="breadcrumb">
     <p>
         <spring:url var="prideUrl" value="http://www.ebi.ac.uk/pride"/>
@@ -27,14 +27,17 @@
 
 <div class="grid_23 clearfix project-title">
     <div class="grid_18 alpha">
-        <h3><fmt:message key="project"/> : ${projectSummary.accession}</h3>
+        <h2><fmt:message key="download.files"/> per <fmt:message key="project"/> ${projectSummary.accession}</h2>
+        <h4>
+            <span>
+                <img id="inspector-confirm" class="inspector_window" src="${pageContext.request.contextPath}/resources/img/inspectorIcon.png" />
+                <a id="inspector-link" href="https://github.com/PRIDE-Toolsuite/pride-inspector"><fmt:message key="pride.inspector.title"/></a>
+            </span>
+        </h4>
+        <inspector:inspectorDialog accession="${projectSummary.accession}" />
     </div>
+
     <div class="grid_6 omega">
-        <c:if test="${fn:toLowerCase(projectSummary.submissionType) != 'partial'}">
-            <h5>
-                <span class="icon icon-functional" data-icon="4" id="inspector-confirm"><fmt:message key="pride.inspector.title"/></span>
-            </h5>
-        </c:if>
 
         <%-- go to ftp folder & show aspera download --%>
         <c:if test="${not empty projectSummary.publicationDate }">
@@ -186,13 +189,3 @@
         </c:if>
     </div>
 </c:if>
-
-<spring:url var="prideInspectorUrl" value="/projects/{accession}/jnlp">
-    <spring:param name="accession" value="${projectSummary.accession}"/>
-</spring:url>
-
-<inspector:webstartDialog prideInspectorUrl="${prideInspectorUrl}" />
-
-
-
-

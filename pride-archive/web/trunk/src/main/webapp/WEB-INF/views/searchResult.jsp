@@ -19,6 +19,7 @@
             &gt; <fmt:message key="search.result.title"/>
         </p>
     </nav>
+    <h2><fmt:message key="search.result.title"/></h2>
     </div>
     <c:set var="numFilters" value="${fn:length(titleFilters)+fn:length(speciesFilters)+fn:length(tissueFilters)+fn:length(diseaseFilters)+fn:length(ptmsFilters)+fn:length(instrumentFilters)+fn:length(quantificationFilters)+fn:length(experimentTypeFilters)+fn:length(projectTagFilters)+fn:length(submissionTypeFilters)}" />
     <c:if test="${q!='' && numFilters<1}">
@@ -38,14 +39,13 @@
     <%--Title and count--%>
     <div id="result-count" class="grid_24 clearfix">
 
-        <h2>
+        <h3>
             <strong>${numResults}</strong> <fmt:message key="search.result.title"/>
             <c:if test="${q!=''}">
                 <fmt:message key="search.result.forterm"/> <span class="searchterm" id="query">${q}</span>
             </c:if>
             <c:if test="${numFilters>0}">+ ${numFilters} filters</c:if>
-
-        </h2>
+        </h3>
     </div>
 
 
