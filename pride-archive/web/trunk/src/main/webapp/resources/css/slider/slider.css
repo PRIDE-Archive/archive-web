@@ -1,13 +1,11 @@
-/*Bullet Navigator Skin Begin*/
-
- /* jssor slider bullet navigator skin 05 css */
- /*
- .jssorb05 div           (normal)
- .jssorb05 div:hover     (normal mouseover)
- .jssorb05 .av           (active)
- .jssorb05 .av:hover     (active mouseover)
- .jssorb05 .dn           (mousedown)
- */
+/* jssor slider bullet navigator skin 05 css */
+/*
+.jssorb05 div           (normal)
+.jssorb05 div:hover     (normal mouseover)
+.jssorb05 .av           (active)
+.jssorb05 .av:hover     (active mouseover)
+.jssorb05 .dn           (mousedown)
+*/
  .jssorb05 div, .jssorb05 div:hover, .jssorb05 .av {
      background: url(./img/b05.png) no-repeat;
      overflow: hidden;
@@ -15,7 +13,7 @@
  }
 
 .jssorb05 div {
-    background-position: -5px -5px;
+    background-position: -7px -7px;
 }
 
 .jssorb05 div:hover, .jssorb05 .av:hover {
@@ -94,3 +92,6 @@
     background-position: -315px -37px;
 }
 
+.no-margin {
+    margin: 0;
+}

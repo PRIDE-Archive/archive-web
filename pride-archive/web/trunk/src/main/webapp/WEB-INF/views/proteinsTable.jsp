@@ -9,47 +9,47 @@
 
 <%-- bread crumb--%>
 <div class="grid_24 clearfix">
-    <div class="grid_18 alpha">
-        <nav id="breadcrumb">
-            <p>
-                <spring:url var="prideUrl" value="http://www.ebi.ac.uk/pride"/>
-                <spring:url var="priderUrl" value="/"/>
-                <spring:url var="projectUrl" value="/projects/{accession}">
-                    <spring:param name="accession" value="${projectAccession}"/>
+    <nav id="breadcrumb">
+        <p>
+            <spring:url var="prideUrl" value="http://www.ebi.ac.uk/pride"/>
+            <spring:url var="priderUrl" value="/"/>
+            <spring:url var="projectUrl" value="/projects/{accession}">
+                <spring:param name="accession" value="${projectAccession}"/>
+            </spring:url>
+            <a href="${prideUrl}"><fmt:message key="pride"/></a> &gt; <a href="${priderUrl}"><fmt:message
+                key="prider"/></a>
+            &gt; <a href="${projectUrl}">${projectAccession}</a>
+            <c:if test="${not empty assayAccession}">
+                <spring:url var="assayUrl" value="/assays/{accession}">
+                    <spring:param name="accession" value="${assayAccession}"/>
                 </spring:url>
-                <a href="${prideUrl}"><fmt:message key="pride"/></a> &gt; <a href="${priderUrl}"><fmt:message
-                    key="prider"/></a>
-                &gt; <a href="${projectUrl}">${projectAccession}</a>
-                <c:if test="${not empty assayAccession}">
-                    <spring:url var="assayUrl" value="/assays/{accession}">
-                        <spring:param name="accession" value="${assayAccession}"/>
-                    </spring:url>
-                    &gt; <a href="${assayUrl}">${assayAccession}</a>
-                </c:if>
-                &gt; <span><fmt:message key="proteins"/></span>
-            </p>
-        </nav>
+                &gt; <a href="${assayUrl}">${assayAccession}</a>
+            </c:if>
+            &gt; <span><fmt:message key="proteins"/></span>
+        </p>
+    </nav>
+
+    <div class="grid_19 alpha">
         <h2>
         <span>
             <fmt:message key="proteins"/> in
             <c:if test="${not empty assayAccession}">
-                ${assayAccession}
+                <fmt:message key="assay"/> ${assayAccession}
             </c:if>
             <c:if test="${empty assayAccession}">
-                ${projectAccession}
+                <fmt:message key="project"/> ${projectAccession}
             </c:if>
         </span>
         </h2>
     </div>
-    <div class="grid_6 omega">
-        <h4>
-            <span>
-                <img id="inspector-confirm" class="inspector_window"
-                     src="${pageContext.request.contextPath}/resources/img/inspectorIcon.png"/>
-                <a id="inspector-link" href="https://github.com/PRIDE-Toolsuite/pride-inspector"><fmt:message
-                        key="pride.inspector.title"/></a>
+    <div class="grid_5 omega right-justify">
+        <%-- open pride inspector --%>
+        <fmt:message key="pride.inspector.title" var="inspectorTitle"/>
+        <h5>
+            <span id="inspector-confirm" class="inspector_window icon icon-functional" data-icon="1" title="${inspectorTitle}">
+                ${inspectorTitle}
             </span>
-        </h4>
+        </h5>
         <c:if test="${not empty assayAccession}">
             <inspector:inspectorDialog accession="${assayAccession}"/>
         </c:if>

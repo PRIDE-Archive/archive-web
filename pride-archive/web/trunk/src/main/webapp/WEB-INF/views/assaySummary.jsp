@@ -35,14 +35,7 @@
 <div class="grid_23 clearfix project-title">
     <div class="grid_18 alpha">
         <h2><fmt:message key="assay"/> ${assaySummary.accession}</h2>
-        <h4>
-            <span>
-                <img id="inspector-confirm" class="inspector_window" src="${pageContext.request.contextPath}/resources/img/inspectorIcon.png"/>
-                <a id="inspector-link" href="https://github.com/PRIDE-Toolsuite/pride-inspector"><fmt:message key="pride.inspector.title"/></a>
-            </span>
-        </h4>
     </div>
-    <inspector:inspectorDialog accession="${assaySummary.accession}"/>
 
     <div class="grid_6 omega">
         <c:choose>
@@ -73,43 +66,55 @@
                 </spring:url>
             </c:otherwise>
         </c:choose>
-        <h4>
-            <a href="${assayFileUrl}" title="" class="icon icon-functional" data-icon="=">
-                <fmt:message key="assay.file.download.title"/>
+        <h5>
+            <fmt:message key="assay.file.download.title" var="assayDownloadTitle"/>
+            <a href="${assayFileUrl}" class="icon icon-functional" data-icon="=" title="${assayDownloadTitle}">
+                ${assayDownloadTitle}
             </a>
-        </h4>
+        </h5>
         <c:choose>
             <c:when test="${assaySummary.indexProteinCount gt 0 and assaySummary.publicAssay}">
-                <h4>
-                    <a href="${assayProteinsUrl}" class="icon icon-functional" data-icon="4">
-                        <fmt:message key="assay.proteins.table"/>
+                <fmt:message key="assay.proteins.table" var="assayProteinsTable"/>
+                <h5>
+                    <a href="${assayProteinsUrl}" class="icon icon-functional" data-icon="4" title="${assayProteinsTable}">
+                        ${assayProteinsTable}
                     </a>
-                </h4>
+                </h5>
             </c:when>
             <c:otherwise>
-                <h4>
+                <h5>
                     <span class="icon icon-functional disable" data-icon="4" title="Protein table currently not available">
                         <fmt:message key="project.psms.table"/>
                     </span>
-                </h4>
+                </h5>
             </c:otherwise>
         </c:choose>
         <c:choose>
             <c:when test="${assaySummary.indexPsmCount gt 0 and assaySummary.publicAssay}">
-                <h4>
-                    <a href="${assayPsmsUrl}" class="icon icon-functional" data-icon="4">
-                        <fmt:message key="assay.psms.table"/>
+                <fmt:message key="assay.psms.table" var="assayPsmTable"/>
+                <h5>
+                    <a href="${assayPsmsUrl}" class="icon icon-functional" data-icon="4" title="${assayPsmTable}">
+                        ${assayPsmTable}
                     </a>
-                </h4>
+                </h5>
             </c:when>
             <c:otherwise>
-                <h4>
+                <h5>
                     <span class="icon icon-functional disable" data-icon="4" title="PSM table currently not available">
                         <fmt:message key="assay.psms.table"/>
                     </span>
-                </h4>
+                </h5>
             </c:otherwise>
         </c:choose>
+
+        <%-- open pride inspector --%>
+        <fmt:message key="pride.inspector.title" var="inspectorTitle"/>
+        <h5>
+            <span id="inspector-confirm" class="inspector_window icon icon-functional" data-icon="1" title="${inspectorTitle}">
+                    ${inspectorTitle}
+            </span>
+        </h5>
+        <inspector:inspectorDialog accession="${assaySummary.accession}"/>
     </div>
 </div>
 

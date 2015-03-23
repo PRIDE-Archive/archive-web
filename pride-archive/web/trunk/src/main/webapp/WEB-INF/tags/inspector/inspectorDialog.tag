@@ -5,37 +5,31 @@
 
 
 <div id="inspector-dialog" title="Open in PRIDE Inspector">
-    Follow the next steps to open your selected project or assay in PRIDE Inspector:
+    Follow the next three steps to open your selected project or assay in PRIDE Inspector:
     <br/>
     <br/>
-    <ol>
+    <ul style="list-style-type: none">
         <li>
-            <a class="icon icon-functional" data-icon="="
-               href="http://www.ebi.ac.uk/pride/resources/tools/inspector/latest/desktop/pride-inspector.zip">Download PRIDE Inspector </a> and uncompressed the folder
-        </li>
-        <li>
-            Copy to clipboard the project or assay accession that you would like to open in PRIDE Inspector.
-            <label>
-                In this case: <input size="10" style="text-align: center" title="Select the text and copy it (e.g. Ctr+C or Cmd+C)" type="text" value="${accession}" autofocus="true" onfocus="this.setSelectionRange(0, this.value.length)" />
-            </label>
-        </li>
-        <li>
-            Open PRIDE Inspector <img id="inspector-img" style="width: 45px;" src="${pageContext.request.contextPath}/resources/img/inspectorIcon.png" />
+            <h3 style="display: inline">1.</h3>
+            Download, uncompress and open PRIDE Inspector <img id="inspector-img" style="width: 45px;" src="${pageContext.request.contextPath}/resources/img/inspectorIcon.png" />
 
         </li>
         <li>
-           Click in the little magnifier <img style="height: 20px" src="${pageContext.request.contextPath}/resources/img/search.png"> on the left top corner
+            <h3 style="display: inline">2.</h3>
+            Click in the magnifier <img style="height: 20px" src="${pageContext.request.contextPath}/resources/img/search.png"> on the left top corner, paste the project or assay
+            that you would like to open in the search box,
+            <label>
+            in this case <input size="10" style="text-align: center" title="Select the text and copy it (e.g. Ctr+C or Cmd+C)" type="text" value="${accession}" onfocus="this.setSelectionRange(0, this.value.length)" />,
+            </label> and hit search
         </li>
         <li>
-            Paste the project or assay accession in the box and hit search
-        </li>
-        <li>
+            <h3 style="display: inline">3.</h3>
             Click in the corresponding "Download" button to download the files and visualize them
         </li>
-    </ol>
+    </ul>
 
     <div style="text-align: right" >
-        <span>PRIDE Inspector in  <a href="https://github.com/PRIDE-Toolsuite/pride-inspector">GitHub <img style="height: 20px" src="${pageContext.request.contextPath}/resources/img/octocat.jpg"> </a></span>
+        <span>PRIDE Inspector documentation <a href="https://github.com/PRIDE-Toolsuite/pride-inspector">here </a></span>
     </div>
 </div>
 
@@ -47,7 +41,8 @@
             width: 630,
             modal: true,
             buttons: {
-                "Cancel": function () {
+                "Download": function () {
+                    window.open('http://www.ebi.ac.uk/pride/resources/tools/inspector/latest/desktop/pride-inspector.zip', '_blank');
                     $(this).dialog("close");
                 }
             }
