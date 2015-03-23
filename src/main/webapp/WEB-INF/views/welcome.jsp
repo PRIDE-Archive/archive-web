@@ -21,61 +21,98 @@
         <h2>
             <fmt:message key="welcome.intro.caption"/>
         </h2>
-
         <p class="justify-body-text">
             <fmt:message key="welcome.intro.body"/>
         </p>
 
-        <div class="grid_24" style="height: 400px;">
-            <div id="slider_container" class="grid_14 push_5" style="position: relative; width: 600px; height: 300px; ">
+        <%--TODO Noe: If the style is moved to the css file some components stop working properly--%>
+        <div class="grid_24" style="height: 500px;">
+            <div id="slider_container" class="grid_14 push_2" style="position: relative; width: 800px; height: 400px; ">
 
                 <!-- Slides Container -->
                 <%--TODO Move the images captions and refs to the welcome controller--%>
-                <div u="slides" style="cursor: move; position: relative; width: 600px; height: 300px; overflow: hidden; ">
+                <div u="slides" style="cursor: move; position: absolute; width: 800px; height: 400px; overflow: hidden">
                     <div>
-                        <img u="image" src="${pageContext.request.contextPath}/resources/img/slider/misscleavages.png" />
-                        <a href="https://github.com/PRIDE-Toolsuite/pride-inspector" u="thumb">PRIDE Inspector</a>
+                        <img u="image" class="no-margin" src="${pageContext.request.contextPath}/resources/img/slider/px-sub-tool.png"/>
+                        <div  u="thumb">
+                            <fmt:message key="welcome.submit.data.caption"/>: <a style="color: blue" href="http://www.proteomexchange.org/submission">PX Submission Tool</a>
+                            <br>MS/MS Proteomics Submission Desktop Tool
+                        </div>
                     </div>
                     <div>
-                        <img u="image" src="${pageContext.request.contextPath}/resources/img/slider/precursor.png" />
-                        <a href="https://github.com/PRIDE-Toolsuite/pride-inspector" u="thumb">PRIDE Inspector</a>
+                        <img u="image" class="no-margin" src="${pageContext.request.contextPath}/resources/img/slider/precursor.png" />
+                        <div  u="thumb">
+                            <fmt:message key="welcome.prider.tools.caption"/>: <a style="color: blue" href="https://github.com/PRIDE-Toolsuite/pride-inspector">PRIDE Inspector</a>
+                            <br>Distribution of Precursos Ion Masses
+                        </div>
                     </div>
                     <div>
-                        <img u="image" src="${pageContext.request.contextPath}/resources/img/slider/protein-coverage.png" />
-                        <a href="https://github.com/PRIDE-Toolsuite/pride-inspector" u="thumb">PRIDE Inspector</a>
+                        <img u="image" class="no-margin" src="${pageContext.request.contextPath}/resources/img/slider/proteome_central.png" />
+                        <div  u="thumb">
+                            <fmt:message key="welcome.submit.data.caption"/>: <a style="color: blue" href="http://proteomecentral.proteomexchange.org/cgi/GetDataset">Proteome Central</a>
+                            <br>Accessible ProteomeXchange datasets
+                        </div>
                     </div>
                     <div>
-                        <img u="image" src="${pageContext.request.contextPath}/resources/img/slider/protein-inference-panel.png" />
-                        <a href="https://github.com/PRIDE-Toolsuite/pride-inspector" u="thumb">PRIDE Inspector</a>
+                        <img u="image" class="no-margin" src="${pageContext.request.contextPath}/resources/img/slider/protein-coverage.png" />
+                        <div  u="thumb">
+                            <fmt:message key="welcome.prider.tools.caption"/>: <a style="color: blue"  href="https://github.com/PRIDE-Toolsuite/pride-inspector">PRIDE Inspector</a>
+                            <br>Protein Table
+                        </div>
                     </div>
                     <div>
-                        <img u="image" src="${pageContext.request.contextPath}/resources/img/slider/proteininference.png" />
-                        <a href="https://github.com/PRIDE-Toolsuite/pride-inspector" u="thumb">PRIDE Inspector</a>
+                        <img u="image" class="no-margin" src="${pageContext.request.contextPath}/resources/img/slider/ws.jpg" />
+                        <div u="thumb">
+                            <fmt:message key="welcome.access.caption"/>: <a style="color: blue"  href="http://www.ebi.ac.uk/pride/ws/archive">PRIDE Archive Web Service</a>
+                            <br>Swagger Documentation
+                        </div>
                     </div>
                     <div>
-                        <img u="image" src="${pageContext.request.contextPath}/resources/img/slider/quantitation.png" />
-                        <a href="https://github.com/PRIDE-Toolsuite/pride-inspector" u="thumb">PRIDE Inspector</a>
+                        <img u="image" class="no-margin" src="${pageContext.request.contextPath}/resources/img/slider/protein-inference-panel.png" />
+                        <div  u="thumb">
+                            <fmt:message key="welcome.prider.tools.caption"/>: <a style="color: blue"  href="https://github.com/PRIDE-Toolsuite/pride-inspector">PRIDE Inspector</a>
+                            <br>Protein Inference
+                        </div>
                     </div>
                     <div>
-                        <img u="image" src="${pageContext.request.contextPath}/resources/img/slider/sequence.png" />
-                        <a href="https://github.com/PRIDE-Toolsuite/pride-inspector" u="thumb">PRIDE Inspector</a>
+                        <img u="image" class="no-margin" src="${pageContext.request.contextPath}/resources/img/slider/quantitation.png" />
+                        <div  u="thumb">
+                            <fmt:message key="welcome.prider.tools.caption"/>: <a style="color: blue"  href="https://github.com/PRIDE-Toolsuite/pride-inspector">PRIDE Inspector</a>
+                            <br>Quantitation View
+                        </div>
                     </div>
                     <div>
-                        <img u="image" src="${pageContext.request.contextPath}/resources/img/slider/ws.jpg" />
-                        <a href="http://www.ebi.ac.uk/pride/ws/archive" u="thumb">PRIDE Archive Web Service</a>
+                        <img u="image" class="no-margin" src="${pageContext.request.contextPath}/resources/img/slider/search.jpg" />
+                        <div  u="thumb">
+                            <fmt:message key="welcome.access.caption"/>: <a style="color: blue" href="http://www.ebi.ac.uk/pride/archive/simpleSearch">PRIDE Archive</a>
+                            <br>Results Page
+                        </div>
+                    </div>
+                    <div>
+                        <img u="image" class="no-margin" src="${pageContext.request.contextPath}/resources/img/slider/sequence.png" />
+                        <div  u="thumb">
+                            <fmt:message key="welcome.prider.tools.caption"/>: <a style="color: blue"  href="https://github.com/PRIDE-Toolsuite/pride-inspector">PRIDE Inspector</a>
+                            <br>Protein Details
+                        </div>
+                    </div>
+                    <div>
+                        <img u="image" class="no-margin" src="${pageContext.request.contextPath}/resources/img/slider/ws2.jpg" />
+                        <div u="thumb">
+                            <fmt:message key="welcome.access.caption"/>: <a style="color: blue" href="http://www.ebi.ac.uk/pride/ws/archive">PRIDE Archive Web Service</a>
+                            <br>JSON Output
+                        </div>
                     </div>
 
                 </div>
 
-                <%--TODO Noe: If the style is moved to the css file some components stop working properly--%>
                 <!-- ThumbnailNavigator Skin Begin -->
-                <div u="thumbnavigator" class="sliderb-T" style="position: absolute; bottom: -50px; height:45px; width:600px;">
-                    <div style="filter: alpha(opacity=40); opacity:0.4; position: absolute; display: block; background-color: #000000; top: 0px; left: 0px; width: 100%; height: 100%;">
+                <div u="thumbnavigator" class="sliderb-T" style="position: absolute; bottom: -50px; height:45px; width:800px;">
+                    <div style="filter: alpha(opacity=30); opacity:0.3; position: absolute; display: block; background-color: #000000; top: 0px; left: 0px; width: 100%; height: 100%;">
                     </div>
                     <!-- Thumbnail Item Skin Begin -->
                     <div u="slides">
-                        <div u="prototype" style="POSITION: absolute; WIDTH: 600px; HEIGHT: 45px; TOP: 0; LEFT: 0px;">
-                            <div u="thumbnailtemplate" style="font-family: verdana; font-weight: normal; POSITION: absolute; WIDTH: 100%; HEIGHT: 100%; TOP: 0; LEFT: 0; color:#fff; line-height: 45px; font-size:20px; padding-left:10px;"></div>
+                        <div u="prototype" style="POSITION: absolute; WIDTH: 795px; HEIGHT: 50px; TOP: 0px; LEFT: 0px;">
+                            <div u="thumbnailtemplate" style="font-family: verdana; font-weight: normal; POSITION: absolute; WIDTH: 100%; HEIGHT: 100%; TOP: 0; LEFT: 0; color:#fff; line-height: 20px; font-size:15px; padding-top:5px; padding-left:5px;"></div>
                         </div>
                     </div>
                     <!-- Thumbnail Item Skin End -->
@@ -88,7 +125,6 @@
                     <div u="prototype" style="position: absolute; width: 16px; height: 16px;"></div>
                 </div>
 
-                <%--TODO move the style to the jssor.css--%>
                 <!-- Arrow Left -->
                 <span u="arrowleft" class="jssora13l" style="position: absolute; width: 30px; height: 46px; top: 160px; left: -30px;">
                 </span>
@@ -102,7 +138,7 @@
         </div>
     </section>
 
-    <div class="grid_6 omega">
+    <div class="grid_5 omega">
         <section id="statistics">
             <h3 class="icon icon-functional" data-icon="z">
                 <fmt:message key="welcome.statistics.caption"/>
@@ -260,9 +296,9 @@
             },
 
             $ArrowNavigatorOptions: {
-                $Class: $JssorArrowNavigator$,              //[Requried] Class to create arrow navigator instance
-                $ChanceToShow: 2,                                //[Required] 0 Never, 1 Mouse Over, 2 Always
-                $AutoCenter: 2                                 //[Optional] Auto center navigator in parent container, 0 None, 1 Horizontal, 2 Vertical, 3 Both, default value is 0
+                $Class: $JssorArrowNavigator$,                  //[Requried] Class to create arrow navigator instance
+                $ChanceToShow: 2,                               //[Required] 0 Never, 1 Mouse Over, 2 Always
+                $AutoCenter: 2                                  //[Optional] Auto center navigator in parent container, 0 None, 1 Horizontal, 2 Vertical, 3 Both, default value is 0
             },
 
             $ThumbnailNavigatorOptions: {
@@ -274,20 +310,6 @@
         };
 
         var jssor_sliderb = new $JssorSlider$("slider_container", options);
-        //responsive code begin
-        //you can remove responsive code if you don't want the slider scales while window resizes
-        function ScaleSlider() {
-            var parentWidth = jssor_sliderb.$Elmt.parentNode.clientWidth;
-            if (parentWidth)
-                jssor_sliderb.$ScaleWidth(Math.min(parentWidth, 600));
-            else
-                window.setTimeout(ScaleSlider, 30);
-        }
-        ScaleSlider();
 
-        $(window).bind("load", ScaleSlider);
-        $(window).bind("resize", ScaleSlider);
-        $(window).bind("orientationchange", ScaleSlider);
-        //responsive code end
     });
 </script>

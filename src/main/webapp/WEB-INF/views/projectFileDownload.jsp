@@ -28,13 +28,6 @@
 <div class="grid_23 clearfix project-title">
     <div class="grid_18 alpha">
         <h2><fmt:message key="download.files"/> per <fmt:message key="project"/> ${projectSummary.accession}</h2>
-        <h4>
-            <span>
-                <img id="inspector-confirm" class="inspector_window" src="${pageContext.request.contextPath}/resources/img/inspectorIcon.png" />
-                <a id="inspector-link" href="https://github.com/PRIDE-Toolsuite/pride-inspector"><fmt:message key="pride.inspector.title"/></a>
-            </span>
-        </h4>
-        <inspector:inspectorDialog accession="${projectSummary.accession}" />
     </div>
 
     <div class="grid_6 omega">
@@ -45,6 +38,14 @@
                            projectAccession="${projectSummary.accession}"
                            ftpRootAddress="ftp://ftp.pride.ebi.ac.uk/pride/data/archive"/>
         </c:if>
+         <%-- open pride inspector --%>
+        <fmt:message key="pride.inspector.title" var="inspectorTitle"/>
+        <h5>
+            <span id="inspector-confirm" class="inspector_window icon icon-functional" data-icon="1" title="${inspectorTitle}">
+                ${inspectorTitle}
+            </span>
+        </h5>
+        <inspector:inspectorDialog accession="${projectSummary.accession}" />
     </div>
 </div>
 
