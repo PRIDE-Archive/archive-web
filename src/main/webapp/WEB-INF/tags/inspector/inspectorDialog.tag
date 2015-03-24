@@ -29,7 +29,7 @@
     </ul>
 
     <div style="text-align: right" >
-        <span>PRIDE Inspector documentation <a href="https://github.com/PRIDE-Toolsuite/pride-inspector">here </a></span>
+        <a href="https://github.com/PRIDE-Toolsuite/pride-inspector" target="_blank">PRIDE Inspector documentation</a>
     </div>
 </div>
 

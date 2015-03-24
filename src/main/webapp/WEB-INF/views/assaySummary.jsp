@@ -100,7 +100,7 @@
             </c:when>
             <c:otherwise>
                 <h5>
-                    <span class="icon icon-functional disable" data-icon="4" title="PSM table currently not available">
+                    <span class="icon icon-functional disable" data-icon="4" title="Peptide Table currently not available">
                         <fmt:message key="assay.psms.table"/>
                     </span>
                 </h5>
