@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+            classpath:META-INF/spring/app-context-bootstrap.xml
+            classpath:META-INF/spring/app-context-database.xml
+            classpath:META-INF/spring/app-context-email.xml
+            classpath:META-INF/spring/app-context-security.xml
+            classpath:META-INF/spring/app-context-social.xml
+            classpath:META-INF/spring/app-context-solr.xml
+            WEB-INF/spring/mvc-config.xml
+        </param-value>
+	</context-param>
+
+    <!-- JNDI setup -->
+    <resource-env-ref>
+        <resource-env-ref-name>jdbc/pridepro</resource-env-ref-name>
+        <resource-env-ref-type>javax.sql.DataSource</resource-env-ref-type>
+    </resource-env-ref>
+
+	<!-- Creates the Spring Container shared by all Servlets and Filters -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+    <!--Force UTF-8 encoding-->
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Spring security filter chain -->
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+    <!-- Spring security filter should apply to all URLs -->
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Proxy for ebisearch service calls /ebisearch -->
+    <servlet>
+        <servlet-name>ProxyServletGlobalSearch</servlet-name>
+        <servlet-class>uk.ac.ebi.pride.web.util.servlet.proxy.ProxyServlet</servlet-class>
+        <init-param>
+            <param-name>proxyHost</param-name>
+            <param-value>www.ebi.ac.uk</param-value>
+        </init-param>
+        <init-param>
+            <param-name>proxyPort</param-name>
+            <param-value>80</param-value>
+        </init-param>
+        <init-param>
+            <param-name>proxyPath</param-name>
+            <param-value>/ebisearch</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProxyServletGlobalSearch</servlet-name>
+        <url-pattern>/ebisearch/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Proxy for webapp -->
+    <servlet>
+        <servlet-name>ProxyServletWebapp</servlet-name>
+        <servlet-class>uk.ac.ebi.pride.web.util.servlet.proxy.ProxyServlet</servlet-class>
+        <init-param>
+            <param-name>proxyHost</param-name>
+            <param-value>localhost</param-value>
+        </init-param>
+        <init-param>
+            <param-name>proxyPort</param-name>
+            <param-value>8888</param-value>
+        </init-param>
+        <init-param>
+            <param-name>proxyPath</param-name>
+            <param-value>/.</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProxyServletWebapp</servlet-name>
+        <url-pattern>/webapp/*</url-pattern>
+    </servlet-mapping>
+
+
+	<!-- Processes application requests -->
+	<servlet>
+		<servlet-name>appServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>WEB-INF/spring/mvc-config.xml</param-value>
+		</init-param>
+        <init-param>
+            <param-name>development</param-name>
+            <param-value>false</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>appServlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+    <filter>
+        <filter-name>frontierTemplateFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>frontierTemplateFilter</filter-name>
+        <url-pattern>/</url-pattern>
+        <url-pattern>/projects/*</url-pattern>
+        <url-pattern>/assays/*</url-pattern>
+        <url-pattern>/users/*</url-pattern>
+        <url-pattern>/login</url-pattern>
+        <url-pattern>/simpleSearch</url-pattern>
+        <url-pattern>/register</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>frontierTemplateFilterWebApp</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>frontierTemplateFilterWebApp</filter-name>
+        <url-pattern>/viewer/*</url-pattern>
+    </filter-mapping>
+
+
+    <error-page>
+        <error-code>400</error-code>
+        <location>/error400</location>
+    </error-page>
+
+</web-app>

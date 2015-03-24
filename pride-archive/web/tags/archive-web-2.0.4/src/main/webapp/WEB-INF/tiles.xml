@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+
+    <definition name="baseLayout" template="/WEB-INF/views/layouts/base.jsp" />
+
+    <definition name="baseLayoutWithBreadcrumb" template="/WEB-INF/views/layouts/baseWithBreadcrumb.jsp" />
+
+    <definition name="welcome" extends="baseLayout">
+        <put-attribute name="main" value="/WEB-INF/views/welcome.jsp" />
+    </definition>
+
+    <definition name="about" extends="baseLayout">
+        <put-attribute name="main" value="/WEB-INF/views/about.jsp" />
+    </definition>
+
+    <definition name="projectSummary" extends="baseLayout">
+        <put-attribute name="main" value="/WEB-INF/views/projectSummary.jsp" />
+    </definition>
+
+    <definition name="projectFileDownload" extends="baseLayout">
+        <put-attribute name="main" value="/WEB-INF/views/projectFileDownload.jsp" />
+    </definition>
+
+    <definition name="publishMyProject" extends="baseLayout">
+        <put-attribute name="main" value="/WEB-INF/views/publishMyProject.jsp" />
+    </definition>
+
+    <definition name="finishPublishMyProject" extends="baseLayout">
+        <put-attribute name="main" value="/WEB-INF/views/finishPublishMyProject.jsp" />
+    </definition>
+
+    <definition name="searchResult" extends="baseLayout">
+        <put-attribute name="main" value="/WEB-INF/views/searchResult.jsp" />
+    </definition>
+
+    <definition name="peptideTable" extends="baseLayout">
+        <put-attribute name="main" value="/WEB-INF/views/psmsTable.jsp" />
+    </definition>
+
+    <definition name="proteinTable" extends="baseLayout">
+        <put-attribute name="main" value="/WEB-INF/views/proteinsTable.jsp" />
+    </definition>
+
+    <definition name="assaySummary" extends="baseLayout">
+        <put-attribute name="main" value="/WEB-INF/views/assaySummary.jsp" />
+    </definition>
+
+    <definition name="assayFileDownload" extends="baseLayout">
+        <put-attribute name="main" value="/WEB-INF/views/assayFileDownload.jsp" />
+    </definition>
+
+    <definition name="login" extends="baseLayout">
+        <put-attribute name="main" value="/WEB-INF/views/login.jsp" />
+    </definition>
+
+    <definition name="passwordResetSuccessful" extends="baseLayout">
+        <put-attribute name="main" value="/WEB-INF/views/passwordResetSuccessful.jsp" />
+    </definition>
+
+    <definition name="register" extends="baseLayout">
+        <put-attribute name="main" value="/WEB-INF/views/register.jsp" />
+    </definition>
+
+    <definition name="userProfile" extends="baseLayout">
+        <put-attribute name="main" value="/WEB-INF/views/userProfile.jsp" />
+    </definition>
+
+    <definition name="editUserProfile" extends="baseLayout">
+        <put-attribute name="main" value="/WEB-INF/views/editUserProfile.jsp" />
+    </definition>
+
+    <definition name="reenterPassword" extends="baseLayout">
+        <put-attribute name="main" value="/WEB-INF/views/reenterPassword.jsp" />
+    </definition>
+
+    <definition name="forgotPassword" extends="baseLayout">
+        <put-attribute name="main" value="/WEB-INF/views/forgotPassword.jsp" />
+    </definition>
+
+    <definition name="error" extends="baseLayout">
+        <put-attribute name="main" value="/WEB-INF/views/error.jsp" />
+    </definition>
+
+    <definition name="feedback" extends="baseLayoutWithBreadcrumb">
+        <put-attribute name="main" value="/WEB-INF/views/feedback.jsp" />
+    </definition>
+
+    <definition name="feedbackAcknowledgement" extends="baseLayoutWithBreadcrumb">
+        <put-attribute name="main" value="/WEB-INF/views/feedbackAcknowledgement.jsp" />
+    </definition>
+
+    <definition name="registrationSuccessful" extends="baseLayoutWithBreadcrumb">
+        <put-attribute name="main" value="/WEB-INF/views/registrationSuccessful.jsp" />
+    </definition>
+
+    <definition name="googleChart" extends="baseLayoutWithBreadcrumb">
+        <put-attribute name="main" value="/views/submissionCharts.jsp" />
+    </definition>
+
+</tiles-definitions>
