@@ -35,49 +35,49 @@
                     <div>
                         <img u="image" class="no-margin" src="${pageContext.request.contextPath}/resources/img/slider/px-sub-tool.png"/>
                         <div  u="thumb">
-                            <fmt:message key="welcome.submit.data.caption"/>: <a style="color: blue" href="http://www.proteomexchange.org/submission">PX Submission Tool</a>
+                            <fmt:message key="welcome.submit.data.caption"/>: <a style="color: blue" href="http://www.proteomexchange.org/submission" target="_blank">PX Submission Tool</a>
                             <br>MS/MS Proteomics Submission Desktop Tool
                         </div>
                     </div>
                     <div>
                         <img u="image" class="no-margin" src="${pageContext.request.contextPath}/resources/img/slider/precursor.png" />
                         <div  u="thumb">
-                            <fmt:message key="welcome.prider.tools.caption"/>: <a style="color: blue" href="https://github.com/PRIDE-Toolsuite/pride-inspector">PRIDE Inspector</a>
+                            <fmt:message key="welcome.prider.tools.caption"/>: <a style="color: blue" href="https://github.com/PRIDE-Toolsuite/pride-inspector" target="_blank">PRIDE Inspector</a>
                             <br>Distribution of Precursos Ion Masses
                         </div>
                     </div>
                     <div>
                         <img u="image" class="no-margin" src="${pageContext.request.contextPath}/resources/img/slider/proteome_central.png" />
                         <div  u="thumb">
-                            <fmt:message key="welcome.submit.data.caption"/>: <a style="color: blue" href="http://proteomecentral.proteomexchange.org/cgi/GetDataset">Proteome Central</a>
+                            <fmt:message key="welcome.access.caption"/>: <a style="color: blue" href="http://proteomecentral.proteomexchange.org/cgi/GetDataset" target="_blank">Proteome Central</a>
                             <br>Accessible ProteomeXchange datasets
                         </div>
                     </div>
                     <div>
                         <img u="image" class="no-margin" src="${pageContext.request.contextPath}/resources/img/slider/protein-coverage.png" />
                         <div  u="thumb">
-                            <fmt:message key="welcome.prider.tools.caption"/>: <a style="color: blue"  href="https://github.com/PRIDE-Toolsuite/pride-inspector">PRIDE Inspector</a>
+                            <fmt:message key="welcome.prider.tools.caption"/>: <a style="color: blue"  href="https://github.com/PRIDE-Toolsuite/pride-inspector" target="_blank">PRIDE Inspector</a>
                             <br>Protein Table
                         </div>
                     </div>
                     <div>
                         <img u="image" class="no-margin" src="${pageContext.request.contextPath}/resources/img/slider/ws.jpg" />
                         <div u="thumb">
-                            <fmt:message key="welcome.access.caption"/>: <a style="color: blue"  href="http://www.ebi.ac.uk/pride/ws/archive">PRIDE Archive Web Service</a>
+                            <fmt:message key="welcome.access.caption"/>: <a style="color: blue"  href="http://www.ebi.ac.uk/pride/ws/archive" target="_blank">PRIDE Archive Web Service</a>
                             <br>Swagger Documentation
                         </div>
                     </div>
                     <div>
                         <img u="image" class="no-margin" src="${pageContext.request.contextPath}/resources/img/slider/protein-inference-panel.png" />
                         <div  u="thumb">
-                            <fmt:message key="welcome.prider.tools.caption"/>: <a style="color: blue"  href="https://github.com/PRIDE-Toolsuite/pride-inspector">PRIDE Inspector</a>
+                            <fmt:message key="welcome.prider.tools.caption"/>: <a style="color: blue"  href="https://github.com/PRIDE-Toolsuite/pride-inspector" target="_blank">PRIDE Inspector</a>
                             <br>Protein Inference
                         </div>
                     </div>
                     <div>
                         <img u="image" class="no-margin" src="${pageContext.request.contextPath}/resources/img/slider/quantitation.png" />
                         <div  u="thumb">
-                            <fmt:message key="welcome.prider.tools.caption"/>: <a style="color: blue"  href="https://github.com/PRIDE-Toolsuite/pride-inspector">PRIDE Inspector</a>
+                            <fmt:message key="welcome.prider.tools.caption"/>: <a style="color: blue"  href="https://github.com/PRIDE-Toolsuite/pride-inspector" target="_blank">PRIDE Inspector</a>
                             <br>Quantitation View
                         </div>
                     </div>
@@ -91,14 +91,14 @@
                     <div>
                         <img u="image" class="no-margin" src="${pageContext.request.contextPath}/resources/img/slider/sequence.png" />
                         <div  u="thumb">
-                            <fmt:message key="welcome.prider.tools.caption"/>: <a style="color: blue"  href="https://github.com/PRIDE-Toolsuite/pride-inspector">PRIDE Inspector</a>
+                            <fmt:message key="welcome.prider.tools.caption"/>: <a style="color: blue"  href="https://github.com/PRIDE-Toolsuite/pride-inspector" target="_blank">PRIDE Inspector</a>
                             <br>Protein Details
                         </div>
                     </div>
                     <div>
                         <img u="image" class="no-margin" src="${pageContext.request.contextPath}/resources/img/slider/ws2.jpg" />
                         <div u="thumb">
-                            <fmt:message key="welcome.access.caption"/>: <a style="color: blue" href="http://www.ebi.ac.uk/pride/ws/archive">PRIDE Archive Web Service</a>
+                            <fmt:message key="welcome.access.caption"/>: <a style="color: blue" href="http://www.ebi.ac.uk/pride/ws/archive" target="_blank">PRIDE Archive Web Service</a>
                             <br>JSON Output
                         </div>
                     </div>

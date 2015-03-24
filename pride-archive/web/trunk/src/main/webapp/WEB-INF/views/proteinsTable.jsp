@@ -246,15 +246,15 @@
                                 <spring:param name="assayAccession" value="${protein.assayAccession}"/>
                                 <spring:param name="proteinAccession" value="${protein.submittedAccession}"/>
                             </spring:url>
-
+                                <fmt:message key="jump.peptide.table" var="jumpPeptideTable"/>
                                 <c:choose>
                                     <c:when test="${fn:contains(highlights[protein], 'submitted_accession')}">
                                         <c:forEach var="highlight" items="${highlights[protein]['submitted_accession']}">
-                                            <a href="${psmTableUrl}">${highlight}</a>
+                                            <a href="${psmTableUrl}" title="${jumpPeptideTable}">${highlight}</a>
                                         </c:forEach>
                                     </c:when>
                                     <c:otherwise>
-                                        <a href="${psmTableUrl}">${protein.submittedAccession}</a>
+                                        <a href="${psmTableUrl}" title="${jumpPeptideTable}">${protein.submittedAccession}</a>
                                     </c:otherwise>
                                 </c:choose>
 
