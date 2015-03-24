@@ -343,11 +343,28 @@
                             <c:choose>
                                 <c:when test="${not empty protein.modificationAccessionName}">
                                     <c:forEach var="modification" items="${protein.modificationAccessionName}">
+                                        <c:choose>
+                                            <c:when test="${fn:containsIgnoreCase(modification.value, 'UNIMOD:')}">
+                                                <c:set var="accNum" value="${fn:replace(modification.value,'UNIMOD:','')}"/>
+                                                <spring:url var="url" value="http://www.unimod.org/modifications_view.php?editid1={accession}">
+                                                    <spring:param name="accession" value="${accNum}"/>
+                                                </spring:url>
+                                            </c:when>
+                                            <c:when test="${not fn:containsIgnoreCase(modification.value, 'UNIMOD:') and
+                                                    not fn:containsIgnoreCase(modification.value, 'CHEMMOD:')}">
+                                                <spring:url var="url" value="http://www.ebi.ac.uk/ontology-lookup/?termId={accession}">
+                                                    <spring:param name="accession" value="${modification.value}"/>
+                                                </spring:url>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <c:set var="url" value="" />
+                                            </c:otherwise>
+                                        </c:choose>
                                         <spring:url var="olsUrl" value="http://www.ebi.ac.uk/ontology-lookup/?termId={accession}">
                                             <spring:param name="accession" value="${modification.value}"/>
                                         </spring:url>
                                         <li>
-                                            <a href="${olsUrl}">${modification.key}</a>
+                                            <a href="${url}">${modification.key}</a>
                                         </li>
                                     </c:forEach>
                                 </c:when>
