@@ -184,7 +184,7 @@
                         <fmt:message key="view.reference.detail"/> :
                         <c:forEach var="publication" items="${publications}">
                             <%-- pubmed url--%>
-                            <spring:url var="pubmedIdUrl" value="http://www.ncbi.nlm.nih.gov/pubmed/{pubmedId}">
+                            <spring:url var="pubmedIdUrl" value="http://europepmc.org/abstract/MED/{pubmedId}">
                                 <spring:param name="pubmedId" value="${publication.pubmedId}"/>
                             </spring:url>
 
@@ -216,7 +216,7 @@
                         <fmt:message key="view.reference.detail"/> :
                         <c:forEach var="publication" items="${publications}">
                             <%-- pubmed url--%>
-                            <spring:url var="pubmedIdUrl" value="http://www.ncbi.nlm.nih.gov/pubmed/{pubmedId}">
+                            <spring:url var="pubmedIdUrl" value="http://europepmc.org/abstract/MED/{pubmedId}">
                                 <spring:param name="pubmedId" value="${publication.pubmedId}"/>
                             </spring:url>
 
@@ -529,7 +529,7 @@
             <ul>
                 <c:forEach var="publication" items="${publications}">
                     <%-- pubmed url--%>
-                    <spring:url var="pubmedIdUrl" value="http://www.ncbi.nlm.nih.gov/pubmed/{pubmedId}">
+                    <spring:url var="pubmedIdUrl" value="http://europepmc.org/abstract/MED/{pubmedId}">
                         <spring:param name="pubmedId" value="${publication.pubmedId}"/>
                     </spring:url>
 
