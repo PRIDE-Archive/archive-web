@@ -9,18 +9,22 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import uk.ac.ebi.pride.archive.repo.assay.service.AssaySummary;
 import uk.ac.ebi.pride.archive.repo.project.service.ProjectSummary;
 import uk.ac.ebi.pride.archive.security.assay.AssaySecureService;
 import uk.ac.ebi.pride.archive.security.project.ProjectSecureService;
 import uk.ac.ebi.pride.archive.security.psm.PsmSecureSearchService;
+import uk.ac.ebi.pride.archive.web.model.QualityAwarePsm;
+import uk.ac.ebi.pride.archive.web.model.QualityAwarePsms;
 import uk.ac.ebi.pride.archive.web.util.PageMaker;
 import uk.ac.ebi.pride.archive.web.util.SearchUtils;
 import uk.ac.ebi.pride.indexutils.results.PageWrapper;
 import uk.ac.ebi.pride.psmindex.search.model.Psm;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -85,9 +89,9 @@ public class PsmsTableController {
 
         PageWrapper<Psm> psmPage = psmSearchService.findByAssayAccessionHighlightsOnModificationNames(assayAccession, filteredQuery, ptmsFilters, page);
         Map<String, Long> availablePtms = psmSearchService.findByAssayAccessionFacetOnModificationNames(assayAccession, filteredQuery, ptmsFilters);
+        Map<String, QualityAwarePsm> psmsWithClusters = getClustersForPsm(psmPage.getPage().getContent());
 
-        return pageMaker.createPsmsTablePage(projectAccession, assayAccession, psmPage.getPage(), psmPage.getHighlights(), query, availablePtms, ptmsFilters);
-
+        return pageMaker.createPsmsTablePage(projectAccession, assayAccession, psmPage.getPage(), psmPage.getHighlights(), query, availablePtms, ptmsFilters, psmsWithClusters);
     }
 
     @RequestMapping(value = "/assays/{assayAccession}/psms", method = RequestMethod.GET)
@@ -131,8 +135,9 @@ public class PsmsTableController {
 
         PageWrapper<Psm> psmPage = psmSearchService.findByProjectAccessionHighlightsOnModificationNames(projectAccession, filteredQuery, ptmsFilters, page);
         Map<String, Long> availablePtms = psmSearchService.findByProjectAccessionFacetOnModificationNames(projectAccession, filteredQuery, ptmsFilters);
+        Map<String, QualityAwarePsm> psmsWithClusters = getClustersForPsm(psmPage.getPage().getContent());
 
-        return pageMaker.createPsmsTablePage(projectAccession, null, psmPage.getPage(), psmPage.getHighlights(), query, availablePtms, ptmsFilters);
+        return pageMaker.createPsmsTablePage(projectAccession, null, psmPage.getPage(), psmPage.getHighlights(), query, availablePtms, ptmsFilters, psmsWithClusters);
     }
 
     private String getProjectAccession(String assayAccession) {
@@ -142,5 +147,22 @@ public class PsmsTableController {
         // find the project record to retrieve the project accession
         ProjectSummary projectSummary = projectServiceImpl.findById(assaySummary.getProjectId());
         return projectSummary.getAccession();
+    }
+
+    private Map<String, QualityAwarePsm> getClustersForPsm(List<Psm> psms) {
+        Map<String, QualityAwarePsm> result = new HashMap(psms.size());
+        RestTemplate restTemplate = new RestTemplate();
+        QualityAwarePsms qualityAwarePsms;
+        QualityAwarePsm qualityAwarePsm;
+        for (Psm psm : psms) {
+            qualityAwarePsms = restTemplate.getForObject("http://www.ebi.ac.uk/pride/ws/cluster/psm/archive/" + psm.getId(), QualityAwarePsms.class);
+            if (qualityAwarePsms!=null && !qualityAwarePsms.getQualityAwarePsms().isEmpty()){
+                qualityAwarePsm = qualityAwarePsms.getQualityAwarePsms().first();
+            } else {
+                qualityAwarePsm = new QualityAwarePsm();
+            }
+            result.put(psm.getId(), qualityAwarePsm);
+        }
+        return result;
     }
 }
