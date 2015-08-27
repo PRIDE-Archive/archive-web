@@ -14,6 +14,7 @@ import uk.ac.ebi.pride.archive.repo.statistics.service.StatisticsSummary;
 import uk.ac.ebi.pride.archive.repo.user.service.UserSummary;
 import uk.ac.ebi.pride.archive.web.assay.controller.AssaySummaryAdapter;
 import uk.ac.ebi.pride.archive.web.feedback.model.Feedback;
+import uk.ac.ebi.pride.archive.web.model.QualityAwarePsm;
 import uk.ac.ebi.pride.archive.web.project.controller.ProjectSummaryAdapter;
 import uk.ac.ebi.pride.archive.web.user.model.ChangePassword;
 import uk.ac.ebi.pride.archive.web.user.model.PublishProject;
@@ -401,7 +402,8 @@ public class PageMaker {
                                             Map<Psm, Map<String, List<String>>> highlights,
                                             String query,
                                             Map<String, Long> availablePtms,
-                                            List<String> ptmsFilterList) {
+                                            List<String> ptmsFilterList,
+                                            Map<String, QualityAwarePsm> psmsWithClusters) {
 
         ModelAndView modelAndView = new ModelAndView();
 
@@ -421,6 +423,8 @@ public class PageMaker {
         modelAndView.addObject("ptmsFilters", ptmsFilterList);
         modelAndView.addObject("availablePtmList", availablePtms);
 
+        // psmsWithClusters
+        modelAndView.addObject("psmsWithClusters", psmsWithClusters);
         modelAndView.setViewName("psmsTable");
 
         return modelAndView;
