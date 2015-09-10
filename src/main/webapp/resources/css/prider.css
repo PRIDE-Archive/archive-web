@@ -709,6 +709,18 @@ a.cardiovascular {
     display: inline;
 }
 
+a.highlighted {
+    font-style: italic;
+    font-size: 0.9em;
+    padding: 2px 8px 2px 17px;
+    background: #f2f2c5 url('../img/tag.png') no-repeat 2px 2px;
+    -moz-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    display: inline;
+}
+
 a.metaproteomics {
     font-style: italic;
     font-size: 0.9em;
@@ -728,6 +740,17 @@ a.metaproteomics {
     display: inline;
 }
 
+a.reference {
+    font-style: italic;
+    font-size: 0.9em;
+    padding: 2px 8px 2px 17px;
+    background: rgba(172, 231, 0, 0.7) url('../img/tag.png') no-repeat 2px 2px;
+    -moz-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    display: inline;
+}
 
 a.other {
     font-style: italic;
@@ -741,17 +764,7 @@ a.other {
     display: inline;
 }
 
-a.highlighted {
-    font-style: italic;
-    font-size: 0.9em;
-    padding: 2px 8px 2px 17px;
-    background: #f2f2c5 url('../img/tag.png') no-repeat 2px 2px;
-    -moz-border-radius: 5px;
-    -khtml-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    display: inline;
-}
+
 
 a.no_visual_link {
     border-bottom-color: transparent;
