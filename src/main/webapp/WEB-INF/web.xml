@@ -18,10 +18,16 @@
 	</context-param>
 
     <!-- JNDI setup -->
+    <!-- PRIDEPRO -->
     <resource-env-ref>
         <resource-env-ref-name>jdbc/pridepro</resource-env-ref-name>
         <resource-env-ref-type>javax.sql.DataSource</resource-env-ref-type>
     </resource-env-ref>
+    <!-- VPRIDETST -->
+<!--    <resource-env-ref>
+        <resource-env-ref-name>jdbc/pridetst</resource-env-ref-name>
+        <resource-env-ref-type>javax.sql.DataSource</resource-env-ref-type>
+    </resource-env-ref>-->
 
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>

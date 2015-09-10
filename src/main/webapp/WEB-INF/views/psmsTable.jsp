@@ -339,32 +339,32 @@
                                 <a class="no_visual_link"  target="_blank" href="${clusterUrl}/${psmsWithClusters[psm.id].clusterId}">
                                     <c:choose>
                                         <c:when test="${'HIGH' eq psmsWithClusters[psm.id].clusterQuality}">
-                                            <img class=table_icon_hl id='cluster_stars_high_0' title="High quality spectra clustering. Go to PRIDE Cluster" style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-full-icon.png'>
-                                            <img class=table_icon_hl id='cluster_stars_high_1' title="High quality spectra clustering. Go to PRIDE Cluster" style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-full-icon.png'>
-                                            <img class=table_icon_hl id='cluster_stars_high_2' title="High quality spectra clustering. Go to PRIDE Cluster" style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-full-icon.png'>
+                                            <img class=table_icon_hl id='cluster_stars_high_0' title="Belongs to a high quality spectral cluster. Go to PRIDE Cluster" style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-full-icon.png'>
+                                            <img class=table_icon_hl id='cluster_stars_high_1' title="Belongs to a High quality spectral cluster. Go to PRIDE Cluster" style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-full-icon.png'>
+                                            <img class=table_icon_hl id='cluster_stars_high_2' title="Belongs to a High quality spectral cluster. Go to PRIDE Cluster" style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-full-icon.png'>
                                         </c:when>
                                         <c:when test="${'MEDIUM' eq psmsWithClusters[psm.id].clusterQuality}">
-                                            <img class=table_icon_hl id='cluster_stars_med_0' title="Medium quality spectra clustering. Go to PRIDE Cluster" style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-full-icon.png'>
-                                            <img class=table_icon_hl id='cluster_stars_med_1' title="Medium quality spectra clustering. Go to PRIDE Cluster"  style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-full-icon.png'>
-                                            <img class=table_icon_hl id='cluster_stars_med_2' title="Medium quality spectra clustering. Go to PRIDE Cluster"  style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-empty-icon.png'>
+                                            <img class=table_icon_hl id='cluster_stars_med_0' title="Belongs to a medium quality spectral cluster. Go to PRIDE Cluster" style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-full-icon.png'>
+                                            <img class=table_icon_hl id='cluster_stars_med_1' title="Belongs to a medium quality spectral cluster. Go to PRIDE Cluster"  style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-full-icon.png'>
+                                            <img class=table_icon_hl id='cluster_stars_med_2' title="Belongs to a medium quality spectral cluster. Go to PRIDE Cluster"  style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-empty-icon.png'>
                                         </c:when>
                                         <c:when test="${'LOW' eq psmsWithClusters[psm.id].clusterQuality}">
-                                            <img class=table_icon_hl id='cluster_stars_low_0' title="Low quality spectra clustering. Go to PRIDE Cluster"  style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-full-icon.png'>
-                                            <img class=table_icon_hl id='cluster_stars_low_1' title="Low quality spectra clustering. Go to PRIDE Cluster"  style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-empty-icon.png'>
-                                            <img class=table_icon_hl id='cluster_stars_low_2' title="Low quality spectra clustering. Go to PRIDE Cluster"  style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-empty-icon.png'>
+                                            <img class=table_icon_hl id='cluster_stars_low_0' title="Belongs to a low quality spectral cluster.  Go to PRIDE Cluster"  style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-full-icon.png'>
+                                            <img class=table_icon_hl id='cluster_stars_low_1' title="Belongs to a low quality spectral cluster. Go to PRIDE Cluster"  style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-empty-icon.png'>
+                                            <img class=table_icon_hl id='cluster_stars_low_2' title="Belongs to a low quality spectral cluster. Go to PRIDE Cluster"  style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-empty-icon.png'>
                                         </c:when>
                                         <c:otherwise>
-                                            <img class=table_icon id='cluster_stars_na_0' title="No spectra clustering from PRIDE Cluster" style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-empty-icon.png'>
-                                            <img class=table_icon id='cluster_stars_na_1' title="No spectra clustering from PRIDE Cluster" style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-empty-icon.png'>
-                                            <img class=table_icon id='cluster_stars_na_2' title="No spectra clustering from PRIDE Cluster" style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-empty-icon.png'>
+                                            <img class=table_icon id='cluster_stars_na_0' title="No information available from PRIDE Cluster" style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-empty-icon.png'>
+                                            <img class=table_icon id='cluster_stars_na_1' title="No information available from PRIDE Cluster" style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-empty-icon.png'>
+                                            <img class=table_icon id='cluster_stars_na_2' title="No information available from PRIDE Cluster" style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-empty-icon.png'>
                                         </c:otherwise>
                                     </c:choose>
                                 </a>
                             </c:when>
                             <c:otherwise>
-                                <img class=table_icon id='cluster_stars_na_0' title="No spectra clustering from PRIDE Cluster" style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-empty-icon.png'>
-                                <img class=table_icon id='cluster_stars_na_1' title="No spectra clustering from PRIDE Cluster" style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-empty-icon.png'>
-                                <img class=table_icon id='cluster_stars_na_2' title="No spectra clustering from PRIDE Cluster" style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-empty-icon.png'>
+                                <img class=table_icon id='cluster_stars_na_0' title="No information available from PRIDE Cluster" style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-empty-icon.png'>
+                                <img class=table_icon id='cluster_stars_na_1' title="No information available from PRIDE Cluster" style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-empty-icon.png'>
+                                <img class=table_icon id='cluster_stars_na_2' title="No information available from PRIDE Cluster" style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-empty-icon.png'>
                                 <%-- display 3 empty stars--%>
                             </c:otherwise>
                         </c:choose>

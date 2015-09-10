@@ -426,7 +426,9 @@
                                         fn:toLowerCase(tag) eq 'biological' or
                                         fn:toLowerCase(tag) eq 'technical' or
                                         fn:toLowerCase(tag) eq 'cardiovascular' or
-                                        fn:toLowerCase(tag) eq 'metaproteomics'}">
+                                        fn:toLowerCase(tag) eq 'metaproteomics' or
+                                        fn:toLowerCase(tag) eq 'reference'
+                                        }">
                             <c:set var="tagType" value='${fn:toLowerCase(tag)}'/>
                             <c:set var="tagName">${tag} <fmt:message key="project.dataset"/></c:set>
                         </c:when>
