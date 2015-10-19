@@ -41,7 +41,7 @@
         <td width="10%">
             <c:choose>
                 <c:when test="${isPublic}">
-                    <a href="http://www.ebi.ac.uk/pride/data/archive/${year}/${month}/${projectSummary.accession}/${file.fileName}"
+                    <a href="//www.ebi.ac.uk/pride/data/archive/${year}/${month}/${projectSummary.accession}/${file.fileName}"
                        class="icon icon-functional" data-icon="="><fmt:message key="file.download"/></a>
                 </c:when>
                 <c:otherwise>

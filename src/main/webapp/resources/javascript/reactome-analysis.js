@@ -9,7 +9,7 @@ var reactomeAnalysis = function(btn, acc, projection) {
     }
 
     // ToDo: make this URI configurable to support local testing. perhaps pass in as argument
-    var dataURI = "http://wwwdev.ebi.ac.uk/pride/ws/archive/protein/list/assay/"+ acc +".acc";
+    var dataURI = "//www.ebi.ac.uk/pride/ws/archive/protein/list/assay/"+ acc +".acc";
 
     var parent = $(btn).parent();
     parent.text("Loading...");
