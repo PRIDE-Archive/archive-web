@@ -3,13 +3,16 @@ var reactomeAnalysis = function(btn, acc, projection) {
     var reactomeCorsURI;
 
     if (projection) {
+        //using proxy in case you are planning to use HTTPS
+        //reactomeCorsURI = '/pride/reactome/AnalysisService/identifiers/url/projection?pageSize=1&page=1';
         reactomeCorsURI = 'http://www.reactome.org/AnalysisService/identifiers/url/projection?pageSize=1&page=1';
     } else {
+        //using proxy in case you are planning to use HTTPS
+        //reactomeCorsURI = '/pride/reactome/AnalysisService/identifiers/url?pageSize=1&page=1';
         reactomeCorsURI = 'http://www.reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1';
     }
 
-    // ToDo: make this URI configurable to support local testing. perhaps pass in as argument
-    var dataURI = "//www.ebi.ac.uk/pride/ws/archive/protein/list/assay/"+ acc +".acc";
+    var dataURI =  location.origin + "/pride/ws/archive/protein/list/assay/" + acc + ".acc";
 
     var parent = $(btn).parent();
     parent.text("Loading...");
@@ -51,32 +54,10 @@ var reactomeAnalysis = function(btn, acc, projection) {
 
 var linkBuilder = function(btn, data){
     token = data.summary.token;
-
-    if( data.resourceSummary.length > 2 ){
-        stId = data.pathways[0].stId;
-        btn.onclick = function(){
-            window.open("http://www.reactome.org/PathwayBrowser/#" + stId + "&DTAB=AN&ANALYSIS=" + token, "_blank");
-        };
-    } else {
-        resource = data.resourceSummary[1].resource;
-        $.ajax({
-            type: "GET",
-            contentType: "text/plain",
-            dataType: "json",
-            url: "http://www.reactome.org/AnalysisService/token/" + token + "?pageSize=1&page=1&resource=" + resource,
-            success: null //needs to be defined, but null is "something" xD
-        })
-        .done(function(data) {
-                console.info(data);
-            stId = data.pathways[0].stId;
-            btn.onclick = function(){
-                window.open("http://www.reactome.org/PathwayBrowser/#" + stId + "&DTAB=AN&ANALYSIS=" + token, "_blank");
-            };
-        })
-        .fail(function(response, status) {
-            //TODO
-        })
-    }
+    resource = ( data.resourceSummary.length > 2) ? data.resourceSummary[0] : data.resourceSummary[1]:
+    btn.onclick = function(){
+        window.open("http://www.reactome.org/PathwayBrowser/#/DTAB=AN&ANALYSIS=" + token + "&RESOURCE=" + resource, "_blank");
+    };
 };
 
 /**
@@ -89,3 +70,4 @@ Number.prototype.format = function(n, x) {
     var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
     return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,');
 };
+Status API Training Shop Blog About Pricing
