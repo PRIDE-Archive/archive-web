@@ -4,11 +4,11 @@ var reactomeAnalysis = function(btn, acc, projection) {
 
     if (projection) {
         //using proxy in case you are planning to use HTTPS
-        reactomeCorsURI = '/pride/reactome/AnalysisService/identifiers/url/projection?pageSize=1&page=1';
+        reactomeCorsURI = '/reactome/AnalysisService/identifiers/url/projection?pageSize=1&page=1';
         //reactomeCorsURI = location.protocol + '//www.reactome.org/AnalysisService/identifiers/url/projection?pageSize=1&page=1';
     } else {
         //using proxy in case you are planning to use HTTPS
-        reactomeCorsURI = '/pride/reactome/AnalysisService/identifiers/url?pageSize=1&page=1';
+        reactomeCorsURI = '/reactome/AnalysisService/identifiers/url?pageSize=1&page=1';
         //reactomeCorsURI = location.protocol + '//www.reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1';
     }
 

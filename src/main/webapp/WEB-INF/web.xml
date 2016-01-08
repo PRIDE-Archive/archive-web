@@ -109,7 +109,7 @@
     </servlet-mapping>
 
 
-    <!-- Proxy for webservice -->
+    <!-- Proxy for reactome analysis service -->
     <servlet>
         <servlet-name>ProxyServletReactome</servlet-name>
         <servlet-class>uk.ac.ebi.pride.web.util.servlet.proxy.ProxyServlet</servlet-class>
@@ -128,9 +128,8 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>ProxyServletReactome</servlet-name>
-        <url-pattern>/pride/reactome/*</url-pattern>
+        <url-pattern>/reactome/*</url-pattern>
     </servlet-mapping>
-
 
     <!-- Processes application requests -->
 	<servlet>
