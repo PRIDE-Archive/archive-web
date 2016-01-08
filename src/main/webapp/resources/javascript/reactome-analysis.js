@@ -4,15 +4,15 @@ var reactomeAnalysis = function(btn, acc, projection) {
 
     if (projection) {
         //using proxy in case you are planning to use HTTPS
-        //reactomeCorsURI = '/pride/reactome/AnalysisService/identifiers/url/projection?pageSize=1&page=1';
-        reactomeCorsURI = 'http://www.reactome.org/AnalysisService/identifiers/url/projection?pageSize=1&page=1';
+        reactomeCorsURI = '/pride/reactome/AnalysisService/identifiers/url/projection?pageSize=1&page=1';
+        //reactomeCorsURI = location.protocol + '//www.reactome.org/AnalysisService/identifiers/url/projection?pageSize=1&page=1';
     } else {
         //using proxy in case you are planning to use HTTPS
-        //reactomeCorsURI = '/pride/reactome/AnalysisService/identifiers/url?pageSize=1&page=1';
-        reactomeCorsURI = 'http://www.reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1';
+        reactomeCorsURI = '/pride/reactome/AnalysisService/identifiers/url?pageSize=1&page=1';
+        //reactomeCorsURI = location.protocol + '//www.reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1';
     }
 
-    var dataURI =  location.origin + "/pride/ws/archive/protein/list/assay/" + acc + ".acc";
+    var dataURI = location.protocol + "//www.ebi.ac.uk/pride/ws/archive/protein/list/assay/" + acc + ".acc";
 
     var parent = $(btn).parent();
     parent.text("Loading...");
@@ -54,7 +54,7 @@ var reactomeAnalysis = function(btn, acc, projection) {
 
 var linkBuilder = function(btn, data){
     token = data.summary.token;
-    resource = ( data.resourceSummary.length > 2) ? data.resourceSummary[0] : data.resourceSummary[1]:
+    resource = ( data.resourceSummary.length > 2) ? data.resourceSummary[0] : data.resourceSummary[1];
     btn.onclick = function(){
         window.open("http://www.reactome.org/PathwayBrowser/#/DTAB=AN&ANALYSIS=" + token + "&RESOURCE=" + resource, "_blank");
     };
