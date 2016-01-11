@@ -645,7 +645,7 @@
                         <div>
                             <c:choose>
                                 <c:when test="${projectSummary.indexProteinCount gt 0 }">
-                                    <button title="Analyse the protein set in Reactome" onclick="reactomeAnalysis(this, ${assay.accession}, false)" class="reactome-analyse">
+                                    <button title="Analyse the protein set in Reactome" onclick="reactomeAnalysis(this,'${pageContext.request.contextPath}', ${assay.accession}, false)" class="reactome-analyse">
                                         Analyse
                                     </button>
                                 </c:when>

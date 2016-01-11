@@ -91,6 +91,7 @@
 
         <plugins>
             <!-- maven-jetty-plugin -->
+            <!-- generate the keystore with the following command for https to work in jetty -->
             <!-- keytool -genkey -alias jetty6 -keyalg RSA -keystore src/test/resources/jetty-ssl.keystore -storepass jetty6 -keypass jetty6 -dname "CN=PRIDE Archive" -->
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>

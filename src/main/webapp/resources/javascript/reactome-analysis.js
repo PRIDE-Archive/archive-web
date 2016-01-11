@@ -1,14 +1,14 @@
-var reactomeAnalysis = function(btn, acc, projection) {
+var reactomeAnalysis = function(btn, contextPath, acc, projection) {
 
     var reactomeCorsURI;
 
     if (projection) {
         //using proxy in case you are planning to use HTTPS
-        reactomeCorsURI = '/reactome/AnalysisService/identifiers/url/projection?pageSize=1&page=1';
+        reactomeCorsURI = contextPath + '/reactome/AnalysisService/identifiers/url/projection?pageSize=1&page=1';
         //reactomeCorsURI = location.protocol + '//www.reactome.org/AnalysisService/identifiers/url/projection?pageSize=1&page=1';
     } else {
         //using proxy in case you are planning to use HTTPS
-        reactomeCorsURI = '/reactome/AnalysisService/identifiers/url?pageSize=1&page=1';
+        reactomeCorsURI = contextPath + '/reactome/AnalysisService/identifiers/url?pageSize=1&page=1';
         //reactomeCorsURI = location.protocol + '//www.reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1';
     }
 
@@ -54,7 +54,7 @@ var reactomeAnalysis = function(btn, acc, projection) {
 
 var linkBuilder = function(btn, data){
     token = data.summary.token;
-    resource = ( data.resourceSummary.length > 2) ? data.resourceSummary[0] : data.resourceSummary[1];
+    resource = ( data.resourceSummary.length > 2) ? data.resourceSummary[0].resource : data.resourceSummary[1].resource;
     btn.onclick = function(){
         window.open("http://www.reactome.org/PathwayBrowser/#/DTAB=AN&ANALYSIS=" + token + "&RESOURCE=" + resource, "_blank");
     };
