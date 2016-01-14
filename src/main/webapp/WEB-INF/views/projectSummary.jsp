@@ -553,7 +553,7 @@
                         </spring:url>
                         <p>
                             ${publication.referenceLine}
-                            <fmt:message key="pubmed"/> : <a href="${pubmedIdUrl}" target="_blank">${publication.pubmedId}</a>
+                            PubMed: <a href="${pubmedIdUrl}" target="_blank">${publication.pubmedId}</a>
                         </p>
                     </c:if>
                     <c:if test="${publication.pubmedId eq 0}">
@@ -562,7 +562,8 @@
                             <spring:param name="doi" value="${publication.doi}"/>
                         </spring:url>
                         <p>
-                            <fmt:message key="doi"/> : <a href="${doiUrl}" target="_blank">${publication.doi}</a>
+                            No PubMed ID is available for this publication since this journal is not indexed in PubMed. However, a DOI is provided:
+                            <a href="${doiUrl}" target="_blank">${publication.doi}</a>
                         </p>
                     </c:if>
                 </c:forEach>
