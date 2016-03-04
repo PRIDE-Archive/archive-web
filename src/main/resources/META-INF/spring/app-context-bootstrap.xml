@@ -8,12 +8,15 @@
 	    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 	    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-	<!-- Root Context: defines shared resources visible to all other web components -->
+    <context:annotation-config />
+
+    <!-- Root Context: defines shared resources visible to all other web components -->
     <context:component-scan base-package="uk.ac.ebi.pride.archive.security,
                                           uk.ac.ebi.pride.archive.repo,
                                           uk.ac.ebi.pride.archive.web.user.validator,
                                           uk.ac.ebi.pride.archive.web.feedback.validator,
-                                          uk.ac.ebi.pride.archive.web.util"/>
+                                          uk.ac.ebi.pride.archive.web.util,
+                                          uk.ac.ebi.pride.spectrumindex.search"/>
 
     <bean id="filePathBuilder" class="uk.ac.ebi.pride.archive.utils.config.FilePathBuilderPride3"/>
     <bean id="fileUtils" class="uk.ac.ebi.pride.archive.utils.streaming.FileUtils"/>
