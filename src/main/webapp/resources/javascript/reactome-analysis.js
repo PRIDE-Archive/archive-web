@@ -4,12 +4,12 @@ var reactomeAnalysis = function(btn, contextPath, acc, projection) {
 
     if (projection) {
         //using proxy in case you are planning to use HTTPS
-        reactomeCorsURI = contextPath + '/reactome/AnalysisService/identifiers/url/projection?pageSize=1&page=1';
-        //reactomeCorsURI = location.protocol + '//www.reactome.org/AnalysisService/identifiers/url/projection?pageSize=1&page=1';
+        //reactomeCorsURI = contextPath + '/reactome/AnalysisService/identifiers/url/projection?pageSize=1&page=1';
+        reactomeCorsURI = location.protocol + '//www.reactome.org/AnalysisService/identifiers/url/projection?pageSize=1&page=1';
     } else {
         //using proxy in case you are planning to use HTTPS
-        reactomeCorsURI = contextPath + '/reactome/AnalysisService/identifiers/url?pageSize=1&page=1';
-        //reactomeCorsURI = location.protocol + '//www.reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1';
+        //reactomeCorsURI = contextPath + '/reactome/AnalysisService/identifiers/url?pageSize=1&page=1';
+        reactomeCorsURI = location.protocol + '//www.reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1';
     }
 
     var dataURI = location.protocol + "//www.ebi.ac.uk/pride/ws/archive/protein/list/assay/" + acc + ".acc";

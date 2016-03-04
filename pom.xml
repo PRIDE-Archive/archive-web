@@ -99,7 +99,7 @@
                 <version>6.1.26</version>
                 <configuration>
                     <webAppConfig>
-                        <contextPath>/</contextPath>
+                        <contextPath>/pride/archive</contextPath>
                     </webAppConfig>
                     <connectors>
                         <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
