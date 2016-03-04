@@ -42,7 +42,7 @@
             modal: true,
             buttons: {
                 "Download": function () {
-                    window.open('http://www.ebi.ac.uk/pride/resources/tools/inspector/latest/desktop/pride-inspector.zip', '_blank');
+                    window.open('//www.ebi.ac.uk/pride/resources/tools/inspector/latest/desktop/pride-inspector.zip', '_blank');
                     $(this).dialog("close");
                 }
             }

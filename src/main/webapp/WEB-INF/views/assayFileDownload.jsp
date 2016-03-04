@@ -13,7 +13,7 @@
 <div class="grid_23 clearfix">
     <nav id="breadcrumb">
     <p>
-        <spring:url var="prideUrl" value="http://www.ebi.ac.uk/pride"/>
+        <spring:url var="prideUrl" value="//www.ebi.ac.uk/pride"/>
         <spring:url var="priderUrl" value="/"/>
         <spring:url var="assayUrl" value="/assays/{accession}">
             <spring:param name="accession" value="${assayAccession}"/>
@@ -31,6 +31,7 @@
             </c:otherwise>
         </c:choose>
     </p>
+    </nav>
 </div>
 
 <div class="grid_23 clearfix project-title">
