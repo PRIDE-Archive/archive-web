@@ -48,9 +48,9 @@
         <!--<archive.data.provider.api.version>2.0.6</archive.data.provider.api.version>-->
         <!--<protein.identification.search.version>0.1.2</protein.identification.search.version>-->
         <!--<psm.search.version>0.1.7</psm.search.version>-->
-        <spectrum.search.version>0.1.1</spectrum.search.version>
+        <spectrum.search.version>2.0.0</spectrum.search.version>
         <archive.utils.version>0.1.12</archive.utils.version>
-        <webapp.service.impl.version>0.1.5</webapp.service.impl.version>
+        <webapp.service.impl.version>0.1.6</webapp.service.impl.version>
         <commons.digester.version>1.8</commons.digester.version>
         <google.charts4j.version>1.3</google.charts4j.version>
         <solrj.version>4.2.0</solrj.version>
@@ -178,12 +178,8 @@
             </exclusions>
         </dependency>
 
-        <!--psm-search-->
-        <dependency>
-            <groupId>uk.ac.ebi.pride</groupId>
-            <artifactId>spectrum-index-search</artifactId>
-            <version>${spectrum.search.version}</version>
-        </dependency>
+        <!--spectrum-search-->
+        <!-- provided by webapp service impl -->
 
 
         <!-- pride archive utils -->

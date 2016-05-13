@@ -62,14 +62,6 @@
         <constructor-arg value="#{ solrPsmRepositoryFactory.create() }"/>
     </bean>
 
-    <!-- Spectrum repository -->
-    <bean id="solrSpectrumRepositoryFactory" class="uk.ac.ebi.pride.spectrumindex.search.service.repository.SolrSpectrumRepositoryFactory">
-        <constructor-arg ref="spectrumSolrTemplate"/>
-    </bean>
-
-    <bean id="spectrumSearchService" class="uk.ac.ebi.pride.spectrumindex.search.service.SpectrumSearchService">
-        <constructor-arg value="#{ solrSpectrumRepositoryFactory.create() }"/>
-    </bean>
 
     <!--Properties-->
 

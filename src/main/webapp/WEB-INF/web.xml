@@ -10,6 +10,7 @@
             classpath:META-INF/spring/app-context-bootstrap.xml
             classpath:META-INF/spring/app-context-database.xml
             classpath:META-INF/spring/app-context-email.xml
+            classpath:META-INF/spring/app-context-mongodb.xml
             classpath:META-INF/spring/app-context-security.xml
             classpath:META-INF/spring/app-context-social.xml
             classpath:META-INF/spring/app-context-solr.xml
