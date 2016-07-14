@@ -24,6 +24,8 @@
                 pride-archive-web-local          -> Configure the <deploy.url> property in the profile and the solr URL
                 pride-twitter
                 wgc-template-service-prod
+                db-pride-mongo
+                tomcat-log-base
 
          If not using JNDI the DB connections will have to be configured
                 db-pride-repo-pridearch-ro-user  (only needed if not using JNDI)
