@@ -117,6 +117,9 @@
             },
             {
                 "url": "${deploy.url}webapp/static/css/webapp.css"
+            },
+            {
+                "url": "${deploy.url}webapp/static/css/lorikeet.css"
             }
         ],
         "javascriptList": [
@@ -137,6 +140,30 @@
             },
             {
                 "url": "${deploy.url}webapp/viewer/viewer.nocache.js"
+            },
+            {
+                "url": "${deploy.url}webapp/static/js/libs/jquery/jquery.min.js"
+            },
+            {
+                "url": "${deploy.url}webapp/static/js/libs/jquery/jquery-ui.min.js"
+            },
+            {
+                "url": "${deploy.url}webapp/static/js/libs/jquery/jquery.flot.js"
+            },
+            {
+                "url": "${deploy.url}webapp/static/js/libs/jquery/jquery.flot.selection.js"
+            },
+            {
+                "url": "${deploy.url}webapp/static/js/specview.js"
+            },
+            {
+                "url": "${deploy.url}webapp/static/js/peptide.js"
+            },
+            {
+                "url": "${deploy.url}webapp/static/js/aminoacid.js"
+            },
+            {
+                "url": "${deploy.url}webapp/static/js/ion.js"
             }
         ]
     }

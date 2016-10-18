@@ -13,7 +13,7 @@
 <%-- Or PRIDE > PRIDE Archive > Assay accession --%>
 <div class="grid_23 clearfix">
     <p>
-        <spring:url var="prideUrl" value="http://www.ebi.ac.uk/pride"/>
+        <spring:url var="prideUrl" value="//www.ebi.ac.uk/pride"/>
         <spring:url var="priderUrl" value="/"/>
         <c:choose>
             <%-- linked from project page--%>

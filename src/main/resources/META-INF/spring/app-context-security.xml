@@ -45,6 +45,8 @@
         <intercept-url pattern="/webapp/**" access="permitAll" />
         <intercept-url pattern="/resources/**" access="permitAll" />
         <intercept-url pattern="/ebisearch/**" access="permitAll" /> <!-- use for local testing of EBI global search -->
+        <intercept-url pattern="/reactome/**" access="permitAll" /> <!-- use for reactome analysis service -->
+        <intercept-url pattern="/robots.txt" access="permitAll" /> <!-- use for avoiding robots -->
         <intercept-url pattern="/users/**" access="hasAnyRole('SUBMITTER', 'ADMINISTRATOR', 'REVIEWER')" />
         <intercept-url pattern="/**" access="hasAnyRole('SUBMITTER', 'ADMINISTRATOR', 'REVIEWER')" />
         <form-login login-page='/login' default-target-url='/users/profile' always-use-default-target='true' authentication-failure-url="/login?error=true"/>

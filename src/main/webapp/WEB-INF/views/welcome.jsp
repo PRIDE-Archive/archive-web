@@ -84,7 +84,7 @@
                     <div>
                         <img u="image" class="no-margin" src="${pageContext.request.contextPath}/resources/img/slider/search.jpg" />
                         <div  u="thumb">
-                            <fmt:message key="welcome.access.caption"/>: <a style="color: blue" href="http://www.ebi.ac.uk/pride/archive/simpleSearch">PRIDE Archive</a>
+                            <fmt:message key="welcome.access.caption"/>: <a style="color: blue" href="${pageContext.request.contextPath}/simpleSearch">PRIDE Archive</a>
                             <br>Results Page
                         </div>
                     </div>

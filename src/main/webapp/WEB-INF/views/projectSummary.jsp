@@ -12,7 +12,7 @@
 <div class="grid_23 clearfix">
     <nav id="breadcrumb">
         <p>
-            <spring:url var="prideUrl" value="http://www.ebi.ac.uk/pride"/>
+            <spring:url var="prideUrl" value="//www.ebi.ac.uk/pride"/>
             <spring:url var="priderUrl" value="/"/>
             <a href="${prideUrl}"><fmt:message key="pride"/></a> &gt; <a href="${priderUrl}"><fmt:message
                 key="prider"/></a>
@@ -183,12 +183,21 @@
                     <p>
                         <fmt:message key="view.reference.detail"/> :
                         <c:forEach var="publication" items="${publications}">
-                            <%-- pubmed url--%>
+                            <c:if test="${publication.pubmedId gt 0}">
+                                <%-- pubmed url--%>
                             <spring:url var="pubmedIdUrl" value="http://europepmc.org/abstract/MED/{pubmedId}">
                                 <spring:param name="pubmedId" value="${publication.pubmedId}"/>
                             </spring:url>
 
                             <a href="${pubmedIdUrl}" target="_blank">${publication.pubmedId}</a>
+                            </c:if>
+                            <c:if test="${publication.pubmedId eq 0}">
+                                <%-- doi url--%>
+                                <spring:url var="doiUrl" value="http://dx.doi.org/{doi}">
+                                    <spring:param name="doi" value="${publication.doi}"/>
+                                </spring:url>
+                            <a href="${doiUrl}" target="_blank">${publication.doi}</a>
+                            </c:if>
                         </c:forEach>
                     </p>
                 </c:when>
@@ -215,12 +224,21 @@
                     <p>
                         <fmt:message key="view.reference.detail"/> :
                         <c:forEach var="publication" items="${publications}">
-                            <%-- pubmed url--%>
-                            <spring:url var="pubmedIdUrl" value="http://europepmc.org/abstract/MED/{pubmedId}">
-                                <spring:param name="pubmedId" value="${publication.pubmedId}"/>
-                            </spring:url>
+                            <c:if test="${publication.pubmedId gt 0}">
+                                <%-- pubmed url--%>
+                                <spring:url var="pubmedIdUrl" value="http://europepmc.org/abstract/MED/{pubmedId}">
+                                    <spring:param name="pubmedId" value="${publication.pubmedId}"/>
+                                </spring:url>
 
-                            <a href="${pubmedIdUrl}" target="_blank">${publication.pubmedId}</a>
+                                <a href="${pubmedIdUrl}" target="_blank">${publication.pubmedId}</a>
+                            </c:if>
+                            <c:if test="${publication.pubmedId eq 0}">
+                                <%-- doi url--%>
+                                <spring:url var="doiUrl" value="http://dx.doi.org/{doi}">
+                                    <spring:param name="doi" value="${publication.doi}"/>
+                                </spring:url>
+                                <a href="${doiUrl}" target="_blank">${publication.doi}</a>
+                            </c:if>
                         </c:forEach>
                     </p>
                 </c:when>
@@ -528,16 +546,26 @@
         <c:when test="${not empty publications}">
             <ul>
                 <c:forEach var="publication" items="${publications}">
-                    <%-- pubmed url--%>
-                    <spring:url var="pubmedIdUrl" value="http://europepmc.org/abstract/MED/{pubmedId}">
-                        <spring:param name="pubmedId" value="${publication.pubmedId}"/>
-                    </spring:url>
-
-                    <p>
+                    <c:if test="${publication.pubmedId gt 0}">
+                        <%-- pubmed url--%>
+                        <spring:url var="pubmedIdUrl" value="http://europepmc.org/abstract/MED/{pubmedId}">
+                            <spring:param name="pubmedId" value="${publication.pubmedId}"/>
+                        </spring:url>
+                        <p>
                             ${publication.referenceLine}
-                        <fmt:message key="pubmed"/> : <a href="${pubmedIdUrl}"
-                                                         target="_blank">${publication.pubmedId}</a>
-                    </p>
+                            PubMed: <a href="${pubmedIdUrl}" target="_blank">${publication.pubmedId}</a>
+                        </p>
+                    </c:if>
+                    <c:if test="${publication.pubmedId eq 0}">
+                        <%-- doi url--%>
+                        <spring:url var="doiUrl" value="http://dx.doi.org/{doi}">
+                            <spring:param name="doi" value="${publication.doi}"/>
+                        </spring:url>
+                        <p>
+                            No PubMed ID is available for this publication since this journal is not indexed in PubMed. However, a DOI is provided:
+                            <a href="${doiUrl}" target="_blank">${publication.doi}</a>
+                        </p>
+                    </c:if>
                 </c:forEach>
             </ul>
         </c:when>
@@ -618,7 +646,7 @@
                         <div>
                             <c:choose>
                                 <c:when test="${projectSummary.indexProteinCount gt 0 }">
-                                    <button title="Analyse the protein set in Reactome" onclick="reactomeAnalysis(this, ${assay.accession}, false)" class="reactome-analyse">
+                                    <button title="Analyse the protein set in Reactome" onclick="reactomeAnalysis(this,'${pageContext.request.contextPath}', ${assay.accession}, false)" class="reactome-analyse">
                                         Analyse
                                     </button>
                                 </c:when>

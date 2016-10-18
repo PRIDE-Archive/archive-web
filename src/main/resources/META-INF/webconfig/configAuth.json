@@ -133,7 +133,7 @@
                 "url": "//code.jquery.com/ui/1.10.3/jquery-ui.js"
             },
             {
-                "url": "http://www.google.com/jsapi"
+                "url": "//www.google.com/jsapi"
             },
             {
                 "url": "${deploy.url}resources/javascript/priderStats.js"
@@ -162,10 +162,10 @@
         ],
         "bottomJavascriptList": [
             {
-                "url": "http://www.ebi.ac.uk/web_guidelines/js/ebi-global-search-run.js"
+                "url": "//www.ebi.ac.uk/web_guidelines/js/ebi-global-search-run.js"
             },
             {
-                "url": "http://www.ebi.ac.uk/web_guidelines/js/ebi-global-search.js"
+                "url": "//www.ebi.ac.uk/web_guidelines/js/ebi-global-search.js"
             }
         ]
     }

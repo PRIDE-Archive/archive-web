@@ -8,7 +8,7 @@
 <div class="grid_24 clearfix">
     <nav id="breadcrumb">
         <p>
-            <spring:url var="prideUrl" value="http://www.ebi.ac.uk/pride"/>
+            <spring:url var="prideUrl" value="//www.ebi.ac.uk/pride"/>
             <spring:url var="priderUrl" value="/"/>
             <spring:url var="userProfileUrl" value="/users/profile"/>
 

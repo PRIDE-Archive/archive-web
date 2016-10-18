@@ -10,6 +10,7 @@
             classpath:META-INF/spring/app-context-bootstrap.xml
             classpath:META-INF/spring/app-context-database.xml
             classpath:META-INF/spring/app-context-email.xml
+            classpath:META-INF/spring/app-context-mongodb.xml
             classpath:META-INF/spring/app-context-security.xml
             classpath:META-INF/spring/app-context-social.xml
             classpath:META-INF/spring/app-context-solr.xml
@@ -109,7 +110,29 @@
     </servlet-mapping>
 
 
-	<!-- Processes application requests -->
+    <!-- Proxy for reactome analysis service -->
+    <servlet>
+        <servlet-name>ProxyServletReactome</servlet-name>
+        <servlet-class>uk.ac.ebi.pride.web.util.servlet.proxy.ProxyServlet</servlet-class>
+        <init-param>
+            <param-name>proxyHost</param-name>
+            <param-value>www.reactome.org</param-value>
+        </init-param>
+        <init-param>
+            <param-name>proxyPort</param-name>
+            <param-value>80</param-value>
+        </init-param>
+        <init-param>
+            <param-name>proxyPath</param-name>
+            <param-value>/.</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProxyServletReactome</servlet-name>
+        <url-pattern>/reactome/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Processes application requests -->
 	<servlet>
 		<servlet-name>appServlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

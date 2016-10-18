@@ -10,7 +10,7 @@
 <div class="grid_24 clearfix">
     <nav id="breadcrumb">
         <p>
-            <spring:url var="prideUrl" value="http://www.ebi.ac.uk/pride"/>
+            <spring:url var="prideUrl" value="//www.ebi.ac.uk/pride"/>
             <spring:url var="priderUrl" value="/"/>
             <a href="${prideUrl}"><fmt:message key="pride"/></a> &gt; <a href="${priderUrl}"><fmt:message key="prider"/></a>
             &gt; <fmt:message key="user.profile"/>
@@ -21,7 +21,7 @@
 <div class="grid_23 clearfix">
 
     <div class="grid_10">
-        <h4 style="font:BOLD">
+        <h4 style="font-weight:bold">
             ${user.firstName} <sec:authorize access="hasRole('SUBMITTER')">${user.lastName}</sec:authorize>
         </h4>
 

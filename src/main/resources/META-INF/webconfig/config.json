@@ -164,10 +164,10 @@
         ],
         "bottomJavascriptList": [
             {
-                "url": "http://www.ebi.ac.uk/web_guidelines/js/ebi-global-search-run.js"
+                "url": "//www.ebi.ac.uk/web_guidelines/js/ebi-global-search-run.js"
             },
             {
-                "url": "http://www.ebi.ac.uk/web_guidelines/js/ebi-global-search.js"
+                "url": "//www.ebi.ac.uk/web_guidelines/js/ebi-global-search.js"
             }
         ]
 
