@@ -41,8 +41,16 @@
         <td width="10%">
             <c:choose>
                 <c:when test="${isPublic}">
-                    <a href="//www.ebi.ac.uk/pride/data/archive/${year}/${month}/${projectSummary.accession}/${file.fileName}"
-                       class="icon icon-functional" data-icon="="><fmt:message key="file.download"/></a>
+                    <c:choose>
+                        <c:when test="${file.fileSource ne 'GENERATED'}">
+                            <a href="//www.ebi.ac.uk/pride/data/archive/${year}/${month}/${projectSummary.accession}/${file.fileName}"
+                               class="icon icon-functional" data-icon="="><fmt:message key="file.download"/></a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="//www.ebi.ac.uk/pride/data/archive/${year}/${month}/${projectSummary.accession}/generated/${file.fileName}"
+                               class="icon icon-functional" data-icon="="><fmt:message key="file.download"/></a>
+                        </c:otherwise>
+                    </c:choose>
                 </c:when>
                 <c:otherwise>
                     <a href="<c:url value='/files/${file.id}'/>" class="icon icon-functional" data-icon="="><fmt:message key="file.download"/></a>
@@ -52,9 +60,16 @@
             <%-- Extra table column for Aspera download links, if Aspera plugin is installed --%>
         <c:if test="${not empty projectSummary.publicationDate }">
             <td class="aspera-content aspera-content-hidden">
-                <a href="#" class="icon icon-functional" data-icon="=" onClick="asperaDownload('fasp://prd_ascp@fasp.ebi.ac.uk/pride/data/archive/${year}/${month}/${projectSummary.accession}/${file.fileName}?auth=no&bwcap=300000&targetrate=100p&policy=fair&enc=none')">
-                    <fmt:message key="file.download"/>
-                </a>
+                <c:choose>
+                    <c:when test="${file.fileSource ne 'GENERATED'}">
+                        <a href="#" class="icon icon-functional" data-icon="=" onClick="asperaDownload('fasp://prd_ascp@fasp.ebi.ac.uk/pride/data/archive/${year}/${month}/${projectSummary.accession}/${file.fileName}?auth=no&bwcap=300000&targetrate=100p&policy=fair&enc=none')">
+                          <fmt:message key="file.download"/></a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="#" class="icon icon-functional" data-icon="=" onClick="asperaDownload('fasp://prd_ascp@fasp.ebi.ac.uk/pride/data/archive/${year}/${month}/${projectSummary.accession}/generated/${file.fileName}?auth=no&bwcap=300000&targetrate=100p&policy=fair&enc=none')">
+                            <fmt:message key="file.download"/></a>
+                    </c:otherwise>
+                </c:choose>
             </td>
         </c:if>
     </tr>

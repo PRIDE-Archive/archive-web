@@ -115,19 +115,17 @@
 
 </div>
 
-<%-- ToDo: we don't list any generated files until we are sure about their availability --%>
-<c:set var="numFiles" value="0"/>
-<%--<c:set var="numFiles"--%>
-       <%--value="${fn:length(fileGeneratedSummariesRESULT) +--%>
-                <%--fn:length(fileGeneratedSummariesRAW) +--%>
-                <%--fn:length(fileGeneratedSummariesPEAK) +--%>
-                <%--fn:length(fileGeneratedSummariesSEARCH) +--%>
-                <%--fn:length(fileGeneratedSummariesQUANT) +--%>
-                <%--fn:length(fileGeneratedSummariesGEL) +--%>
-                <%--fn:length(fileGeneratedSummariesMS_IMAGE_DATA) +--%>
-                <%--fn:length(fileGeneratedSummariesOPTICAL_IMAGE) +--%>
-                <%--fn:length(fileGeneratedSummariesOTHER)--%>
-                <%--}"/>--%>
+<c:set var="numFiles"
+       value="${fn:length(fileGeneratedSummariesRESULT) +
+                fn:length(fileGeneratedSummariesRAW) +
+                fn:length(fileGeneratedSummariesPEAK) +
+                fn:length(fileGeneratedSummariesSEARCH) +
+                fn:length(fileGeneratedSummariesQUANT) +
+                fn:length(fileGeneratedSummariesGEL) +
+                fn:length(fileGeneratedSummariesMS_IMAGE_DATA) +
+                fn:length(fileGeneratedSummariesOPTICAL_IMAGE) +
+                fn:length(fileGeneratedSummariesOTHER)
+                }"/>
 
 <c:if test="${numFiles gt 0}">
     <div class="grid_23 clearfix file-list">
