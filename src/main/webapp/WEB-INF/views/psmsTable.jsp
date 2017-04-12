@@ -222,17 +222,11 @@
             <th><strong><fmt:message key="search.engine.score"/></strong></th>
             <%-- Experimental m/z column--%>
             <th data-hide="phone">
-                <span>
-                    <table:psmSortUrl page="${page}" q="${q}" ptmsFilters="${ptmsFilters}" urlType="expMzSortURL"/>
-                    <strong><fmt:message key="experimental.m.z"/></strong>
-                </span>
-            </th>
-            <%-- Charge state column --%>
+                   <strong><fmt:message key="experimental.m.z"/></strong>
+           </th>
+           <%-- Charge state column --%>
             <th data-hide="phone">
-                        <span>
-                            <table:psmSortUrl page="${page}" q="${q}" ptmsFilters="${ptmsFilters}" urlType="chargeSortURL"/>
-                            <strong><fmt:message key="charge"/></strong>
-                        </span>
+                    <strong><fmt:message key="charge"/></strong>
             </th>
             <%-- PRIDE Cluster column--%>
             <th><strong><fmt:message key="pride.cluster.quality"/></strong></th>
