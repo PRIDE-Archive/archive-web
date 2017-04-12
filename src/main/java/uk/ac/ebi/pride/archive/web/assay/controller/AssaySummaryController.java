@@ -21,6 +21,7 @@ import uk.ac.ebi.pride.archive.web.util.filter.EntityFilter;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * @author Rui Wang
@@ -53,6 +54,7 @@ public class AssaySummaryController {
     @Autowired
     private PsmSecureSearchService psmSecureSearchService;
 
+
     // ToDo: add sensible mapping for /assays
 
     @RequestMapping(value = "/assays/{assayAccession}", method = RequestMethod.GET)
@@ -66,34 +68,31 @@ public class AssaySummaryController {
     public ModelAndView getProjectAssayRedirect(@PathVariable String projectAccession) {
         return new ModelAndView("redirect:/projects/" + projectAccession);
     }
+
+    /**
+     * Gets the project assay summary.
+     * Uses default indexProteinCount and indexPsmCount 0 values in case we cannot retrieve real numbers from the Solr server.
+     * We can still generate a project summary page, even if the protein/psm queries don't work,
+     * the page will have to deal with the case that no protein/psm data is present
+     * @param assayAccession the assay accession
+     * @param projectAccession the project accession
+     * @return the assay summary
+     */
     @RequestMapping(value = "/projects/{projectAccession}/assays/{assayAccession}", method = RequestMethod.GET)
     public ModelAndView getProjectAssaySummary(@PathVariable String assayAccession, @PathVariable String projectAccession) {
-
         AssaySummary summary = assayServiceImpl.findByAccession(assayAccession);
-
-        // filter assay
-        Collection<AssaySummary> filteredAssays = removeAssayDuplicateCvParamFilter.filter(Arrays.asList(summary));
-
+        Collection<AssaySummary> filteredAssays = removeAssayDuplicateCvParamFilter.filter(Collections.singletonList(summary)); // filter assay
         summary = filteredAssays.iterator().next();
-
-        // use default values in case we can not retrieve real numbers from the Solr server
         Long indexProteinCount = 0L;
         Long indexPsmCount = 0L;
-        // we can still generate a project summary page, even if the protein/psm queries don't work,
-        // wo we wrap protein/psm queries in a try catch in case the Solr server is down
-        // the page will have to deal with the case that no protein/psm data is present
         try {
             indexProteinCount = proteinIdentificationSearchService.countByAssayAccession(assayAccession);
             indexPsmCount = psmSecureSearchService.countByAssayAccession(assayAccession);
         } catch (Exception e) {
-            logger.error("Exception executing Solr query: " + e.getMessage());
-            logger.debug("Solr exception details", e);
+            logger.error("Exception executing Solr query: ", e);
         }
-
-        // in the client we need to know if the assay is part of a public project
         ProjectSummary projectSummary  = projectServiceImpl.findById(summary.getProjectId());
-        boolean publicAssay = projectSummary.isPublicProject();
-
+        boolean publicAssay = projectSummary.isPublicProject(); // required by client
         return pageMaker.createAssaySummary(new AssaySummaryAdapter(summary, indexProteinCount, indexPsmCount, publicAssay), projectAccession);
     }
 
