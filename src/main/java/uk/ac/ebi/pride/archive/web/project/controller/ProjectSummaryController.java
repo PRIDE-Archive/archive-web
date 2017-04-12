@@ -24,7 +24,6 @@ import uk.ac.ebi.pride.archive.security.assay.AssaySecureService;
 import uk.ac.ebi.pride.archive.security.project.ProjectSecureService;
 import uk.ac.ebi.pride.archive.security.protein.ProteinIdentificationSecureSearchService;
 import uk.ac.ebi.pride.archive.security.psm.PsmSecureSearchService;
-import uk.ac.ebi.pride.archive.web.assay.controller.AssaySummaryAdapter;
 import uk.ac.ebi.pride.archive.web.user.model.PublishProject;
 import uk.ac.ebi.pride.archive.web.user.validator.PublishProjectValidator;
 import uk.ac.ebi.pride.archive.web.util.PageMaker;
@@ -34,7 +33,6 @@ import uk.ac.ebi.pride.archive.web.util.filter.EntityFilter;
 import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
 
 /**
  * @author Rui Wang
@@ -185,7 +183,7 @@ public class ProjectSummaryController {
                     publishProjectRequest.setAuthorized(false);
                 }
             } else {
-                throw new IllegalStateException("Unrecognised authentidation details!");
+                throw new IllegalStateException("Unrecognised authentication details!");
             }
 
             // proceed in the publication request process
