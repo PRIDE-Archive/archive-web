@@ -249,7 +249,7 @@
             <%-- Table rows which contains all the psms--%>
             <tbody>
             <c:set var="first" value="${page.size * page.number}"/>
-            <c:forEach items="${page.content}" var="mongoPsm" varStatus="status">
+            <c:forEach items="${mongoPsms}" var="mongoPsm" varStatus="status">
                 <tr>
                     <td style="white-space: nowrap;">${first + status.count}</td>
                     <%--  peptide_sequence  --%>

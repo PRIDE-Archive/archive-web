@@ -400,14 +400,16 @@ public class PageMaker {
 
     public ModelAndView createPsmsTablePage(@NotNull String projectAccession,
                                             String assayAccession,
-                                            Page<MongoPsm> mongoPsmPage,
+                                            Page<Psm> psmPage,
                                             Map<Psm, Map<String, List<String>>> highlights,
                                             String query,
                                             Map<String, Long> availablePtms,
                                             List<String> ptmsFilterList,
-                                            Map<String, QualityAwarePsm> psmsWithClusters) {
+                                            Map<String, QualityAwarePsm> psmsWithClusters,
+                                            List<MongoPsm> mongoPsms) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("page", mongoPsmPage);
+        modelAndView.addObject("page", psmPage);
+        modelAndView.addObject("mongoPsms", mongoPsms);
         modelAndView.addObject("highlights", highlights);
         modelAndView.addObject("q", query);
         modelAndView.addObject("projectAccession", projectAccession);

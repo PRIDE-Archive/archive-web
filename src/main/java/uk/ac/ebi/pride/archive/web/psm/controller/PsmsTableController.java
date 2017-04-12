@@ -97,9 +97,8 @@ public class PsmsTableController {
                 map(Psm::getId).
                 collect(Collectors.toCollection(ArrayList<String>::new)),
             new Sort(Sort.Direction.ASC, "peptideSequence", "_id"));
-        Page<MongoPsm> mongoPsmPage = new PageImpl<>(mongoPsms);
-        return pageMaker.createPsmsTablePage(projectAccession, assayAccession, mongoPsmPage,
-            psmPage.getHighlights(), query, availablePtms, ptmsFilters, psmsWithClusters);
+        return pageMaker.createPsmsTablePage(projectAccession, assayAccession, psmPage.getPage(),
+            psmPage.getHighlights(), query, availablePtms, ptmsFilters, psmsWithClusters, mongoPsms);
     }
 
     @RequestMapping(value = "/assays/{assayAccession}/psms", method = RequestMethod.GET)
@@ -148,9 +147,8 @@ public class PsmsTableController {
                 map(Psm::getId).
                 collect(Collectors.toCollection(ArrayList<String>::new)),
             new Sort(Sort.Direction.ASC, "peptideSequence", "_id"));
-        Page<MongoPsm> mongoPsmPage = new PageImpl<>(mongoPsms); // todo paging not working properly
-        return pageMaker.createPsmsTablePage(projectAccession, null, mongoPsmPage,
-            psmPage.getHighlights(), query, availablePtms, ptmsFilters, psmsWithClusters);
+        return pageMaker.createPsmsTablePage(projectAccession, null, psmPage.getPage(),
+            psmPage.getHighlights(), query, availablePtms, ptmsFilters, psmsWithClusters, mongoPsms);
     }
 
     private String getProjectAccession(String assayAccession) {
