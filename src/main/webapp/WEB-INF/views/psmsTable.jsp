@@ -249,20 +249,20 @@
             <%-- Table rows which contains all the psms--%>
             <tbody>
             <c:set var="first" value="${page.size * page.number}"/>
-            <c:forEach items="${page.content}" var="psm" varStatus="status">
+            <c:forEach items="${page.content}" var="mongoPsm" varStatus="status">
                 <tr>
                     <td style="white-space: nowrap;">${first + status.count}</td>
                     <%--  peptide_sequence  --%>
                     <td style="white-space: nowrap;">
                         <span id="sequence_${status.index}">
                         <c:choose>
-                            <c:when test="${fn:contains(highlights[psm], 'peptide_sequence')}">
-                                <c:forEach var="highlight" items="${highlights[psm]['peptide_sequence']}">
+                            <c:when test="${fn:contains(highlights[mongoPsm], 'peptide_sequence')}">
+                                <c:forEach var="highlight" items="${highlights[mongoPsm]['peptide_sequence']}">
                                     ${highlight}
                                 </c:forEach>
                             </c:when>
                             <c:otherwise>
-                                ${psm.peptideSequence}
+                                ${mongoPsm.peptideSequence}
                             </c:otherwise>
                         </c:choose>
                         </span>
@@ -283,18 +283,18 @@
                             <spring:url var="proteinTableUrl"
                                         value="/projects/{projectAccession}/assays/{assayAccession}/proteins?q={proteinAccession}">
                                 <spring:param name="projectAccession" value="${projectAccession}"/>
-                                <spring:param name="assayAccession" value="${psm.assayAccession}"/>
-                                <spring:param name="proteinAccession" value="${psm.proteinAccession}"/>
+                                <spring:param name="assayAccession" value="${mongoPsm.assayAccession}"/>
+                                <spring:param name="proteinAccession" value="${mongoPsm.proteinAccession}"/>
                             </spring:url>
                                  <fmt:message key="jump.protein.table" var="jumpProteinTable"/>
                                 <c:choose>
-                                    <c:when test="${fn:contains(highlights[psm], 'protein_accession')}">
-                                        <c:forEach var="highlight" items="${highlights[psm]['protein_accession']}">
+                                    <c:when test="${fn:contains(highlights[mongoPsm], 'protein_accession')}">
+                                        <c:forEach var="highlight" items="${highlights[mongoPsm]['protein_accession']}">
                                             <a href="${proteinTableUrl}" title="${jumpProteinTable}">${highlight}</a>
                                         </c:forEach>
                                     </c:when>
                                     <c:otherwise>
-                                        <a href="${proteinTableUrl}" title="${jumpProteinTable}">${psm.proteinAccession}</a>
+                                        <a href="${proteinTableUrl}" title="${jumpProteinTable}">${mongoPsm.proteinAccession}</a>
                                     </c:otherwise>
                                 </c:choose>
 
@@ -311,16 +311,16 @@
                     <%-- assay --%>
                     <c:if test="${empty assayAccession}">
                         <spring:url var="psmAssayUrl" value="/assays/{accession}">
-                            <spring:param name="accession" value="${psm.assayAccession}"/>
+                            <spring:param name="accession" value="${mongoPsm.assayAccession}"/>
                         </spring:url>
                         <td>
-                            <a href="${psmAssayUrl}">${psm.assayAccession}</a>
+                            <a href="${psmAssayUrl}">${mongoPsm.assayAccession}</a>
                         </td>
                     </c:if>
                     <%-- search engine score  --%>
                     <td>
                         <ul>
-                            <c:forEach var="searchEngineScore" items="${psm.searchEngineScores}">
+                            <c:forEach var="searchEngineScore" items="${mongoPsm.searchEngineScores}">
                                 <spring:url var="olsUrl" value="http://www.ebi.ac.uk/ontology-lookup/?termId={accession}">
                                     <spring:param name="accession" value="${searchEngineScore.accession}"/>
                                 </spring:url>
@@ -328,27 +328,27 @@
                             </c:forEach>
                         </ul>
                     </td>
-                    <td>${psm.expMassToCharge}</td>
-                    <td>${psm.charge}</td>
+                    <td>${mongoPsm.expMassToCharge}</td>
+                    <td>${mongoPsm.charge}</td>
                     <%-- cluster qulaity --%>
                     <spring:url var="clusterUrl" value="http://www.ebi.ac.uk/pride/cluster/#/id">
                     </spring:url>
                     <td>
                         <c:choose>
-                            <c:when test="${not empty psmsWithClusters[psm.id].clusterId}" >
-                                <a class="no_visual_link"  target="_blank" href="${clusterUrl}/${psmsWithClusters[psm.id].clusterId}">
+                            <c:when test="${not empty psmsWithClusters[mongoPsm.id].clusterId}" >
+                                <a class="no_visual_link"  target="_blank" href="${clusterUrl}/${psmsWithClusters[mongoPsm.id].clusterId}">
                                     <c:choose>
-                                        <c:when test="${'HIGH' eq psmsWithClusters[psm.id].clusterQuality}">
+                                        <c:when test="${'HIGH' eq psmsWithClusters[mongoPsm.id].clusterQuality}">
                                             <img class=table_icon_hl id='cluster_stars_high_0' title="Belongs to a high quality spectral cluster. Go to PRIDE Cluster" style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-full-icon.png'>
                                             <img class=table_icon_hl id='cluster_stars_high_1' title="Belongs to a High quality spectral cluster. Go to PRIDE Cluster" style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-full-icon.png'>
                                             <img class=table_icon_hl id='cluster_stars_high_2' title="Belongs to a High quality spectral cluster. Go to PRIDE Cluster" style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-full-icon.png'>
                                         </c:when>
-                                        <c:when test="${'MEDIUM' eq psmsWithClusters[psm.id].clusterQuality}">
+                                        <c:when test="${'MEDIUM' eq psmsWithClusters[mongoPsm.id].clusterQuality}">
                                             <img class=table_icon_hl id='cluster_stars_med_0' title="Belongs to a medium quality spectral cluster. Go to PRIDE Cluster" style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-full-icon.png'>
                                             <img class=table_icon_hl id='cluster_stars_med_1' title="Belongs to a medium quality spectral cluster. Go to PRIDE Cluster"  style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-full-icon.png'>
                                             <img class=table_icon_hl id='cluster_stars_med_2' title="Belongs to a medium quality spectral cluster. Go to PRIDE Cluster"  style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-empty-icon.png'>
                                         </c:when>
-                                        <c:when test="${'LOW' eq psmsWithClusters[psm.id].clusterQuality}">
+                                        <c:when test="${'LOW' eq psmsWithClusters[mongoPsm.id].clusterQuality}">
                                             <img class=table_icon_hl id='cluster_stars_low_0' title="Belongs to a low quality spectral cluster.  Go to PRIDE Cluster"  style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-full-icon.png'>
                                             <img class=table_icon_hl id='cluster_stars_low_1' title="Belongs to a low quality spectral cluster. Go to PRIDE Cluster"  style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-empty-icon.png'>
                                             <img class=table_icon_hl id='cluster_stars_low_2' title="Belongs to a low quality spectral cluster. Go to PRIDE Cluster"  style="border-style: none" src='${pageContext.request.contextPath}/resources/img/star-empty-icon.png'>
@@ -369,15 +369,15 @@
                             </c:otherwise>
                         </c:choose>
                     </td>
-                    <td>${psm.startPosition}</td>
-                    <td>${psm.endPosition}</td>
-                    <td>${psm.preAminoAcid}</td>
-                    <td>${psm.postAminoAcid}</td>
-                    <td>${psm.reportedId}</td>
+                    <td>${mongoPsm.startPosition}</td>
+                    <td>${mongoPsm.endPosition}</td>
+                    <td>${mongoPsm.preAminoAcid}</td>
+                    <td>${mongoPsm.postAminoAcid}</td>
+                    <td>${mongoPsm.reportedId}</td>
                     <%-- modification  --%>
                     <td>
                         <ul id="modification_${status.index}">
-                            <c:forEach var="modification" items="${psm.modifications}" varStatus="modStatus">
+                            <c:forEach var="modification" items="${mongoPsm.modifications}" varStatus="modStatus">
                                 <%--creates link to ols or unimod--%>
                                 <c:choose>
                                     <c:when test="${fn:containsIgnoreCase(modification.accession, 'UNIMOD:')}">
