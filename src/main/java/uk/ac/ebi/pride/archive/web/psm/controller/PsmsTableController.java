@@ -4,7 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -15,18 +18,21 @@ import uk.ac.ebi.pride.archive.repo.assay.service.AssaySummary;
 import uk.ac.ebi.pride.archive.repo.project.service.ProjectSummary;
 import uk.ac.ebi.pride.archive.security.assay.AssaySecureService;
 import uk.ac.ebi.pride.archive.security.project.ProjectSecureService;
+import uk.ac.ebi.pride.archive.security.psm.MongoPsmSecureSearchService;
 import uk.ac.ebi.pride.archive.security.psm.PsmSecureSearchService;
 import uk.ac.ebi.pride.archive.web.model.QualityAwarePsm;
 import uk.ac.ebi.pride.archive.web.model.QualityAwarePsms;
 import uk.ac.ebi.pride.archive.web.util.PageMaker;
 import uk.ac.ebi.pride.archive.web.util.SearchUtils;
 import uk.ac.ebi.pride.indexutils.results.PageWrapper;
+import uk.ac.ebi.pride.psmindex.mongo.search.model.MongoPsm;
 import uk.ac.ebi.pride.psmindex.search.model.Psm;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * User: ntoro
@@ -40,6 +46,9 @@ public class PsmsTableController {
 
     @Autowired
     private PsmSecureSearchService psmSearchService;
+
+    @Autowired
+    MongoPsmSecureSearchService mongoPsmSecureSearchService;
 
     @Autowired
     private AssaySecureService assayServiceImpl;
@@ -64,34 +73,33 @@ public class PsmsTableController {
                                             @RequestParam(value = "q", required = false) String query,
                                             @RequestParam(value = "newPtmsFilter", required = false) String newPtmsFilter,
                                             @RequestParam(value = "ptmsFilters", required = false) List<String> ptmsFilters) {
-        // get the project psms
         logger.debug("Retrieve psm entries with project: " + projectAccession +
                     " assay: " + assayAccession +
                     " page: " + page +
                     " and query: " + query +
                     " and newPtmsFilter: " + newPtmsFilter +
                     " and ptmsFilters: " + ptmsFilters);
-
-
         if (newPtmsFilter != null && !newPtmsFilter.isEmpty()) {
             if (ptmsFilters == null || ptmsFilters.isEmpty()) {
-                ptmsFilters = new ArrayList<String>();
+                ptmsFilters = new ArrayList<>();
             }
-            //We need the double quotes to have an exact match in the filter
-            ptmsFilters.add("\"" + newPtmsFilter + "\"");
+            ptmsFilters.add("\"" + newPtmsFilter + "\""); //We need the double quotes to have an exact match in the filter
         }
-
-        //The query is escaped
-        String filteredQuery = query;
+        String filteredQuery = query; //The query is escaped
         if(filteredQuery  != null && !filteredQuery.isEmpty()){
             filteredQuery = SearchUtils.escapeQueryCharsExceptStartQuestionMarkWhitespace(query);
         }
-
         PageWrapper<Psm> psmPage = psmSearchService.findByAssayAccessionHighlightsOnModificationNames(assayAccession, filteredQuery, ptmsFilters, page);
         Map<String, Long> availablePtms = psmSearchService.findByAssayAccessionFacetOnModificationNames(assayAccession, filteredQuery, ptmsFilters);
         Map<String, QualityAwarePsm> psmsWithClusters = getClustersForPsm(psmPage.getPage().getContent());
 
-        return pageMaker.createPsmsTablePage(projectAccession, assayAccession, psmPage.getPage(), psmPage.getHighlights(), query, availablePtms, ptmsFilters, psmsWithClusters);
+        List<MongoPsm> mongoPsms = mongoPsmSecureSearchService.findByIdIn(psmPage.getPage().getContent().stream().
+                map(Psm::getId).
+                collect(Collectors.toCollection(ArrayList<String>::new)),
+            new Sort(Sort.Direction.ASC, "peptideSequence", "_id"));
+        Page<MongoPsm> mongoPsmPage = new PageImpl<>(mongoPsms);
+        return pageMaker.createPsmsTablePage(projectAccession, assayAccession, mongoPsmPage,
+            psmPage.getHighlights(), query, availablePtms, ptmsFilters, psmsWithClusters);
     }
 
     @RequestMapping(value = "/assays/{assayAccession}/psms", method = RequestMethod.GET)
@@ -136,8 +144,13 @@ public class PsmsTableController {
         PageWrapper<Psm> psmPage = psmSearchService.findByProjectAccessionHighlightsOnModificationNames(projectAccession, filteredQuery, ptmsFilters, page);
         Map<String, Long> availablePtms = psmSearchService.findByProjectAccessionFacetOnModificationNames(projectAccession, filteredQuery, ptmsFilters);
         Map<String, QualityAwarePsm> psmsWithClusters = getClustersForPsm(psmPage.getPage().getContent());
-
-        return pageMaker.createPsmsTablePage(projectAccession, null, psmPage.getPage(), psmPage.getHighlights(), query, availablePtms, ptmsFilters, psmsWithClusters);
+        List<MongoPsm> mongoPsms = mongoPsmSecureSearchService.findByIdIn(psmPage.getPage().getContent().stream().
+                map(Psm::getId).
+                collect(Collectors.toCollection(ArrayList<String>::new)),
+            new Sort(Sort.Direction.ASC, "peptideSequence", "_id"));
+        Page<MongoPsm> mongoPsmPage = new PageImpl<>(mongoPsms);
+        return pageMaker.createPsmsTablePage(projectAccession, null, mongoPsmPage,
+            psmPage.getHighlights(), query, availablePtms, ptmsFilters, psmsWithClusters);
     }
 
     private String getProjectAccession(String assayAccession) {
@@ -150,7 +163,7 @@ public class PsmsTableController {
     }
 
     private Map<String, QualityAwarePsm> getClustersForPsm(List<Psm> psms) {
-        Map<String, QualityAwarePsm> result = new HashMap(psms.size());
+        Map<String, QualityAwarePsm> result = new HashMap<>(psms.size());
         RestTemplate restTemplate = new RestTemplate();
         QualityAwarePsms qualityAwarePsms;
         QualityAwarePsm qualityAwarePsm;

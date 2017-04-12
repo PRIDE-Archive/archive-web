@@ -1,6 +1,7 @@
 package uk.ac.ebi.pride.archive.web.util;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.social.twitter.api.Tweet;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,6 +21,7 @@ import uk.ac.ebi.pride.archive.web.user.model.ChangePassword;
 import uk.ac.ebi.pride.archive.web.user.model.PublishProject;
 import uk.ac.ebi.pride.archive.web.user.model.UpdateUserSummary;
 import uk.ac.ebi.pride.proteinidentificationindex.search.model.ProteinIdentification;
+import uk.ac.ebi.pride.psmindex.mongo.search.model.MongoPsm;
 import uk.ac.ebi.pride.psmindex.search.model.Psm;
 
 import javax.validation.constraints.NotNull;
@@ -398,35 +400,24 @@ public class PageMaker {
 
     public ModelAndView createPsmsTablePage(@NotNull String projectAccession,
                                             String assayAccession,
-                                            Page<Psm> psmPage,
+                                            Page<MongoPsm> mongoPsmPage,
                                             Map<Psm, Map<String, List<String>>> highlights,
                                             String query,
                                             Map<String, Long> availablePtms,
                                             List<String> ptmsFilterList,
                                             Map<String, QualityAwarePsm> psmsWithClusters) {
-
         ModelAndView modelAndView = new ModelAndView();
-
-        modelAndView.addObject("page", psmPage);
+        modelAndView.addObject("page", mongoPsmPage);
         modelAndView.addObject("highlights", highlights);
         modelAndView.addObject("q", query);
-
-        // project accession
         modelAndView.addObject("projectAccession", projectAccession);
-
-        // assay accession
         if (assayAccession != null) {
             modelAndView.addObject("assayAccession", assayAccession);
         }
-
-        // ptm filters
         modelAndView.addObject("ptmsFilters", ptmsFilterList);
         modelAndView.addObject("availablePtmList", availablePtms);
-
-        // psmsWithClusters
         modelAndView.addObject("psmsWithClusters", psmsWithClusters);
         modelAndView.setViewName("psmsTable");
-
         return modelAndView;
     }
 }
