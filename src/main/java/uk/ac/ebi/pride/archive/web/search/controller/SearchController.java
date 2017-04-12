@@ -1,6 +1,8 @@
 package uk.ac.ebi.pride.archive.web.search.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -353,8 +355,9 @@ public class SearchController {
                                     // get protein identifications for this project and possibly the search term
                                     List<Psm> psms =
                                             psmSearchService.findByPeptideSequenceAndProjectAccession(
-                                                    termToken, projectSearchSummary.getProjectAccession()
-                                            );
+                                                    termToken, projectSearchSummary.getProjectAccession(),
+                                                new PageRequest(0, 5, Sort.Direction.ASC, "peptide_sequence", "id")).getContent()
+                                            ;
 
                                     if (psms != null) {
 
