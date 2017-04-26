@@ -10,9 +10,8 @@
     <context:annotation-config />
 
     <!-- MongoDB repositories -->
-    <mongo:repositories base-package="uk.ac.ebi.pride.spectrumindex.search.service.repository"/>
-    <mongo:repositories base-package="uk.ac.ebi.pride.psmindex.mongo.search.service.repository"/>
-    <context:component-scan base-package="uk.ac.ebi.pride.psmindex.mongo.search"/>
+    <mongo:repositories base-package="uk.ac.ebi.pride.spectrumindex.search.service.repository, uk.ac.ebi.pride.psmindex.mongo.search.service.repository, uk.ac.ebi.pride.proteinidentificationindex.mongo.search.service.repository"/>
+    <context:component-scan base-package="uk.ac.ebi.pride.spectrumindex.search, uk.ac.ebi.pride.psmindex.mongo.search, uk.ac.ebi.pride.proteinidentificationindex.mongo.search"/>
 
     <!--EBI configuration start-->
     <mongo:mongo id="mongo"

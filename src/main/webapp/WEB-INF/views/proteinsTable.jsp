@@ -234,7 +234,7 @@
             <%-- Table rows which contains proteins--%>
             <tbody>
             <c:set var="first" value="${page.size * page.number}"/>
-            <c:forEach items="${page.content}" var="protein" varStatus="status">
+            <c:forEach items="${mongoProteinIdentifications}" var="protein" varStatus="status">
                 <tr>
                     <td style="white-space: nowrap;">${first + status.count}</td>
                     <%-- Submitted protein accession column--%>
