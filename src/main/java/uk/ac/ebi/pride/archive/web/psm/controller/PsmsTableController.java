@@ -4,8 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -32,7 +30,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * User: ntoro
@@ -92,10 +89,11 @@ public class PsmsTableController {
         PageWrapper<Psm> psmPage = psmSearchService.findByAssayAccessionHighlightsOnModificationNames(assayAccession, filteredQuery, ptmsFilters, page);
         Map<String, Long> availablePtms = psmSearchService.findByAssayAccessionFacetOnModificationNames(assayAccession, filteredQuery, ptmsFilters);
         Map<String, QualityAwarePsm> psmsWithClusters = getClustersForPsm(psmPage.getPage().getContent());
-
-        List<MongoPsm> mongoPsms = mongoPsmSecureSearchService.findByIdIn(psmPage.getPage().getContent().stream().
-                map(Psm::getId).
-                collect(Collectors.toCollection(ArrayList<String>::new)),
+        ArrayList<String> psmIds = new ArrayList<>();
+        for (Psm psm: psmPage.getPage().getContent()) {
+            psmIds.add(psm.getId());
+        }
+        List<MongoPsm> mongoPsms = mongoPsmSecureSearchService.findByIdIn(psmIds,
             new Sort(Sort.Direction.ASC, "peptideSequence", "_id"));
         return pageMaker.createPsmsTablePage(projectAccession, assayAccession, psmPage.getPage(),
             psmPage.getHighlights(), query, availablePtms, ptmsFilters, psmsWithClusters, mongoPsms);
@@ -143,9 +141,11 @@ public class PsmsTableController {
         PageWrapper<Psm> psmPage = psmSearchService.findByProjectAccessionHighlightsOnModificationNames(projectAccession, filteredQuery, ptmsFilters, page);
         Map<String, Long> availablePtms = psmSearchService.findByProjectAccessionFacetOnModificationNames(projectAccession, filteredQuery, ptmsFilters);
         Map<String, QualityAwarePsm> psmsWithClusters = getClustersForPsm(psmPage.getPage().getContent());
-        List<MongoPsm> mongoPsms = mongoPsmSecureSearchService.findByIdIn(psmPage.getPage().getContent().stream().
-                map(Psm::getId).
-                collect(Collectors.toCollection(ArrayList<String>::new)),
+        ArrayList<String> psmIds = new ArrayList<>();
+        for (Psm psm: psmPage.getPage().getContent()) {
+            psmIds.add(psm.getId());
+        }
+        List<MongoPsm> mongoPsms = mongoPsmSecureSearchService.findByIdIn(psmIds,
             new Sort(Sort.Direction.ASC, "peptideSequence", "_id"));
         return pageMaker.createPsmsTablePage(projectAccession, null, psmPage.getPage(),
             psmPage.getHighlights(), query, availablePtms, ptmsFilters, psmsWithClusters, mongoPsms);

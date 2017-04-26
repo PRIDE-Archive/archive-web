@@ -38,7 +38,9 @@
 
     <bean id="viewerControllerImpl" class="uk.ac.ebi.pride.archive.web.service.controller.viewer.ViewerControllerImpl">
         <constructor-arg name="proteinIdentificationSearchService" ref="proteinIdentificationSearchService"/>
+        <constructor-arg name="mongoProteinIdentificationSearchService" ref="mongoProteinIdentificationSearchService"/>
         <constructor-arg name="psmSearchService" ref="psmSearchService"/>
+        <constructor-arg name="mongoPsmSearchService" ref="mongoPsmSearchService"/>
         <constructor-arg name="spectrumSearchService" ref="spectrumSearchService"/>
     </bean>
 </beans>

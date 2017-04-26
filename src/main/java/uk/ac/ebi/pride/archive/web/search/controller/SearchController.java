@@ -295,7 +295,10 @@ public class SearchController {
                                                 projectSearchSummary.getProjectAccession(), termToken);
                                 if (proteinIdentifications != null && proteinIdentifications.size() > 0) {
                                     int count = proteinIdentifications.size();
-                                    projectSearchSummary.getHighlights().computeIfAbsent(PROTEIN_IDENTIFICATIONS.getIndexName(), k -> new LinkedList<>());
+                                    // initialize the highlights for the field if needed (most likely)
+                                    if (projectSearchSummary.getHighlights().get(PROTEIN_IDENTIFICATIONS.getIndexName()) == null) {
+                                        projectSearchSummary.getHighlights().put(PROTEIN_IDENTIFICATIONS.getIndexName(), new LinkedList<String>());
+                                    }
                                     projectSearchSummary.getHighlights().get(PROTEIN_IDENTIFICATIONS.getIndexName()).add(
                                             HIGHLIGHT_PRE_FRAGMENT + termToken + " (" + count + ")" + HIGHLIGHT_POST_FRAGMENT
                                     );
@@ -343,7 +346,9 @@ public class SearchController {
                                         while (it.hasNext() && numHighlightsAdded < MAX_PEPTIDE_SEQUENCE_HIGHLIGHTS) {
                                             String sequence = it.next();
                                             // initialize the highlights for the field if needed (most likely)
-                                            projectSearchSummary.getHighlights().computeIfAbsent(PEPTIDE_SEQUENCES.getIndexName(), k -> new LinkedList<>());
+                                            if (projectSearchSummary.getHighlights().get(PEPTIDE_SEQUENCES.getIndexName()) == null) {
+                                                projectSearchSummary.getHighlights().put(PEPTIDE_SEQUENCES.getIndexName(), new LinkedList<String>());
+                                            }
                                             String pepHighlight = HIGHLIGHT_PRE_FRAGMENT + sequence + HIGHLIGHT_POST_FRAGMENT;
                                             //the peptide sequences is not added before becasue we remove the repetitions before
                                             projectSearchSummary.getHighlights().get(PEPTIDE_SEQUENCES.getIndexName()).add(pepHighlight);
@@ -401,12 +406,18 @@ public class SearchController {
         else return (int) ((num + divisor - 1) / divisor);
     }
 
-    private static <K,V extends Comparable<V>> Map<K,V>  sortByValueDesc(Map<K,V> map) {
+    static <K,V extends Comparable<V>> Map<K,V>  sortByValueDesc(Map<K,V> map) {
         if (map != null) {
-            List<Map.Entry<K,V>> list = new LinkedList<>(map.entrySet());
-            list.sort(Comparator.comparing(o -> (o.getValue())));
+            List<Map.Entry<K,V>> list = new LinkedList<Map.Entry<K,V>>(map.entrySet());
+            Collections.sort(list, new Comparator<Map.Entry<K,V>>() {
+                public int compare(Map.Entry<K,V> o1, Map.Entry<K,V> o2) {
+                    return (o1.getValue()).compareTo(o2.getValue());
+                }
+            });
+
             Collections.reverse(list);
-            Map<K,V> result = new LinkedHashMap<>();
+
+            Map<K,V> result = new LinkedHashMap<K,V>();
             for (Map.Entry<K, V> entry : list) {
                 result.put(entry.getKey(), entry.getValue());
             }

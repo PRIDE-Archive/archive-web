@@ -48,7 +48,7 @@
         <!--<psm.search.version>0.1.7</psm.search.version>-->
         <!--<spectrum.search.version>2.0.0</spectrum.search.version>-->
         <archive.utils.version>0.1.21</archive.utils.version>
-        <webapp.service.impl.version>0.1.6</webapp.service.impl.version>
+        <webapp.service.impl.version>0.1.7-SNAPSHOT</webapp.service.impl.version>
     </properties>
 
     <dependencies>
@@ -154,12 +154,12 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>3.2.9.RELEASE</version>
+            <version>3.2.10.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>3.2.9.RELEASE</version>
+            <version>3.2.10.RELEASE</version>
         </dependency>
 
         <!-- Spring social -->
@@ -173,29 +173,29 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>3.2.9.RELEASE</version>
+            <version>3.2.10.RELEASE</version>
         </dependency>
 
         <!-- Spring security-->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-            <version>3.2.4.RELEASE</version>
+            <version>3.2.10.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
-            <version>3.2.4.RELEASE</version>
+            <version>3.2.10.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
-            <version>3.2.4.RELEASE</version>
+            <version>3.2.10.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-taglibs</artifactId>
-            <version>3.2.4.RELEASE</version>
+            <version>3.2.10.RELEASE</version>
         </dependency>
 
         <!--SolrJ-->

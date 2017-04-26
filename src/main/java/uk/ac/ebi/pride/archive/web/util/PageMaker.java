@@ -93,10 +93,10 @@ public class PageMaker {
     HashMap<String, List<FileSummary>> fileSummariesByType = new HashMap<>();
     HashMap<String, List<FileSummary>> fileSummariesBySource = new HashMap<>();
     for (ProjectFileType theType: ProjectFileType.values()) {
-      fileSummariesByType.put(theType.name(), new LinkedList<>());
+      fileSummariesByType.put(theType.name(), new LinkedList<FileSummary>());
     }
     for (ProjectFileType theType: ProjectFileType.values()) {
-      fileSummariesBySource.put(theType.name(), new LinkedList<>());
+      fileSummariesBySource.put(theType.name(), new LinkedList<FileSummary>());
     }
     for (FileSummary theFileSummary: fileList){
       if(!theFileSummary.getFileSource().equals(ProjectFileSource.GENERATED)){

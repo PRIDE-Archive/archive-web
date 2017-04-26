@@ -4,8 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -27,7 +25,6 @@ import uk.ac.ebi.pride.proteinidentificationindex.search.model.ProteinIdentifica
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * User: ntoro
@@ -93,11 +90,12 @@ public class ProteinsTableController {
         findByAssayAccessionHighlightsOnModificationNames(assayAccession, filteredQuery, ptmsFilters, page);
     Map<String, Long> availablePtms = proteinIdentificationSearchService.
         findByAssayAccessionFacetOnModificationNames(assayAccession, filteredQuery, ptmsFilters);
+    ArrayList<String> proteinIdentIds = new ArrayList<>();
+    for (ProteinIdentification proteinIdentification: proteinPage.getPage().getContent()) {
+      proteinIdentIds.add(proteinIdentification.getId());
+    }
     List<MongoProteinIdentification> mongoProteinIdentifications = mongoProteinIdentificationSecureSearchService.
-        findByIdIn(
-            proteinPage.getPage().getContent().stream().
-            map(ProteinIdentification::getId).
-            collect(Collectors.toCollection(ArrayList<String>::new)));
+        findByIdIn(proteinIdentIds);
     return pageMaker.createProteinsTablePage(projectAccession, assayAccession, proteinPage.getPage(), proteinPage.getHighlights(), query, availablePtms, ptmsFilters, mongoProteinIdentifications);
   }
 
@@ -143,11 +141,12 @@ public class ProteinsTableController {
         findByProjectAccessionHighlightsOnModificationNames(projectAccession, filteredQuery, ptmsFilters, page);
     Map<String, Long>  availablePtms = proteinIdentificationSearchService.
         findByProjectAccessionFacetOnModificationNames(projectAccession, filteredQuery, ptmsFilters);
+    ArrayList<String> proteinIdentIds = new ArrayList<>();
+    for (ProteinIdentification proteinIdentification: proteinPage.getPage().getContent()) {
+      proteinIdentIds.add(proteinIdentification.getId());
+    }
     List<MongoProteinIdentification> mongoProteinIdentifications = mongoProteinIdentificationSecureSearchService.
-        findByIdIn(
-            proteinPage.getPage().getContent().stream().
-            map(ProteinIdentification::getId).
-            collect(Collectors.toCollection(ArrayList<String>::new)));
+        findByIdIn(proteinIdentIds);
     return pageMaker.createProteinsTablePage(projectAccession, null, proteinPage.getPage(),
         proteinPage.getHighlights(), query, availablePtms, ptmsFilters, mongoProteinIdentifications);
   }
