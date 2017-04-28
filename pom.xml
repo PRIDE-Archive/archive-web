@@ -41,31 +41,12 @@
         <pride.web.utils.version>1.3.11</pride.web.utils.version>
         <archive.security.version>0.1.5-PSM_PROT_REDUCED_SCHEMA_MONGO_SNAPSHOT</archive.security.version>
         <archive.search.version>1.0.11-PSM_PROT_REDUCED_SCHEMA_MONGO_SNAPSHOT</archive.search.version>
-        <!--provided by archive-security-->
-        <!--<archive.repo.version>0.1.19</archive.repo.version>-->
-        <!--<archive.data.provider.api.version>2.0.6</archive.data.provider.api.version>-->
-        <!--<protein.identification.search.version>0.1.2</protein.identification.search.version>-->
-        <!--<psm.search.version>0.1.7</psm.search.version>-->
-        <!--<spectrum.search.version>2.0.0</spectrum.search.version>-->
         <archive.utils.version>0.1.21</archive.utils.version>
         <webapp.service.impl.version>0.1.7-SNAPSHOT</webapp.service.impl.version>
     </properties>
 
     <dependencies>
         <!-- ##### ##### PRIDE internal dependencies ##### ##### ##### ##### ##### -->
-
-        <!--archive-repo-->
-        <!-- provided by archive security -->
-
-        <!-- archive-data-provider-api -->
-        <!-- provided by archive security -->
-
-        <!--protein-identification-search-->
-        <!-- provided by archive security -->
-
-        <!--psm-search-->
-        <!-- provided by archive security -->
-
         <!--archive-search-->
         <dependency>
             <groupId>uk.ac.ebi.pride.archive</groupId>
@@ -78,10 +59,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
-        <!--spectrum-search-->
-        <!-- provided by webapp service impl -->
-
 
         <!-- pride archive utils -->
         <dependency>
