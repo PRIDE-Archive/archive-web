@@ -39,8 +39,8 @@
 
     <properties>
         <pride.web.utils.version>1.3.11</pride.web.utils.version>
-        <archive.security.version>0.1.5-PSM_PROT_REDUCED_SCHEMA_MONGO_SNAPSHOT</archive.security.version>
-        <archive.search.version>1.0.11-PSM_PROT_REDUCED_SCHEMA_MONGO_SNAPSHOT</archive.search.version>
+        <archive.security.version>1.0.1</archive.security.version>
+        <archive.search.version>1.0.11</archive.search.version>
         <archive.utils.version>0.1.21</archive.utils.version>
         <webapp.service.impl.version>0.1.7-SNAPSHOT</webapp.service.impl.version>
     </properties>
