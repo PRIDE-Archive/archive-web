@@ -198,10 +198,7 @@
             <th><strong>#</strong></th>
             <%-- Submitted protein accession column--%>
             <th>
-                <span>
-                    <table:proteinSortUrl page="${page}" q="${q}" ptmsFilters="${ptmsFilters}"  urlType="submittedProteinAccSortURL"/>
                     <strong><fmt:message key="submitted.acc"/></strong>
-                </span>
             </th>
             <%-- Optional assay accession column --%>
             <c:if test="${empty assayAccession}">
