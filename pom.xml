@@ -11,7 +11,7 @@
     <groupId>uk.ac.ebi.pride.archive</groupId>
     <artifactId>archive-web</artifactId>
     <packaging>war</packaging>
-    <version>2.0.9</version>
+    <version>2.0.10-SNAPSHOT</version>
     <name>PRIDE Archive Web</name>
     <url>http://www.ebi.ac.uk/pride/archive</url>
 
@@ -379,7 +379,7 @@
         <connection>scm:git:https://github.com/PRIDE-Archive/web.git</connection>
         <developerConnection>scm:git:https://github.com/PRIDE-Archive/web.git</developerConnection>
         <url>https://github.com/PRIDE-Archive/web.git</url>
-        <tag>archive-web-2.0.9</tag>
+        <tag>HEAD</tag>
     </scm>
 
 </project>
