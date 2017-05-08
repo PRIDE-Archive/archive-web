@@ -42,7 +42,7 @@
         <archive.security.version>1.0.1</archive.security.version>
         <archive.search.version>1.0.11</archive.search.version>
         <archive.utils.version>0.1.21</archive.utils.version>
-        <webapp.service.impl.version>0.1.7-SNAPSHOT</webapp.service.impl.version>
+        <webapp.service.impl.version>0.1.7</webapp.service.impl.version>
     </properties>
 
     <dependencies>
