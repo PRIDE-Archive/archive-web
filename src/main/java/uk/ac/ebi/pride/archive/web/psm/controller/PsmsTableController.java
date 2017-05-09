@@ -94,7 +94,7 @@ public class PsmsTableController {
             psmIds.add(psm.getId());
         }
         List<MongoPsm> mongoPsms = mongoPsmSecureSearchService.findByIdIn(psmIds,
-            new Sort(Sort.Direction.ASC, "peptideSequence", "_id"));
+            new Sort(Sort.Direction.ASC, "peptideSequence"));
         return pageMaker.createPsmsTablePage(projectAccession, assayAccession, psmPage.getPage(),
             psmPage.getHighlights(), query, availablePtms, ptmsFilters, psmsWithClusters, mongoPsms);
     }
@@ -146,7 +146,7 @@ public class PsmsTableController {
             psmIds.add(psm.getId());
         }
         List<MongoPsm> mongoPsms = mongoPsmSecureSearchService.findByIdIn(psmIds,
-            new Sort(Sort.Direction.ASC, "peptideSequence", "_id"));
+            new Sort(Sort.Direction.ASC, "peptideSequence"));
         return pageMaker.createPsmsTablePage(projectAccession, null, psmPage.getPage(),
             psmPage.getHighlights(), query, availablePtms, ptmsFilters, psmsWithClusters, mongoPsms);
     }

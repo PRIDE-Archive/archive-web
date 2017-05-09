@@ -332,7 +332,7 @@ public class SearchController {
                                     List<Psm> psms =
                                             psmSearchService.findByPeptideSequenceAndProjectAccession(
                                                     termToken, projectSearchSummary.getProjectAccession(),
-                                                new PageRequest(0, 5, Sort.Direction.ASC, "peptide_sequence", "id")).getContent()
+                                                new PageRequest(0, 5, Sort.Direction.ASC, "peptide_sequence")).getContent()
                                             ;
                                     if (psms != null) {
                                         Set<String> peptideSequences = new TreeSet<>();
