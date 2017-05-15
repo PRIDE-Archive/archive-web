@@ -118,80 +118,6 @@
     </c:forEach>
 </spring:url>
 
-<%-- Construct sort URL for experimental m/z --%>
-<spring:url var="expMzSortURL" value="">
-    <spring:param name="page" value="${page.number}"/>
-    <spring:param name="size" value="${page.size}"/>
-    <spring:param name="q" value="${q}"/>
-
-    <c:set var="found" value="false"/>
-
-    <%--If exp_mass_to_charge was there we toggle the value--%>
-    <c:forEach var="sortOrder" items="${fn:split(page.sort,',')}">
-        <c:if test="${not empty sortOrder}">
-            <c:choose>
-                <c:when test="${sortOrder eq 'exp_mass_to_charge: ASC'}">
-                    <spring:param name="sort" value="exp_mass_to_charge: DESC"/>
-                    <c:set var="found" value="true"/>
-                </c:when>
-                <c:when test="${sortOrder eq 'exp_mass_to_charge: DESC'}">
-                    <spring:param name="sort" value="exp_mass_to_charge: ASC"/>
-                    <c:set var="found" value="true"/>
-                </c:when>
-                <c:otherwise>
-                    <spring:param name="sort" value="${sortOrder}"/>
-                </c:otherwise>
-            </c:choose>
-        </c:if>
-    </c:forEach>
-
-    <%--exp_mass_to_charge wasn't there so we add the value at the end --%>
-    <c:if test="${not found}">
-        <spring:param name="sort" value="${fn:containsIgnoreCase(page.sort, 'exp_mass_to_charge: ASC') ? 'exp_mass_to_charge: DESC' : 'exp_mass_to_charge: ASC'}"/>
-    </c:if>
-
-    <c:forEach var="theFilter" items="${ptmsFilters}">
-        <spring:param name="ptmsFilters" value="${theFilter}"/>
-    </c:forEach>
-</spring:url>
-
-<%-- Construct sort URL for charge state --%>
-<spring:url var="chargeSortURL" value="">
-    <spring:param name="page" value="${page.number}"/>
-    <spring:param name="size" value="${page.size}"/>
-    <spring:param name="q" value="${q}"/>
-
-    <c:set var="found" value="false"/>
-
-    <%--If exp_mass_to_charge was there we toggle the value--%>
-    <c:forEach var="sortOrder" items="${fn:split(page.sort,',')}">
-        <c:if test="${not empty sortOrder}">
-            <c:choose>
-                <c:when test="${sortOrder eq 'charge: ASC'}">
-                    <spring:param name="sort" value="charge: DESC"/>
-                    <c:set var="found" value="true"/>
-                </c:when>
-                <c:when test="${sortOrder eq 'charge: DESC'}">
-                    <spring:param name="sort" value="charge: ASC"/>
-                    <c:set var="found" value="true"/>
-                </c:when>
-                <c:otherwise>
-                    <spring:param name="sort" value="${sortOrder}"/>
-                </c:otherwise>
-            </c:choose>
-        </c:if>
-    </c:forEach>
-
-    <%--exp_mass_to_charge wasn't there so we add the value at the end --%>
-    <c:if test="${not found}">
-        <spring:param name="sort" value="${fn:containsIgnoreCase(page.sort, 'charge: ASC') ? 'charge: DESC' : 'charge: ASC'}"/>
-    </c:if>
-
-    <c:forEach var="theFilter" items="${ptmsFilters}">
-        <spring:param name="ptmsFilters" value="${theFilter}"/>
-    </c:forEach>
-</spring:url>
-
 <%--URLS--%>
 <c:if test="${fn:contains(urlType, 'peptideSequenceSortURL')}">
     <a class="sortLink" href="${peptideSequenceSortURL}">
@@ -237,42 +163,5 @@
                 <span title="sort" class="sortButton"></span>
             </c:otherwise>
         </c:choose>
-    </a>
-</c:if>
-<c:if test="${fn:contains(urlType, 'expMzSortURL')}">
-    <a class="sortLink" href="${expMzSortURL}">
-        <c:choose>
-            <c:when test="${fn:containsIgnoreCase(page.sort, 'exp_mass_to_charge: DESC')}">
-                <span title="sort descending" class="sortDescButton"></span>
-            </c:when>
-            <c:when test="${fn:containsIgnoreCase(page.sort, 'exp_mass_to_charge: ASC')}">
-                <span title="sort ascending" class="sortAscButton"></span>
-            </c:when>
-            <c:otherwise>
-                <span title="sort" class="sortButton"></span>
-            </c:otherwise>
-        </c:choose>
-    </a>
-</c:if>
-<c:if test="${fn:contains(urlType, 'chargeSortURL')}">
-    <a class="sortLink" href="${chargeSortURL}">
-        <%--We need to split the list to avoid mapping charge to exp_mass_to_charge--%>
-            <c:set var="found" value="false"/>
-            <c:forEach var="sortOrder" items="${fn:split(page.sort,',')}">
-            <c:if test="${not empty sortOrder}">
-                <c:if test="${sortOrder eq 'charge: DESC'}">
-                    <span title="sort descending" class="sortDescButton"></span>
-                    <c:set var="found" value="true"/>
-                </c:if>
-                <c:if test="${sortOrder eq 'charge: ASC'}">
-                    <span title="sort ascending" class="sortAscButton"></span>
-                    <c:set var="found" value="true"/>
-                </c:if>
-            </c:if>
-        </c:forEach>
-
-        <c:if test="${not found}">
-            <span title="sort" class="sortButton"></span>
-        </c:if>
     </a>
 </c:if>
