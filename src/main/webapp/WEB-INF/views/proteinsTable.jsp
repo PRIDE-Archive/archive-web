@@ -245,8 +245,8 @@
                             </spring:url>
                                 <fmt:message key="jump.peptide.table" var="jumpPeptideTable"/>
                                 <c:choose>
-                                    <c:when test="${fn:contains(highlights[protein], 'submitted_accession')}">
-                                        <c:forEach var="highlight" items="${highlights[protein]['submitted_accession']}">
+                                    <c:when test="${fn:contains(highlights[protein], 'accession')}">
+                                        <c:forEach var="highlight" items="${highlights[protein]['accession']}">
                                             <a href="${psmTableUrl}" title="${jumpPeptideTable}">${highlight}</a>
                                         </c:forEach>
                                     </c:when>
@@ -254,8 +254,6 @@
                                         <a href="${psmTableUrl}" title="${jumpPeptideTable}">${protein.submittedAccession}</a>
                                     </c:otherwise>
                                 </c:choose>
-
-
                             <%-- hyperlink to protein webapp view --%>
                             <spring:url var="proteinViewerUrl"
                                         value="/projects/{accession}/viewer/protein/{proteinID}">
@@ -349,7 +347,7 @@
                                             </c:when>
                                             <c:when test="${not fn:containsIgnoreCase(modification.value, 'UNIMOD:') and
                                                     not fn:containsIgnoreCase(modification.value, 'CHEMMOD:')}">
-                                                <spring:url var="url" value="http://www.ebi.ac.uk/ontology-lookup/?termId={accession}">
+                                                <spring:url var="url" value="http://www.ebi.ac.uk/ols/search?q={accession}">
                                                     <spring:param name="accession" value="${modification.value}"/>
                                                 </spring:url>
                                             </c:when>
@@ -357,7 +355,7 @@
                                                 <c:set var="url" value="" />
                                             </c:otherwise>
                                         </c:choose>
-                                        <spring:url var="olsUrl" value="http://www.ebi.ac.uk/ontology-lookup/?termId={accession}">
+                                        <spring:url var="olsUrl" value="http://www.ebi.ac.uk/ols/search?q={accession}">
                                             <spring:param name="accession" value="${modification.value}"/>
                                         </spring:url>
                                         <li>
@@ -378,47 +376,13 @@
                     <%-- Ambiguity group column--%>
                     <td>
                         <ul>
-                            <c:forEach var="submittedAccession" items="${protein.ambiguityGroupSubmittedAccessions}">
-                                <c:choose>
-                                    <c:when test="${fn:contains(highlights[protein], 'ambiguity_group')}">
-                                        <c:forEach var="highlight" items="${highlights[protein]['ambiguity_group']}">
-                                            <c:choose>
-                                                <c:when test="${fn:contains(highlight, submittedAccession)}">
-                                                    <li style="white-space: nowrap">${highlight}</li>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <li style="white-space: nowrap">${submittedAccession}</li>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:forEach>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <li style="white-space: nowrap">${submittedAccession}</li>
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:forEach>
+                            <li style="white-space: nowrap">${protein.submittedAccession}</li>
                         </ul>
                     </td>
                     <%-- Alternative mappings --%>
                     <td>
                         <c:forEach var="alternativeMapping" items="${protein.otherMappings}">
-                            <c:choose>
-                                <c:when test="${fn:contains(highlights[protein], 'other_mappings')}">
-                                    <c:forEach var="highlight" items="${highlights[protein]['other_mappings']}">
-                                        <c:choose>
-                                            <c:when test="${fn:contains(highlight, alternativeMapping)}">
-                                                ${highlight}
-                                            </c:when>
-                                            <c:otherwise>
-                                                ${alternativeMapping}
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </c:forEach>
-                                </c:when>
-                                <c:otherwise>
-                                    ${alternativeMapping}
-                                </c:otherwise>
-                            </c:choose>
+                            ${alternativeMapping}
                         </c:forEach>
                     </td>
                 </tr>
