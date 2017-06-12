@@ -382,7 +382,7 @@
                                     </c:when>
                                     <c:when test="${not fn:containsIgnoreCase(modification.accession, 'UNIMOD:') and
                                                     not fn:containsIgnoreCase(modification.accession, 'CHEMMOD:')}">
-                                        <spring:url var="url" value="http://www.ebi.ac.uk/ontology-lookup/?termId={accession}">
+                                        <spring:url var="url" value="http://www.ebi.ac.uk/ols/search?q={accession}">
                                             <spring:param name="accession" value="${modification.accession}"/>
                                         </spring:url>
                                     </c:when>
