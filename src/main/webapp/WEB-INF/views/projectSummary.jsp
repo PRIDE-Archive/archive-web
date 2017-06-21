@@ -281,75 +281,79 @@
     </p>
 
     <%-- other omics link --%>
+    <c:if test="${not empty projectSummary.otherOmicsLink}">
     <h5><fmt:message key="otheromicslinks"/></h5>
     <p>
-        <a href="http://www.omicsdi.org/dataset/pride/${projectSummary.accession}">${projectSummary.accession}</a> (OmicsDI)
-        <c:if test="${not empty projectSummary.otherOmicsLink}">
-            <c:forTokens items="${projectSummary.otherOmicsLink}" delims="," var="mySplit">
-            <c:set var = "mySplit" value = "${fn:trim(mySplit)}" />
-            <br />
+        <c:forTokens items="${projectSummary.otherOmicsLink}" delims="," var="otheromics" varStatus="otheromicsloopstatus">
+            <c:set var = "otheromics" value = "${fn:trim(otheromics)}" />
             <c:choose>
-                <c:when test="${fn:startsWith(mySplit, 'GSE') || fn:startsWith(mySplit, 'GPL')}">
-                    <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=${mySplit}">${mySplit}</a> (GEO, NCBI)
+                <c:when test="${fn:startsWith(otheromics, 'GSE') || fn:startsWith(otheromics, 'GPL')}">
+                    <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=${otheromics}">${otheromics}</a> (GEO, NCBI)
                 </c:when>
-                <c:when test="${fn:startsWith(mySplit, 'E-MTAB')}">
-                    <a href="http://www.ebi.ac.uk/arrayexpress/experiments/${mySplit}/">${mySplit}</a> (ArrayExpress, EMBL-EBI)
+                <c:when test="${fn:startsWith(otheromics, 'E-MTAB')}">
+                    <a href="http://www.ebi.ac.uk/arrayexpress/experiments/${otheromics}/">${otheromics}</a> (ArrayExpress, EMBL-EBI)
                 </c:when>
-                <c:when test="${fn:startsWith(mySplit, 'IM-')}">
-                    <a href="http://www.ebi.ac.uk/intact/imex/main.xhtml?query=${mySplit}">${mySplit}</a> (IntAct, IMEx)
+                <c:when test="${fn:startsWith(otheromics, 'IM-')}">
+                    <a href="http://www.ebi.ac.uk/intact/imex/main.xhtml?query=${otheromics}">${otheromics}</a> (IntAct, IMEx)
                 </c:when>
-                <c:when test="${fn:startsWith(mySplit, 'PXD')}">
-                    <a href="http://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=${mySplit}">${mySplit}</a> (ProteomeXchange)
+                <c:when test="${fn:startsWith(otheromics, 'PXD')}">
+                    <a href="http://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=${otheromics}">${otheromics}</a> (ProteomeXchange)
                 </c:when>
-                <c:when test="${fn:startsWith(mySplit, 'SRP') || fn:startsWith(mySplit, 'SRX')}">
-                    <a href="http://www.ebi.ac.uk/ena/data/view/${mySplit}">${mySplit}</a> (Sequence Read Archive, ENA, EMBL-EBI)
+                <c:when test="${fn:startsWith(otheromics, 'SRP') || fn:startsWith(otheromics, 'SRX')}">
+                    <a href="http://www.ebi.ac.uk/ena/data/view/${otheromics}">${otheromics}</a> (Sequence Read Archive, ENA, EMBL-EBI)
                 </c:when>
-                <c:when test="${fn:startsWith(mySplit, 'PRJN')}">
-                    <a href="http://www.ebi.ac.uk/ena/data/view/${mySplit}">${mySplit}</a> (BioProject, ENA, EMBL-EBI)
+                <c:when test="${fn:startsWith(otheromics, 'PRJN')}">
+                    <a href="http://www.ebi.ac.uk/ena/data/view/${otheromics}">${otheromics}</a> (BioProject, ENA, EMBL-EBI)
                 </c:when>
-                <c:when test="${fn:startsWith(mySplit, 'SAME') || fn:startsWith(mySplit, 'PRJ')}">
-                    <a href="http://www.ebi.ac.uk/ena/data/view/${mySplit}">${mySplit}</a> (ENA, EMBL-EBI)
+                <c:when test="${fn:startsWith(otheromics, 'SAME') || fn:startsWith(otheromics, 'PRJ')}">
+                    <a href="http://www.ebi.ac.uk/ena/data/view/${otheromics}">${otheromics}</a> (ENA, EMBL-EBI)
                 </c:when>
-                <c:when test="${fn:startsWith(mySplit, 'mgm')}">
-                    <a href="http://metagenomics.anl.gov/mgmain.html?mgpage=overview&metagenome=${mySplit}">${mySplit}</a> (MG-RAST)
+                <c:when test="${fn:startsWith(otheromics, 'mgm')}">
+                    <a href="http://metagenomics.anl.gov/mgmain.html?mgpage=overview&metagenome=${otheromics}">${otheromics}</a> (MG-RAST)
                 </c:when>
-                <c:when test="${fn:startsWith(mySplit, 'PASS')}">
-                    <a href="http://www.peptideatlas.org/PASS/${mySplit}">${mySplit}</a> (PeptideAtlas)
+                <c:when test="${fn:startsWith(otheromics, 'PASS')}">
+                    <a href="http://www.peptideatlas.org/PASS/${otheromics}">${otheromics}</a> (PeptideAtlas)
                 </c:when>
-                <c:when test="${fn:startsWith(mySplit, 'MSV')}">
-                    <a href="http://massive.ucsd.edu/ProteoSAFe/datasets.jsp#%7B%22main.dataset_input%22%3A%22${mySplit}%22%7D">${mySplit}</a> (MassIVE)
+                <c:when test="${fn:startsWith(otheromics, 'MSV')}">
+                    <a href="http://massive.ucsd.edu/ProteoSAFe/datasets.jsp#%7B%22main.dataset_input%22%3A%22${otheromics}%22%7D">${otheromics}</a> (MassIVE)
                 </c:when>
-                <c:when test="${fn:startsWith(mySplit, 'Gs')}">
-                    <a href="https://gold.jgi.doe.gov/study?id=${mySplit}">${mySplit}</a> (Genomes OnLine Database)
+                <c:when test="${fn:startsWith(otheromics, 'Gs')}">
+                    <a href="https://gold.jgi.doe.gov/study?id=${otheromics}">${otheromics}</a> (Genomes OnLine Database)
                 </c:when>
-                <c:when test="${fn:startsWith(mySplit, 'GCA') || fn:startsWith(mySplit, 'GCF')}">
-                    <a href="https://www.ncbi.nlm.nih.gov/assembly/${mySplit}">${mySplit}</a> (Assembly, NCBI)
+                <c:when test="${fn:startsWith(otheromics, 'GCA') || fn:startsWith(otheromics, 'GCF')}">
+                    <a href="https://www.ncbi.nlm.nih.gov/assembly/${otheromics}">${otheromics}</a> (Assembly, NCBI)
                 </c:when>
-                <c:when test="${fn:startsWith(mySplit, 'IMG/ER-genome:')}">
-                    <a href="https://img.jgi.doe.gov/cgi-bin/m/main.cgi?section=TaxonDetail&page=taxonDetail&taxon_oid=${fn:substring(mySplit, 14, fn:length(mySplit))}">${fn:substring(mySplit, 14, fn:length(mySplit))}</a> (Integrated Microbial Genomes)
+                <c:when test="${fn:startsWith(otheromics, 'IMG/ER-genome:')}">
+                    <a href="https://img.jgi.doe.gov/cgi-bin/m/main.cgi?section=TaxonDetail&page=taxonDetail&taxon_oid=${fn:substring(otheromics, 14, fn:length(otheromics))}">${fn:substring(otheromics, 14, fn:length(otheromics))}</a> (Integrated Microbial Genomes)
                 </c:when>
-                <c:when test="${fn:startsWith(mySplit, 'http')}">
-                    <a href="${mySplit}">${mySplit}</a>
+                <c:when test="${fn:startsWith(otheromics, 'http')}">
+                    <a href="${otheromics}">${otheromics}</a>
                 </c:when>
-                <c:when test="${fn:startsWith(mySplit, 'PPV')}">
-                    <%-- Do nothing--%>
+                <c:when test="${fn:startsWith(otheromics, 'PPV')}">
+                    <%-- Do nothing, see MS-Viewer section below --%>
                 </c:when>
                 <c:otherwise>
-                    ${mySplit}
+                    ${otheromics}
                 </c:otherwise>
             </c:choose>
+            <c:if test="${!otheromicsloopstatus.last && !fn:startsWith(otheromics, 'PPV')}">
+                <br />
+            </c:if>
         </c:forTokens>
-    </c:if>
     </p>
+    </c:if>
     <%-- MS-Viewer links --%>
     <c:if test="${not empty projectSummary.otherOmicsLink && fn:contains(projectSummary.otherOmicsLink, 'PPV')}">
         <h5><fmt:message key="visualizationlinks"/></h5>
         <p>
-        <c:forTokens items="${projectSummary.otherOmicsLink}" delims="," var="mySplit">
-        <c:set var = "mySplit" value = "${fn:trim(mySplit)}" />
+        <c:forTokens items="${projectSummary.otherOmicsLink}" delims="," var="otheromicslinks" varStatus="ootheromicslinksloopstatus">
+        <c:set var = "otheromicslinks" value = "${fn:trim(otheromicslinks)}" />
             <c:choose>
-                <c:when test="${fn:startsWith(mySplit, 'PPV')}">
-                    <a href="http://msviewer.ucsf.edu/prospector/cgi-bin/mssearch.cgi?search_name=msviewrep&report_title=MS-Viewer Repository&ms_viewer_accession=${mySplit}">${mySplit}</a> (MS-Viewer)<br />
+                <c:when test="${fn:startsWith(otheromicslinks, 'PPV')}">
+                    <a href="http://msviewer.ucsf.edu/prospector/cgi-bin/mssearch.cgi?search_name=msviewrep&report_title=MS-Viewer Repository&ms_viewer_accession=${otheromicslinks}">${otheromicslinks}</a> (MS-Viewer)
+                    <c:if test="${!ootheromicslinksloopstatus.last}">
+                        <br />
+                    </c:if>
                 </c:when>
                 <c:otherwise>
                     <%-- Do nothing--%>
