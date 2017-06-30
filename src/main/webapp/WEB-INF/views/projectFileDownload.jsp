@@ -12,16 +12,16 @@
 
 <div class="grid_23 clearfix">
     <nav id="breadcrumb">
-    <p>
-        <spring:url var="prideUrl" value="//www.ebi.ac.uk/pride"/>
-        <spring:url var="priderUrl" value="/"/>
-        <spring:url var="projectUrl" value="/projects/{accession}">
-            <spring:param name="accession" value="${projectSummary.accession}"/>
-        </spring:url>
-        <a href="${prideUrl}"><fmt:message key="pride"/></a> &gt; <a href="${priderUrl}"><fmt:message
+        <p>
+            <spring:url var="prideUrl" value="//www.ebi.ac.uk/pride"/>
+            <spring:url var="priderUrl" value="/"/>
+            <spring:url var="projectUrl" value="/projects/{accession}">
+                <spring:param name="accession" value="${projectSummary.accession}"/>
+            </spring:url>
+            <a href="${prideUrl}"><fmt:message key="pride"/></a> &gt; <a href="${priderUrl}"><fmt:message
             key="prider"/> </a> &gt; <a href="${projectUrl}">${projectSummary.accession}</a> &gt;
-        <span><fmt:message key="download.files"/> </span>
-    </p>
+            <span><fmt:message key="download.files"/> </span>
+        </p>
     </nav>
 </div>
 
@@ -38,14 +38,16 @@
                            projectAccession="${projectSummary.accession}"
                            ftpRootAddress="ftp://ftp.pride.ebi.ac.uk/pride/data/archive"/>
         </c:if>
-         <%-- open pride inspector --%>
-        <fmt:message key="pride.inspector.title" var="inspectorTitle"/>
-        <h5>
+        <c:if test="${fn:toLowerCase(projectSummary.submissionType) != 'partial'}">
+            <%-- open pride inspector --%>
+            <fmt:message key="pride.inspector.title" var="inspectorTitle"/>
+            <h5>
             <span id="inspector-confirm" class="inspector_window icon icon-functional" data-icon="1" title="${inspectorTitle}">
-                ${inspectorTitle}
+                    ${inspectorTitle}
             </span>
-        </h5>
-        <inspector:inspectorDialog accession="${projectSummary.accession}" />
+            </h5>
+            <inspector:inspectorDialog accession="${projectSummary.accession}" />
+        </c:if>
     </div>
 </div>
 
