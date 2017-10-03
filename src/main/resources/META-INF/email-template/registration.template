@@ -14,21 +14,21 @@ Please also verify your contact details:
     Last name: [LAST_NAME]
     Affiliation: [AFFILIATION]
 
-To submit data, you can visit [PRIDE_ARCHIVE_SUBMISSION_URL]
+To submit data, you can visit https:[PRIDE_ARCHIVE_SUBMISSION_URL]
 
-For general help, please go to [PRIDE_ARCHIVE_HELP_URL]
+For general help, please go to https:[PRIDE_ARCHIVE_HELP_URL]
 
 You can always reach us at [PRIDE_SUPPORT] for any other questions.
 
 Regards,
 
 The PRIDE Team
-Website: [PRIDE_URL]
+Website: https:[PRIDE_URL]
 Email: [PRIDE_SUPPORT]
 Twitter: [TWITTER]
 
-For general ProteomeXchange reference, please use:
-[1] Vizcaíno JA, Deutsch EW, Wang R, Csordas A, Reisinger F, Ríos D, Dianes JA, Sun Z, Farrah T, Bandeira N, Binz PA, Xenarios I, Eisenacher M, Mayer G, Gatto L, Campos A, Chalkley RJ, Kraus HJ, Albar JP, Martinez-Bartolomé S, Apweiler R, Omenn GS, Martens L, Jones AR, Hermjakob H (2014). ProteomeXchange provides globally co-ordinated proteomics data submission and dissemination. Nature Biotechnol. 30(3):223-226. PubMed PMID:24727771.
-
 For general PRIDE reference, please use:
-[2] Vizcaino JA, Cote RG, Csordas A, Dianes JA, Fabregat A, Foster JM, Griss J, Alpi E, Birim M, Contell J, O'Kelly G, Schoenegger A, Ovelleiro D, Perez-Riverol Y, Reisinger F, Rios D, Wang R, Hermjakob H (2013). The Proteomics Identifications (PRIDE) database and associated tools: status in 2013. Nucleic Acids Res. 41(D1):D1063-1069. PubMed PMID:23203882.
+[1] Vizcaíno JA, Csordas A, del-Toro N, Dianes JA, Griss J, Lavidas I, Mayer G, Perez-Riverol Y, Reisinger F, Ternent T, Xu QW, Wang R, Hermjakob H (2016). 2016 update of the PRIDE database and related tools. Nucleic Acids Res 44(D1): D447-D456 (PubMed ID: 26527722).
+
+For general ProteomeXchange reference, please use:
+[2] Deutsch EW, Csordas A, Sun Z, Jarnuczak A, Perez-Riverol Y, Ternent T, Campbell DS, Bernal-Llinares M, Okuda S, Kawano S, Moritz RL, Carver JJ, Wang M, Ishihama Y, Bandeira N, Hermjakob H, Vizcaíno JA (2017). The ProteomeXchange Consortium in 2017: supporting the cultural change in proteomics public data deposition. Nucleic Acids Res 54(D1):D1100-D1106 (PubMed PMID: 27924013).
