@@ -23,11 +23,28 @@
     <!-- END PLUS Configuration -->
 
     <!-- JNDI DataSource Definition -->
-    <New id="cf" class="org.mortbay.jetty.plus.naming.Resource">
+    <!--<New id="cf" class="org.mortbay.jetty.plus.naming.Resource">
         <Arg>jdbc/pridepro</Arg>
         <Arg>
             <New class="org.apache.commons.dbcp.BasicDataSource">
                 <Set name="url">jdbc:oracle:thin:@ora-vm-032.ebi.ac.uk:1531:PRIDEPRO</Set>
+                <Set name="driverClassName">oracle.jdbc.OracleDriver</Set>
+                <Set name="username">PRIDEARCH_RO</Set>
+                <Set name="password">Pr1d3_ro</Set>
+                <Set name="maxActive">30</Set>
+                <Set name="maxIdle">10</Set>
+                <Set name="minIdle">2</Set>
+                <Set name="maxWait">5000</Set>
+                <Set name="minEvictableIdleTimeMillis">25000</Set>
+                <Set name="timeBetweenEvictionRunsMillis">30000</Set>
+            </New>
+        </Arg>
+    </New>-->
+    <New id="cf" class="org.mortbay.jetty.plus.naming.Resource">
+        <Arg>jdbc/pridepro</Arg>
+        <Arg>
+            <New class="org.apache.commons.dbcp.BasicDataSource">
+                <Set name="url">jdbc:oracle:thin:@ora-dlvm-029.ebi.ac.uk:1521:VPRIDEDEV</Set>
                 <Set name="driverClassName">oracle.jdbc.OracleDriver</Set>
                 <Set name="username">PRIDEARCH_RO</Set>
                 <Set name="password">Pr1d3_ro</Set>

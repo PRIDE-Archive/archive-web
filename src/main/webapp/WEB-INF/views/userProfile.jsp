@@ -22,12 +22,20 @@
 
     <div class="grid_10">
         <h4 style="font-weight:bold">
-            ${user.firstName} <sec:authorize access="hasRole('SUBMITTER')">${user.lastName}</sec:authorize>
+            <sec:authorize access="hasRole('SUBMITTER')">${user.title} </sec:authorize>${user.firstName}<sec:authorize access="hasRole('SUBMITTER')"> ${user.lastName}</sec:authorize>
         </h4>
 
         <sec:authorize access="hasRole('SUBMITTER')">
             <h5><fmt:message key="email"/>: ${user.email} </h5>
             <h5><fmt:message key="affiliation"/>: ${user.affiliation} </h5>
+            <c:if test="${not empty user.country}">
+                <h5><fmt:message key="country"/>: ${user.country} </h5>
+            </c:if>
+            <c:if test="${not empty user.orcid}">
+                <h5><a href="https://orcid.org/${user.orcid}" title="Link: https://orcid.org/${user.orcid}" target="_blank">
+                    <img src="${pageContext.request.contextPath}/resources/img/orcid_16x16.gif" title="Image: ORCID" border="0"> orcid.org/${user.orcid}</a>
+                </h5>
+            </c:if>
         </sec:authorize>
 
     </div>

@@ -13,6 +13,8 @@ Please also verify your contact details:
     First name: [FIRST_NAME]
     Last name: [LAST_NAME]
     Affiliation: [AFFILIATION]
+    Country: [COUNTRY]
+    ORCID: [ORCID]
 
 To submit data, you can visit [PRIDE_ARCHIVE_SUBMISSION_URL]
 
@@ -27,7 +29,7 @@ Website: [PRIDE_URL]
 Email: [PRIDE_SUPPORT]
 Twitter: [TWITTER]
 
-For general ProteomeXchange reference, please use:
+For general ProteomeXchange reference, please Fuse:
 [1] Vizcaíno JA, Deutsch EW, Wang R, Csordas A, Reisinger F, Ríos D, Dianes JA, Sun Z, Farrah T, Bandeira N, Binz PA, Xenarios I, Eisenacher M, Mayer G, Gatto L, Campos A, Chalkley RJ, Kraus HJ, Albar JP, Martinez-Bartolomé S, Apweiler R, Omenn GS, Martens L, Jones AR, Hermjakob H (2014). ProteomeXchange provides globally co-ordinated proteomics data submission and dissemination. Nature Biotechnol. 30(3):223-226. PubMed PMID:24727771.
 
 For general PRIDE reference, please use:

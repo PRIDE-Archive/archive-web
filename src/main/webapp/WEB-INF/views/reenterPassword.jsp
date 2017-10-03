@@ -40,6 +40,8 @@
                     <form:hidden path="firstName"/>
                     <form:hidden path="lastName"/>
                     <form:hidden path="affiliation"/>
+                    <form:hidden path="country"/>
+                    <form:hidden path="orcid"/>
 
                     <%-- existing password--%>
                     <div>

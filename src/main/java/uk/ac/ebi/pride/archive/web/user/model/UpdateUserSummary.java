@@ -32,6 +32,8 @@ public class UpdateUserSummary extends UserSummary {
         this.setCreateAt(userSummary.getCreateAt());
         this.setUpdateAt(userSummary.getUpdateAt());
         this.setUserAuthorities(new HashSet<UserAuthority>(userSummary.getUserAuthorities()));
+        this.setCountry(userSummary.getCountry());
+        this.setOrcid(userSummary.getOrcid());
     }
 
     public String getExistingEmail() {

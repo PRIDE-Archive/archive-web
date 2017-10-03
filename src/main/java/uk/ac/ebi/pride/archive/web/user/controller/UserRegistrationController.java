@@ -51,7 +51,7 @@ public class UserRegistrationController extends AbstractUserProfileController{
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView processRegistrationSubmit(@ModelAttribute(value = "user") @Valid UserSummary user, BindingResult errors, HttpServletRequest request) {
-
+        System.setProperty("java.net.preferIPv4Stack" , "true");
         if (errors.hasErrors()) {
             return pageMaker.createRegistrationPage(user, false);
         } else {
