@@ -2,18 +2,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>uk.ac.ebi.pride.architectural</groupId>
-        <artifactId>pride-core</artifactId>
-        <version>1.0.1</version>
-    </parent>
-
     <groupId>uk.ac.ebi.pride.archive</groupId>
     <artifactId>archive-web</artifactId>
     <packaging>war</packaging>
     <version>2.0.10-SNAPSHOT-ORCID</version>
     <name>PRIDE Archive Web</name>
     <url>http://www.ebi.ac.uk/pride/archive</url>
+
+    <parent>
+        <groupId>uk.ac.ebi.pride.architectural</groupId>
+        <artifactId>pride-core</artifactId>
+        <version>1.0.1</version>
+    </parent>
 
     <!--
          To build the project several settings are required which are provided via maven profiles
