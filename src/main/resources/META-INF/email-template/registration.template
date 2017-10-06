@@ -13,17 +13,19 @@ Please also verify your contact details:
     First name: [FIRST_NAME]
     Last name: [LAST_NAME]
     Affiliation: [AFFILIATION]
+    Country: [COUNTRY]
+    ORCID: [ORCID]
 
-To submit data, you can visit https:[PRIDE_ARCHIVE_SUBMISSION_URL]
+To submit data, you can visit [PRIDE_ARCHIVE_SUBMISSION_URL]
 
-For general help, please go to https:[PRIDE_ARCHIVE_HELP_URL]
+For general help, please go to [PRIDE_ARCHIVE_HELP_URL]
 
 You can always reach us at [PRIDE_SUPPORT] for any other questions.
 
 Regards,
 
 The PRIDE Team
-Website: https:[PRIDE_URL]
+Website: [PRIDE_URL]
 Email: [PRIDE_SUPPORT]
 Twitter: [TWITTER]
 

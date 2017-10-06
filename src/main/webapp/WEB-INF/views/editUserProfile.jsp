@@ -64,7 +64,6 @@
                         <form:errors cssClass="error" path="title"/>
                     </div>
 
-
                     <%-- First name --%>
                     <div>
                         <label class="block-label">
@@ -93,6 +92,26 @@
 
                         <form:textarea cssClass="input-box" path="affiliation" rows="3" cols="20"/>
                         <form:errors cssClass="error" path="affiliation"/>
+                    </div>
+
+                    <%-- country --%>
+                    <div>
+                        <label class="block-label">
+                            <fmt:message key="country"/>
+                        </label>
+
+                        <form:select cssClass="register-countries-list" path="country" items="${countries}"/>
+                        <form:errors cssClass="error" path="country"/>
+                    </div>
+
+                    <%-- orcid --%>
+                    <div>
+                        <label class="block-label">
+                            <fmt:message key="orcid"/> - <a href="https://orcid.org/" title="Link: https://orcid.org/" target="_blank">What is ORCID?</a>
+                        </label>
+
+                        <a href="https://orcid.org/" title="Link: https://orcid.org/" target="_blank"><img src="${pageContext.request.contextPath}/resources/img/orcid_16x16.gif" title="Image: ORCID" border="0"> orcid.org/ </a><form:input cssClass="input-box" path="orcid"/>
+                        <form:errors cssClass="error" path="orcid"/>
                     </div>
 
                     <div>

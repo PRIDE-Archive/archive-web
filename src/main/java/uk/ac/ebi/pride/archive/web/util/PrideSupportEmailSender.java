@@ -40,6 +40,8 @@ public class PrideSupportEmailSender {
     public static final String COMMENT_PLACE_HOLDER = "[COMMENTS]";
     public static final String TWITTER_PLACE_HOLDER = "[TWITTER]";
     public static final String EMAIL_PLACE_HOLDER = "[EMAIL]";
+    public static final String COUNTRY_PLACE_HOLDER = "[COUNTRY]";
+    public static final String ORCID_PLACE_HOLDER = "[ORCID]";
     public static final String OLD_EMAIL_PLACE_HOLDER = "[OLD_EMAIL]";
     public static final String NEW_EMAIL_PLACE_HOLDER = "[NEW_EMAIL]";
     public static final String PRIDE_URL_PLACE_HOLDER = "[PRIDE_URL]";
@@ -204,11 +206,11 @@ public class PrideSupportEmailSender {
         emailBody = emailBody.replace(FIRST_NAME_PLACE_HOLDER, user.getFirstName());
         emailBody = emailBody.replace(LAST_NAME_PLACE_HOLDER, user.getLastName());
         emailBody = emailBody.replace(AFFILIATION_PLACE_HOLDER, user.getAffiliation());
+        emailBody = emailBody.replace(COUNTRY_PLACE_HOLDER, user.getCountry());
+        emailBody = emailBody.replace(ORCID_PLACE_HOLDER, user.getOrcid());
         emailBody = emailBody.replace(PRIDE_ARCHIVE_SUBMISSION_URL_PLACE_HOLDER, prideArchiveSubmissionUrl);
         emailBody = emailBody.replace(PRIDE_ARCHIVE_HELP_URL_PLACE_HOLDER, prideArchiveHelpUrl);
-
         emailBody = formatCommonFields(emailBody);
-
         try {
             sendEmail(new String[]{user.getEmail()}, REGISTRATION_EMAIL_TITLE, emailBody);
         } catch (MailException ex) {
@@ -221,20 +223,16 @@ public class PrideSupportEmailSender {
         emailBody = emailBody.replace(PRIDE_SUPPORT_EMAIL_PLACE_HOLDER, prideSupportEmailAddress);
         emailBody = emailBody.replace(PRIDE_URL_PLACE_HOLDER, prideUrl);
         emailBody = emailBody.replace(TWITTER_PLACE_HOLDER, twitterAccount);
-
         return emailBody;
     }
 
     private void sendEmail(String[] mailTo, String title, String emailBody) {
-
         SimpleMailMessage msg = new SimpleMailMessage();
-
         msg.setFrom(prideSupportEmailAddress);
         msg.setReplyTo(prideSupportEmailAddress);
         msg.setTo(mailTo);
         msg.setSubject(title);
         msg.setText(emailBody);
-
         mailSender.send(msg);
     }
 }

@@ -193,6 +193,7 @@ public class PageMaker {
     modelAndView.addObject("updateContact", user);
     modelAndView.addObject("updatePassword", changePassword);
     modelAndView.addObject("titles", TitleUtils.getValidTitles());
+    modelAndView.addObject("countries", CountryUtils.getAllCountries());
     modelAndView.setViewName("editUserProfile");
     return modelAndView;
   }
@@ -237,6 +238,7 @@ public class PageMaker {
     }
     modelAndView.addObject("user", user);
     modelAndView.addObject("titles", TitleUtils.getValidTitles());
+    modelAndView.addObject("countries", CountryUtils.getAllCountries());
     modelAndView.setViewName("register");
     return modelAndView;
   }
