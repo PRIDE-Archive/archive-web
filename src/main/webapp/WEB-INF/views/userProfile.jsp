@@ -59,123 +59,132 @@
             <fmt:message key="my.project.list.title"/>
         </h3>
     </div>
-
+    <c:if test="${not empty user.orcid}">
+        <spring:url var="claimToOrcid" value="https://www.ebi.ac.uk/ebisearch/search.ebi?db=pride&query=${user.orcid}"/>
+        <sec:authorize access="hasRole('SUBMITTER')">
+            <form action="${claimToOrcid}" method="post" target="_blank">
+                <button class="button" type="submit">
+                    <fmt:message key="user.profile.orcid.claim"/>
+                </button>
+            </form>
+        </sec:authorize>
+    </c:if>
     <%-- project table --%>
     <div class="grid_23">
         <p>
-        <c:choose>
+            <c:choose>
             <c:when test="${not empty projects}">
-                <table class="summary-table ">
-                    <thead>
-                    <tr>
-                        <th>
-                            <fmt:message key="project.accession"/>
-                        </th>
-                        <th>
-                            <fmt:message key="title"/>
-                        </th>
-                        <th>
-                            <fmt:message key="species"/>
-                        </th>
-                        <th>
-                            <fmt:message key="experiment.type"/>
-                        </th>
-                        <th>
-                            <fmt:message key="submission.type"/>
-                        </th>
-                        <th>
-                            <fmt:message key="submission.date"/>
-                        </th>
-                        <th>
-                            <fmt:message key="publication.date"/>
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach var="myProject" items="${projects}">
-                        <tr>
-                            <td>
-                                <spring:url var="showUrl" value="/projects/{projectAccession}">
-                                    <spring:param name="projectAccession" value="${myProject.accession}"/>
-                                </spring:url>
-                                <a href="${showUrl}" class="icon icon-functional"
-                                   data-icon="4">${myProject.accession}</a>
-                            </td>
-                            <td>
-                                    ${myProject.title}
-                            </td>
-                            <td>
-                                <c:set var="species" value="${myProject.species}"/>
+        <table class="summary-table ">
+            <thead>
+            <tr>
+                <th>
+                    <fmt:message key="project.accession"/>
+                </th>
+                <th>
+                    <fmt:message key="title"/>
+                </th>
+                <th>
+                    <fmt:message key="species"/>
+                </th>
+                <th>
+                    <fmt:message key="experiment.type"/>
+                </th>
+                <th>
+                    <fmt:message key="submission.type"/>
+                </th>
+                <th>
+                    <fmt:message key="submission.date"/>
+                </th>
+                <th>
+                    <fmt:message key="publication.date"/>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="myProject" items="${projects}">
+                <tr>
+                    <td>
+                        <spring:url var="showUrl" value="/projects/{projectAccession}">
+                            <spring:param name="projectAccession" value="${myProject.accession}"/>
+                        </spring:url>
+                        <a href="${showUrl}" class="icon icon-functional"
+                           data-icon="4">${myProject.accession}</a>
+                    </td>
+                    <td>
+                            ${myProject.title}
+                    </td>
+                    <td>
+                        <c:set var="species" value="${myProject.species}"/>
 
-                                <c:choose>
-                                    <c:when test="${not empty species}">
-                                        <c:forEach var="singleSpecies" items="${species}">
-                                            <spring:url var="searchSpeciesUrl"
-                                                        value="/simpleSearch?q={species}">
-                                                <spring:param name="species" value="${singleSpecies.name}"/>
-                                            </spring:url>
+                        <c:choose>
+                            <c:when test="${not empty species}">
+                                <c:forEach var="singleSpecies" items="${species}">
+                                    <spring:url var="searchSpeciesUrl"
+                                                value="/simpleSearch?q={species}">
+                                        <spring:param name="species" value="${singleSpecies.name}"/>
+                                    </spring:url>
 
-                                            <a href="${searchSpeciesUrl}">${singleSpecies.name}</a>
-                                            <br/>
-                                        </c:forEach>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <fmt:message key="not.available"/>
-                                    </c:otherwise>
-                                </c:choose>
-                            </td>
-                            <td>
-                                <c:set var="experimentTypes" value="${myProject.experimentTypes}"/>
+                                    <a href="${searchSpeciesUrl}">${singleSpecies.name}</a>
+                                    <br/>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <fmt:message key="not.available"/>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                    <td>
+                        <c:set var="experimentTypes" value="${myProject.experimentTypes}"/>
 
-                                <c:choose>
-                                    <c:when test="${not empty experimentTypes}">
-                                        <c:forEach var="experimentType" items="${experimentTypes}">
-                                            <spring:url var="searchExperimentTypeUrl"
-                                                        value="/simpleSearch?q={experimentType}">
-                                                <spring:param name="experimentType" value="${experimentType.name}"/>
-                                            </spring:url>
-                                            <a href="${searchExperimentTypeUrl}">${experimentType.name}</a>
-                                            <br/>
-                                        </c:forEach>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <fmt:message key="not.available"/>
-                                    </c:otherwise>
-                                </c:choose>
-                            </td>
-                            <td>
-                                    ${myProject.submissionType}
-                            </td>
-                            <td>
-                                <fmt:formatDate value="${myProject.submissionDate}" pattern="dd/MM/yyyy"/>
-                            </td>
-                            <td>
-                                <c:choose>
-                                    <c:when test="${not empty myProject.publicationDate}">
-                                        <fmt:formatDate value="${myProject.publicationDate}" pattern="dd/MM/yyyy"/>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <sec:authorize access="hasRole('SUBMITTER')">
-                                            <spring:url var="publishProjectUrl" value="/projects/{projectAccession}/publish">
-                                                <spring:param name="projectAccession" value="${myProject.accession}"/>
-                                            </spring:url>
-                                            <form action="${publishProjectUrl}" method="GET">
-                                                <button class="button" type="submit" value="Public">
-                                                    <fmt:message key="make.project.public"/>
-                                                </button>
-                                            </form>
-                                        </sec:authorize>
-                                    </c:otherwise>
-                                </c:choose>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
-            </c:when>
-            <c:otherwise>
-                <h4><fmt:message key="my.project.list.empty"/></h4>
-            </c:otherwise>
+                        <c:choose>
+                            <c:when test="${not empty experimentTypes}">
+                                <c:forEach var="experimentType" items="${experimentTypes}">
+                                    <spring:url var="searchExperimentTypeUrl"
+                                                value="/simpleSearch?q={experimentType}">
+                                        <spring:param name="experimentType" value="${experimentType.name}"/>
+                                    </spring:url>
+                                    <a href="${searchExperimentTypeUrl}">${experimentType.name}</a>
+                                    <br/>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <fmt:message key="not.available"/>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                    <td>
+                            ${myProject.submissionType}
+                    </td>
+                    <td>
+                        <fmt:formatDate value="${myProject.submissionDate}" pattern="dd/MM/yyyy"/>
+                    </td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${not empty myProject.publicationDate}">
+                                <fmt:formatDate value="${myProject.publicationDate}" pattern="dd/MM/yyyy"/>
+                            </c:when>
+                            <c:otherwise>
+                                <sec:authorize access="hasRole('SUBMITTER')">
+                                    <spring:url var="publishProjectUrl" value="/projects/{projectAccession}/publish">
+                                        <spring:param name="projectAccession" value="${myProject.accession}"/>
+                                    </spring:url>
+                                    <form action="${publishProjectUrl}" method="GET">
+                                        <button class="button" type="submit" value="Public">
+                                            <fmt:message key="make.project.public"/>
+                                        </button>
+                                    </form>
+                                </sec:authorize>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+        </c:when>
+        <c:otherwise>
+            <h4><fmt:message key="my.project.list.empty"/></h4>
+        </c:otherwise>
         </c:choose>
     </div>
 
