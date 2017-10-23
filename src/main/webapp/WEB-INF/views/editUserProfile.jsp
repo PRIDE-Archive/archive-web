@@ -110,7 +110,7 @@
                             <fmt:message key="orcid"/> - <a href="https://orcid.org/" title="Link: https://orcid.org/" target="_blank">What is ORCID?</a>
                         </label>
 
-                        <a href="https://orcid.org/" title="Link: https://orcid.org/" target="_blank"><img src="${pageContext.request.contextPath}/resources/img/orcid_16x16.gif" title="Image: ORCID" border="0"> orcid.org/ </a><form:input cssClass="input-box" path="orcid"/>
+                        <a href="https://orcid.org/" title="Link: https://orcid.org/" target="_blank"><img src="https://orcid.org/sites/default/files/images/orcid_24x24.png" title="Image: ORCID" border="0"> orcid.org/ </a><form:input cssClass="input-box" path="orcid"/>
                         <form:errors cssClass="error" path="orcid"/>
                     </div>
 

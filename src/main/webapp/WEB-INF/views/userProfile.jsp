@@ -33,7 +33,7 @@
             </c:if>
             <c:if test="${not empty user.orcid}">
                 <h5><a href="https://orcid.org/${user.orcid}" title="Link: https://orcid.org/${user.orcid}" target="_blank">
-                    <img src="${pageContext.request.contextPath}/resources/img/orcid_16x16.gif" title="Image: ORCID" border="0"> orcid.org/${user.orcid}</a>
+                    <img src="https://orcid.org/sites/default/files/images/orcid_24x24.png" title="Image: ORCID" border="0"> orcid.org/${user.orcid}</a>
                 </h5>
             </c:if>
         </sec:authorize>
@@ -68,28 +68,28 @@
         <table class="summary-table ">
             <thead>
             <tr>
-                <th>
+                <th style="text-align:center;">
                     <fmt:message key="project.accession"/>
                 </th>
-                <th>
+                <th style="text-align:center;">
                     <fmt:message key="title"/>
                 </th>
-                <th>
+                <th style="text-align:center;">
                     <fmt:message key="species"/>
                 </th>
-                <th>
+                <th style="text-align:center;">
                     <fmt:message key="experiment.type"/>
                 </th>
-                <th>
+                <th style="text-align:center;">
                     <fmt:message key="submission.type"/>
                 </th>
-                <th>
+                <th style="text-align:center;">
                     <fmt:message key="submission.date"/>
                 </th>
-                <th>
+                <th style="text-align:center;">
                     <fmt:message key="publication.date"/>
                 </th>
-                <th>
+                <th style="text-align:center;">
                     <fmt:message key="claim.to.orcid"/>
                 </th>
             </tr>
@@ -104,7 +104,7 @@
                         <a href="${showUrl}" class="icon icon-functional"
                            data-icon="4">${myProject.accession}</a>
                     </td style="text-align:center;">
-                    <td>
+                    <td style="text-align:center;">
                             ${myProject.title}
                     </td>
                     <td style="text-align:center;">
@@ -174,9 +174,9 @@
                     <td style="text-align:center;">
                         <c:if test="${not empty myProject.publicationDate}">
                         <spring:url var="claimProjectToOrcid" value="https://www.ebi.ac.uk/ebisearch/search.ebi?db=pride&query=${myProject.accession}"/>
-                        <div style="margin: 0 auto; width: 16px">
+                        <div style="margin: 0 auto; width: 24px">
                             <a href="${claimProjectToOrcid}" title="Claim project to ORCID" target="_blank">
-                                <img src="${pageContext.request.contextPath}/resources/img/orcid_16x16.gif" title="Claim ${myProject.accession} to ORCID" border="0" style="width: 16px"></a>
+                                <img src="https://orcid.org/sites/default/files/images/orcid_24x24.png" title="Claim ${myProject.accession} to ORCID" border="0" style="width: 24px"></a>
                             </c:if>
                     </td>
                 </tr>
