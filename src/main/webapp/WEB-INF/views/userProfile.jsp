@@ -183,20 +183,25 @@
             </c:forEach>
             </tbody>
         </table>
+        <c:if test="${not empty user.orcid}">
+            <spring:url var="claimToOrcid" value="https://www.ebi.ac.uk/ebisearch/search.ebi?db=pride&query=${user.orcid}"/>
+            <sec:authorize access="hasRole('SUBMITTER')">
+                <form action="${claimToOrcid}" method="post" target="_blank">
+                    <button class="button" type="submit">
+                        <fmt:message key="user.profile.orcid.claim"/>
+                    </button>
+                </form>
+            </sec:authorize>
+        </c:if>
+        <form action="http://www.ebi.ac.uk/pride/help/archive/claim-to-orcid" method="post" target="_blank">
+            <button class="button" type="submit">
+                <fmt:message key="user.profile.orcid.claim.help"/>
+            </button>
+        </form>
         </c:when>
         <c:otherwise>
             <h4><fmt:message key="my.project.list.empty"/></h4>
         </c:otherwise>
         </c:choose>
     </div>
-    <c:if test="${not empty user.orcid}">
-        <spring:url var="claimToOrcid" value="https://www.ebi.ac.uk/ebisearch/search.ebi?db=pride&query=${user.orcid}"/>
-        <sec:authorize access="hasRole('SUBMITTER')">
-            <form action="${claimToOrcid}" method="post" target="_blank">
-                <button class="button" type="submit">
-                    <fmt:message key="user.profile.orcid.claim"/>
-                </button>
-            </form>
-        </sec:authorize>
-    </c:if>
 </div>
