@@ -197,8 +197,8 @@
             <button class="button" type="submit">
                 <fmt:message key="user.profile.orcid.claim.help"/>
             </button>
-        </form>
-        </c:when>
+        </form><b>*Please note: search results for claiming to your ORCID ID may take take up to 7 days to appear after a project's publication date.</b>
+    </c:when>
         <c:otherwise>
             <h4><fmt:message key="my.project.list.empty"/></h4>
         </c:otherwise>
