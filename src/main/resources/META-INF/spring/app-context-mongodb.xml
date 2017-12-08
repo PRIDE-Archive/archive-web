@@ -15,7 +15,7 @@
 
     <!--EBI configuration start-->
     <mongo:mongo id="mongo"
-                 replica-set="${archive.mongo.app.machine.one}:${archive.mongo.app.port},${archive.mongo.app.machine.two}:${archive.mongo.app.port},${archive.mongo.app.machine.three}:${archive.mongo.app.port}"
+                 replica-set="${archive.mongo.app.machine.one}:${archive.mongo.app.port},${archive.mongo.app.machine.two}:${archive.mongo.app.port}"
                  write-concern="NORMAL">
         <mongo:options threads-allowed-to-block-for-connection-multiplier="10"
                        connect-timeout="1000000"
