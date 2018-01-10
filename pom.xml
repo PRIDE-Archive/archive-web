@@ -377,9 +377,9 @@
 
     <!--scm git config-->
     <scm>
-        <connection>scm:git:https://github.com/PRIDE-Archive/web.git</connection>
-        <developerConnection>scm:git:https://github.com/PRIDE-Archive/web.git</developerConnection>
-        <url>https://github.com/PRIDE-Archive/web.git</url>
+        <connection>scm:git:https://github.com/PRIDE-Archive/archive-web.git</connection>
+        <developerConnection>scm:git:https://github.com/PRIDE-Archive/archive-web.git</developerConnection>
+        <url>https://github.com/PRIDE-Archive/archive-web</url>
         <tag>HEAD</tag>
     </scm>
 
