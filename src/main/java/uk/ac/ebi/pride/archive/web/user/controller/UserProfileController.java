@@ -15,15 +15,10 @@ import uk.ac.ebi.pride.archive.repo.project.service.ProjectSummary;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-
 
 /**
  * Controller for viewing user profile
- *
- * @author Rui Wang
- * @version $Id$
  */
 @Controller
 @RequestMapping("/users/profile")
@@ -34,7 +29,11 @@ public class UserProfileController extends AbstractUserProfileController{
     @Autowired
     private ProjectSummarySubmissionDateComparator projectSummarySubmissionDateComparator;
 
-
+    /**
+     * Gets the user profile
+     * @param principal currently authenticated principal
+     * @return the user profile page
+     */
     @RequestMapping(method = RequestMethod.GET)
     @PreAuthorize("hasRole('ADMINISTRATOR', 'REVIEWER', 'SUBMITTER')")
     public ModelAndView getUserProfile(Principal principal) {
@@ -50,16 +49,18 @@ public class UserProfileController extends AbstractUserProfileController{
         return pageMaker.createUserProfilePage(user, projectSummaries);
     }
 
+    /**
+     * Sorts project summaries.
+     * @param projectSummaries all project summaries
+     * @return sorted project summaries
+     */
     private Collection<ProjectSummary> sortProjectSummaries(Collection<ProjectSummary> projectSummaries) {
         if (projectSummaries == null || projectSummaries.isEmpty()) {
             return projectSummaries;
         } else {
-            List<ProjectSummary> projectSummaryList = new ArrayList<ProjectSummary>();
-            projectSummaryList.addAll(projectSummaries);
-            Collections.sort(projectSummaryList, projectSummarySubmissionDateComparator);
+            List<ProjectSummary> projectSummaryList = new ArrayList<>(projectSummaries);
+            projectSummaryList.sort(projectSummarySubmissionDateComparator);
             return projectSummaryList;
         }
     }
-
-
 }

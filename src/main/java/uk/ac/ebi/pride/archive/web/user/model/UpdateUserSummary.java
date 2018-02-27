@@ -6,8 +6,7 @@ import uk.ac.ebi.pride.archive.repo.user.service.UserSummary;
 import java.util.HashSet;
 
 /**
- * @author Rui Wang
- * @version $Id$
+ * Models an updated user summary.
  */
 public class UpdateUserSummary extends UserSummary {
 
@@ -20,6 +19,10 @@ public class UpdateUserSummary extends UserSummary {
     public UpdateUserSummary() {
     }
 
+    /**
+     * Constructor, based of an existing user summary.
+     * @param userSummary the user summary to update with
+     */
     public UpdateUserSummary(UserSummary userSummary) {
         this.setId(userSummary.getId());
         this.setEmail(userSummary.getEmail());
@@ -31,7 +34,7 @@ public class UpdateUserSummary extends UserSummary {
         this.setAffiliation(userSummary.getAffiliation());
         this.setCreateAt(userSummary.getCreateAt());
         this.setUpdateAt(userSummary.getUpdateAt());
-        this.setUserAuthorities(new HashSet<UserAuthority>(userSummary.getUserAuthorities()));
+        this.setUserAuthorities(new HashSet<>(userSummary.getUserAuthorities()));
         this.setCountry(userSummary.getCountry());
         this.setOrcid(userSummary.getOrcid());
     }
