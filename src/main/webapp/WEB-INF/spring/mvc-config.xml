@@ -53,19 +53,6 @@
         <beans:property name="suffix" value=".jsp" />
     </beans:bean>
 
-    <!--<beans:bean class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver">-->
-        <!--<beans:property name="order" value="1"/>-->
-    <!--</beans:bean>-->
-
-    <!--<beans:bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">-->
-        <!--&lt;!&ndash;<beans:property name="exceptionMappings">&ndash;&gt;-->
-            <!--&lt;!&ndash;<beans:props>&ndash;&gt;-->
-                <!--&lt;!&ndash;<beans:prop key="java.lang.Exception">error</beans:prop>&ndash;&gt;-->
-            <!--&lt;!&ndash;</beans:props>&ndash;&gt;-->
-        <!--&lt;!&ndash;</beans:property>&ndash;&gt;-->
-        <!--&lt;!&ndash;<beans:property name="order" value="2"/>&ndash;&gt;-->
-    <!--</beans:bean>-->
-
     <!--Disable browser cache for searchResults -->
     <mvc:interceptors>
         <mvc:interceptor>
@@ -94,28 +81,6 @@
                 <beans:value>jnlp</beans:value>
             </beans:list>
         </beans:property>
-        <!--<beans:property name="exceptions">-->
-            <!--<beans:list>-->
-                <!--<beans:value>searchService</beans:value>-->
-                <!--<beans:value>/files/</beans:value>-->
-                <!--<beans:value>/resources/css/prider.css</beans:value>-->
-                <!--<beans:value>/resources/javascript/prider.js</beans:value>-->
-                <!--<beans:value>/resources/javascript/aspera-utils.js</beans:value>-->
-                <!--<beans:value>/resources/javascript/google-analytics.js</beans:value>-->
-                <!--<beans:value>/resources/javascript/priderStats.js</beans:value>-->
-                <!--<beans:value>/resources/javascript/readmore.min.js</beans:value>-->
-                <!--<beans:value>/resources/img/thumb1.PNG</beans:value>-->
-                <!--<beans:value>/resources/img/thumb2.PNG</beans:value>-->
-                <!--<beans:value>/resources/img/thumb3.PNG</beans:value>-->
-                <!--<beans:value>/resources/img/thumb4.PNG</beans:value>-->
-                <!--<beans:value>/resources/img/thumb5.PNG</beans:value>-->
-                <!--<beans:value>/resources/img/tag.png</beans:value>-->
-                <!--<beans:value>/resources/img/loader.gif</beans:value>-->
-                <!--<beans:value>/resources/img/in.png</beans:value>-->
-                <!--<beans:value>/resources/img/out.png</beans:value>-->
-                <!--<beans:value>/ebisearch/</beans:value> &lt;!&ndash; for local testing of the EBI global search &ndash;&gt;-->
-            <!--</beans:list>-->
-        <!--</beans:property>-->
     </beans:bean>
     <beans:bean id="frontierTemplateFilterWebApp" class="uk.ac.ebi.pride.web.util.frontier.CustomizedFrontierTemplateFilter">
         <beans:property name="templateServiceAddress" value="${frontier.template.service.url}"/>
