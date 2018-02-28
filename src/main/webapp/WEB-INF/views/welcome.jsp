@@ -252,7 +252,7 @@
 </div>
 
 <section id="elixir" class="grid_24">
-    <div id="elixir-banner" data-color="blue" data-name="This service" data-description="I am a super cool service" data-more-information-link="https://www.elixir-europe.org/about-us/who-we-are/nodes/embl-ebi" data-use-basic-styles="true"></div>
+    <div id="elixir-banner" data-color="blue" data-name="This service" data-description="PRIDE is an ELIXIR Core Data Resource" data-more-information-link="https://www.elixir-europe.org/about-us/who-we-are/nodes/embl-ebi" data-use-basic-styles="true"></div>
     <script defer="defer" src="https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.3/js/elixirBanner.js"></script>
 </section>
 
