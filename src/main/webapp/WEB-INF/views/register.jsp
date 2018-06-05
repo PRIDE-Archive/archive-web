@@ -120,6 +120,15 @@
                         <form:errors cssClass="error" path="orcid"/>
                     </div>
 
+                    <%-- Terms of usage --%>
+                    <div>
+                        <label class="block-label">
+                            <fmt:message key="terms"/> - <a href="https://www.ebi.ac.uk/data-protection/privacy-notice/pride-new" title="Link: https://www.ebi.ac.uk/data-protection/privacy-notice/pride-new" target="_blank">Privacy notice</a>
+                        </label>
+                        Accept
+                        <form:checkbox cssClass="check-box" path="acceptedTermsOfUse"/>
+                        <form:errors cssClass="error" path="acceptedTermsOfUse"/>
+                    </div>
 
                     <div>
                         <button class="button" type="submit" value="Register">

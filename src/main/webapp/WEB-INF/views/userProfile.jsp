@@ -50,6 +50,9 @@
                 </button>
             </form>
         </sec:authorize>
+        <c:if test="${!user.acceptedTermsOfUse}">
+            <div class="error">Please edit your profile to accept the <fmt:message key="terms"/> - <a href="https://www.ebi.ac.uk/data-protection/privacy-notice/pride-new" title="Link: https://www.ebi.ac.uk/data-protection/privacy-notice/pride-new" target="_blank">Privacy notice</a>.</div>
+        </c:if>
     </div>
 </div>
 
