@@ -139,6 +139,18 @@
     </section>
 
     <div class="grid_5 omega">
+
+        <section id="beta-version">
+            <h3 class="icon icon-generic" data-icon="&gt;">
+                <fmt:message key="welcome.beta"/>
+            </h3>
+            <p class="justify-body-text">
+                <fmt:message key="welcome.beta.text"/>
+                <a href="http://wwwdev.ebi.ac.uk/pride"><fmt:message key="welcome.beta.page"/></a>
+
+            </p>
+        </section>
+
         <section id="statistics">
             <h3 class="icon icon-functional" data-icon="z">
                 <fmt:message key="welcome.statistics.caption"/>
