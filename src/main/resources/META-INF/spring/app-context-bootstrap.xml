@@ -16,7 +16,8 @@
                                           uk.ac.ebi.pride.archive.web.user.validator,
                                           uk.ac.ebi.pride.archive.web.feedback.validator,
                                           uk.ac.ebi.pride.archive.web.util,
-                                          uk.ac.ebi.pride.spectrumindex.search"/>
+                                          uk.ac.ebi.pride.spectrumindex.search,
+                                          uk.ac.ebi.pride.archive.web.user.service.aap"/>
 
     <bean id="filePathBuilder" class="uk.ac.ebi.pride.archive.utils.config.FilePathBuilderPride3"/>
     <bean id="fileUtils" class="uk.ac.ebi.pride.archive.utils.streaming.FileUtils"/>
@@ -34,6 +35,7 @@
         <constructor-arg name="signUpUrl" value="${user.signup.url}"/>
         <constructor-arg name="passwordResetUrl" value="${user.reset.password.url}"/>
         <constructor-arg name="updateUrl" value="${user.update.url}"/>
+        <constructor-arg name="aapRegisterUrl" value="${user.aap.create.url}"/>
     </bean>
 
     <bean id="viewerControllerImpl" class="uk.ac.ebi.pride.archive.web.service.controller.viewer.ViewerControllerImpl">
@@ -43,4 +45,10 @@
         <constructor-arg name="mongoPsmSearchService" ref="mongoPsmSearchService"/>
         <constructor-arg name="spectrumSearchService" ref="spectrumSearchService"/>
     </bean>
+
+    <bean id="aapAuthHandlerService" class="uk.ac.ebi.pride.archive.web.user.service.aap.AuthorizationHandlerService">
+        <constructor-arg name="aapAuthUrl" value="${user.aap.create.url}"/>
+    </bean>
+
+
 </beans>

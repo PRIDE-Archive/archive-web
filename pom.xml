@@ -43,10 +43,18 @@
         <archive.search.version>1.0.14</archive.search.version>
         <archive.utils.version>0.1.24</archive.utils.version>
         <webapp.service.impl.version>0.1.8</webapp.service.impl.version>
+        <spectrum.index.search.version>2.0.3</spectrum.index.search.version>
     </properties>
 
     <dependencies>
         <!-- ##### ##### PRIDE internal dependencies ##### ##### ##### ##### ##### -->
+
+        <dependency>
+            <groupId>uk.ac.ebi.pride.archive</groupId>
+            <artifactId>archive-repo</artifactId>
+            <version>1.0.3-SNAPSHOT</version>
+        </dependency>
+
         <!--archive-search-->
         <dependency>
             <groupId>uk.ac.ebi.pride.archive</groupId>
@@ -82,6 +90,12 @@
             <groupId>uk.ac.ebi.pride.archive</groupId>
             <artifactId>archive-security</artifactId>
             <version>${archive.security.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>uk.ac.ebi.pride.archive</groupId>
+                    <artifactId>archive-repo</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- archive webapp-service-impl -->
@@ -106,7 +120,27 @@
                     <groupId>uk.ac.ebi.pride.utilities</groupId>
                     <artifactId>pride-mod</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>uk.ac.ebi.pride</groupId>
+                    <artifactId>spectrum-index-search</artifactId>
+                </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>uk.ac.ebi.pride</groupId>
+            <artifactId>spectrum-index-search</artifactId>
+            <version>${spectrum.index.search.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>edu.ucdavis.fiehnlab.splash</groupId>
+                    <artifactId>core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>edu.ucdavis.fiehnlab.splash</groupId>
+            <artifactId>core</artifactId>
+            <version>1.8</version>
         </dependency>
 
         <!-- PRIDE web utilities-->
@@ -281,7 +315,10 @@
             <artifactId>mail</artifactId>
             <version>1.4.4</version>
         </dependency>
+
     </dependencies>
+
+
 
     <build>
         <!-- define the final name on the project name rather than the artifact id (for clarification) -->
@@ -374,6 +411,23 @@
             </plugin>
         </plugins>
     </build>
+
+    <!-- Repos and distribution -->
+    <repositories>
+        <repository>
+            <id>nexus-ebi-release-repo</id>
+            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-repo/</url>
+        </repository>
+        <repository>
+            <id>nexus-ebi-snapshot-repo</id>
+            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-snapshots/</url>
+        </repository>
+        <repository>
+            <id>releases</id>
+            <name>Fiehnlab Public Maven Repository</name>
+            <url>http://gose.fiehnlab.ucdavis.edu:55000/content/groups/public</url>
+        </repository>
+    </repositories>
 
     <!--scm git config-->
     <scm>

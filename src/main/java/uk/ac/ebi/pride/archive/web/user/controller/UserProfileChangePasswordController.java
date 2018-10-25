@@ -16,6 +16,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import uk.ac.ebi.pride.archive.repo.user.service.UserSummary;
 import uk.ac.ebi.pride.archive.web.user.model.ChangePassword;
 import uk.ac.ebi.pride.archive.web.user.model.UpdateUserSummary;
+import uk.ac.ebi.pride.archive.web.user.service.aap.AuthorizationHandlerService;
 import uk.ac.ebi.pride.archive.web.user.validator.ChangePasswordValidator;
 import uk.ac.ebi.pride.archive.web.util.PrideSupportEmailSender;
 
@@ -43,6 +44,9 @@ public class UserProfileChangePasswordController extends AbstractUserProfileCont
     @Autowired
     private String passwordChangeEmailTemplate;
 
+    @Autowired
+    private AuthorizationHandlerService aapAuthHandlerService;
+
     @InitBinder(value = "updatePassword")
     protected void initBinder(WebDataBinder binder) {
         binder.setValidator(changePasswordValidator);
@@ -68,6 +72,11 @@ public class UserProfileChangePasswordController extends AbstractUserProfileCont
 
                 // update contact details
                 userSecureServiceWebService.update(originalUser, updateContact);
+
+                //update the same in AAP service
+                boolean isUpdated = aapAuthHandlerService.changePassword(changePassword.getEmail(),changePassword.getOldPassword(),changePassword.getNewPassword());
+                System.out.println("##########Password updation status in AAP::"+isUpdated);
+
 
                 prideSupportEmailSender.sendPasswordChangeEmail(updateContact, passwordChangeEmailTemplate);
             } catch (Exception ex) {
