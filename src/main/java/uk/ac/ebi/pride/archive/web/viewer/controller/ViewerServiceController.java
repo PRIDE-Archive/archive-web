@@ -111,7 +111,7 @@ public class ViewerServiceController {
                     HttpStatus.UNAUTHORIZED.value(),
                     "Private data! Please log in.",
                     "Authorisation required.",
-                    "http://www.ebi.ac.uk/pride/archive/login",
+                    "http://www.ebi.ac.uk/pride/archive/legacy/login",
                     null);
         } else {
             return new RestError(HttpStatus.FORBIDDEN,
