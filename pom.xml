@@ -5,8 +5,8 @@
     <groupId>uk.ac.ebi.pride.archive</groupId>
     <artifactId>archive-web</artifactId>
     <packaging>war</packaging>
-    <version>2.0.18-usageterms-SNAPSHOT</version>
-    <name>pride-archive-web</name><!-- used for the finalName of the generated artifact -->
+    <version>2.0.18-legacy</version>
+    <name>pride-archive-web-legacy</name><!-- used for the finalName of the generated artifact -->
     <url>http://www.ebi.ac.uk/pride/archive</url>
 
     <parent>
@@ -343,7 +343,7 @@
                 <version>6.1.26</version>
                 <configuration>
                     <webAppConfig>
-                        <contextPath>/pride/archive</contextPath>
+                        <contextPath>/pride/archive/legacy</contextPath>
                     </webAppConfig>
                     <connectors>
                         <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
